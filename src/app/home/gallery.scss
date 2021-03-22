@@ -1,0 +1,30 @@
+.image-thumb {
+  line-height: 0;
+  column-count: 5;
+  column-gap: 10px;
+
+  .img-container {
+    padding-bottom: 16px;
+    overflow: hidden;
+  }
+
+  span {
+    white-space: nowrap;
+    // border: 1px solid red;
+    // display: block;
+    // padding-top: 15px;
+  }
+
+  img {
+    width: 100% !important;
+    height: auto !important;
+    padding-bottom: 10px;
+  }
+}
+
+.input-filter {
+  border-radius: 5px;
+  border: 1px solid gray;
+  outline: none;
+  padding-left: 6px;
+}
