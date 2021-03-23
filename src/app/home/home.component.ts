@@ -32,14 +32,15 @@ export class HomeComponent implements OnInit {
   showText: boolean = true;
   searchString: string = '';
   numOfColumns: number = 5;
+  rootName: string = 'HOME';
 
   options: ITreeOptions = MyTreeOptions;
 
   ngOnInit(): void {
 
-
     this.electronService.ipcRenderer.on('input-folder-chosen', (event, fullPath: string) => {
       print(fullPath);
+      this.rootName = fullPath.split('\\').pop();
     });
 
     this.electronService.ipcRenderer.on('files-coming-back', (event, data: ImageFile[]) => {
@@ -99,7 +100,7 @@ export class HomeComponent implements OnInit {
 
     console.log(result)
 
-    result[0].name = "ROOT";
+    result[0].name = this.rootName;
 
     this.nodes = result;
 

@@ -148,7 +148,7 @@ let allFiles = [];
 
     });
 
-    console.log(allFiles);
+    // console.log(allFiles);
 
     event.sender.send('files-coming-back', allFiles);
 
