@@ -9,6 +9,12 @@ interface TreeNode {
   children?: TreeNode[];
 }
 
+export interface ImageFile {
+  fullPath: string;
+  name: string;
+  partialPath: string;
+}
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -21,7 +27,7 @@ export class HomeComponent implements OnInit {
   ) { }
 
   expanded = false;
-  allImages = [];
+  allImages: ImageFile[] = [];
   nodes: TreeNode[] = [];
   showText: boolean = true;
   searchString: string = '';
@@ -32,11 +38,11 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
 
 
-    this.electronService.ipcRenderer.on('input-folder-chosen', (event, data: any) => {
-      print(data);
+    this.electronService.ipcRenderer.on('input-folder-chosen', (event, fullPath: string) => {
+      print(fullPath);
     });
 
-    this.electronService.ipcRenderer.on('files-coming-back', (event, data: any) => {
+    this.electronService.ipcRenderer.on('files-coming-back', (event, data: ImageFile[]) => {
       print(data);
       this.processData(data);
     });
@@ -53,7 +59,7 @@ export class HomeComponent implements OnInit {
     this.expanded = !this.expanded;
   }
 
-  processData(data: any): void {
+  processData(data: ImageFile[]): void {
 
     this.allImages = data;
 

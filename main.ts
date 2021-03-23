@@ -3,6 +3,7 @@ import * as path from 'path';
 import * as url from 'url';
 
 import { fdir } from 'fdir';
+import { ImageFile } from './src/app/home/home.component';
 
 let win: BrowserWindow = null;
 const args = process.argv.slice(1),
@@ -137,7 +138,7 @@ let allFiles = [];
 
       const partial: string = path.relative(inputDir, parsed.dir).replace(/\\/g, '/');
 
-      const newItem: any = {
+      const newItem: ImageFile = {
         fullPath: fullPath,
         name: parsed.base,
         partialPath: '/' + partial,
