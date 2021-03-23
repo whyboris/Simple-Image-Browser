@@ -23,6 +23,9 @@ export class HomeComponent implements OnInit {
   expanded = false;
   allImages = [];
   nodes: TreeNode[] = [];
+  showText: boolean = true;
+  searchString: string = '';
+  numOfColumns: number = 5;
 
   options: ITreeOptions = MyTreeOptions;
 

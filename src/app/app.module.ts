@@ -11,8 +11,16 @@ import { TreeModule } from '@circlon/angular-tree-component';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 
+import { SearchPipe } from './search.pipe';
+import { SortPipe } from './sort.pipe';
+
 @NgModule({
-  declarations: [AppComponent, HomeComponent],
+  declarations: [
+    AppComponent,
+    HomeComponent,
+    SearchPipe,
+    SortPipe
+  ],
   imports: [
     AppRoutingModule,
     BrowserModule,
