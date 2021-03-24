@@ -32,16 +32,17 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   allImages: ImageFile[] = [];
   allowedExtensions: AllowedExtension[] = ['png','jpg'];
+  appMaximized: boolean = false;
   expanded = false;
   nodes: TreeNode[] = [];
   numOfColumns: number = 5;
   partialPath: string = '/';
   rootName: string = 'HOME';
   searchString: string = '';
-  showText: boolean = true;
-  showPng: boolean = true;
   showGif: boolean = true;
   showJpg: boolean = true;
+  showPng: boolean = true;
+  showText: boolean = true;
 
   options: ITreeOptions = {
     actionMapping: {
@@ -159,5 +160,21 @@ export class HomeComponent implements OnInit, AfterViewInit {
   exit(): void {
     this.electronService.ipcRenderer.send('close');
   }
+
+  maximize(): void {
+    if (this.appMaximized) {
+      this.electronService.ipcRenderer.send('un-maximize');
+      this.appMaximized = false;
+    } else {
+      this.electronService.ipcRenderer.send('maximize');
+      this.appMaximized = true;
+    }
+
+  }
+
+  minimize(): void {
+    this.electronService.ipcRenderer.send('minimize');
+  }
+
 
 }

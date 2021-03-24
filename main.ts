@@ -110,6 +110,24 @@ ipcMain.on('close', (event) => {
   app.exit();
 });
 
+ipcMain.on('maximize', (event) => {
+  if (BrowserWindow.getFocusedWindow()) {
+    BrowserWindow.getFocusedWindow().maximize();
+  }
+});
+
+ipcMain.on('un-maximize', (event) => {
+  if (BrowserWindow.getFocusedWindow()) {
+    BrowserWindow.getFocusedWindow().unmaximize();
+  }
+});
+
+ipcMain.on('minimize', (event) => {
+  if (BrowserWindow.getFocusedWindow()) {
+    BrowserWindow.getFocusedWindow().minimize();
+  }
+});
+
 
 ipcMain.on('choose-input', (event) => {
   dialog.showOpenDialog(win, {
