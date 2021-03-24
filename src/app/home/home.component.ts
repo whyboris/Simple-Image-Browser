@@ -156,4 +156,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.tree.treeModel.filterNodes(folderFilter, true);
   }
 
+  exit(): void {
+    this.electronService.ipcRenderer.send('close');
+  }
+
 }

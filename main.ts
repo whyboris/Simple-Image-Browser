@@ -1,25 +1,37 @@
-import { app, BrowserWindow, screen, ipcMain, dialog, protocol } from 'electron';
+import { app, BrowserWindow, ipcMain, dialog, protocol } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
+const electron = require('electron');
+
+const windowStateKeeper = require('electron-window-state');
 
 import { fdir } from 'fdir';
+
 import { AllowedExtension, ImageFile } from './src/app/home/home.component';
 
 let win: BrowserWindow = null;
 const args = process.argv.slice(1),
   serve = args.some(val => val === '--serve');
 
+electron.Menu.setApplicationMenu(null);
+
 function createWindow(): BrowserWindow {
 
-  const electronScreen = screen;
-  const size = electronScreen.getPrimaryDisplay().workAreaSize;
+  const mainWindowState = windowStateKeeper({
+    defaultWidth: 850,
+    defaultHeight: 850
+  });
 
   // Create the browser window.
   win = new BrowserWindow({
-    x: 0,
-    y: 0,
-    width: size.width,
-    height: size.height,
+    x: mainWindowState.x,
+    y: mainWindowState.y,
+    width: mainWindowState.width,
+    height: mainWindowState.height,
+    minWidth: 420,
+    minHeight: 250,
+    center: true,
+    frame: false,
     webPreferences: {
       nodeIntegration: true,
       // allowRunningInsecureContent: (serve) ? true : false,
@@ -93,6 +105,11 @@ try {
   // Catch Error
   // throw e;
 }
+
+ipcMain.on('close', (event) => {
+  app.exit();
+});
+
 
 ipcMain.on('choose-input', (event) => {
   dialog.showOpenDialog(win, {

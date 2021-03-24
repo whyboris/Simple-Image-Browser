@@ -2,9 +2,21 @@
 
   <header class="toolbar toolbar-header">
 
-    <h1 class="title">Image Viewer</h1>
+    <!-- <h1 class="title">Image Viewer</h1> -->
 
     <div class="toolbar-actions">
+
+      <div class="btn-group">
+        <button
+          class="btn btn-default"
+          (click)="exit()"
+        >
+          <span
+            class="icon icon-cancel"
+            title="close app"
+          ></span>
+        </button>
+      </div>
 
       <div class="btn-group">
         <button
