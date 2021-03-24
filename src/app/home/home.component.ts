@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ITreeOptions } from '@circlon/angular-tree-component';
+import { ITreeOptions, TREE_ACTIONS } from '@circlon/angular-tree-component';
 import { ElectronService, print } from '../electron.service';
-
-import { MyTreeOptions } from './tree-options';
 
 interface TreeNode {
   name: string;
@@ -26,15 +24,35 @@ export class HomeComponent implements OnInit {
     public electronService: ElectronService,
   ) { }
 
-  expanded = false;
   allImages: ImageFile[] = [];
+  expanded = false;
   nodes: TreeNode[] = [];
-  showText: boolean = true;
-  searchString: string = '';
   numOfColumns: number = 5;
+  partialPath: string = '/';
   rootName: string = 'HOME';
+  searchString: string = '';
+  showText: boolean = true;
 
-  options: ITreeOptions = MyTreeOptions;
+  options: ITreeOptions = {
+    actionMapping: {
+      mouse: {
+        click: (tree, node, $event) => {
+          if (node.hasChildren) {
+            TREE_ACTIONS.TOGGLE_EXPANDED(tree, node, $event);
+          }
+          this.toggleFolder(node.data.path);
+          console.log(node.data);
+        }
+      }
+    },
+    nodeHeight: 30,
+    levelPadding: 10
+  }
+
+  toggleFolder(partialPath: string) {
+    console.log(partialPath);
+    this.partialPath = partialPath;
+  }
 
   ngOnInit(): void {
 

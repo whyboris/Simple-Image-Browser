@@ -13,13 +13,15 @@ import { HomeComponent } from './home/home.component';
 
 import { SearchPipe } from './search.pipe';
 import { SortPipe } from './sort.pipe';
+import { SubfolderPipe } from './subfolder.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     SearchPipe,
-    SortPipe
+    SortPipe,
+    SubfolderPipe
   ],
   imports: [
     AppRoutingModule,

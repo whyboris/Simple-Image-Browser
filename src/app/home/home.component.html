@@ -126,7 +126,7 @@
 
           <div
             class="img-container"
-            *ngFor="let image of allImages | search : searchString | sort"
+            *ngFor="let image of allImages | subfolder : partialPath | search : searchString | sort"
           >
 
             <img [src]="'file://' + image.fullPath" />
