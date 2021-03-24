@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { AllowedExtension, ImageFile } from './home/home.component';
+import { ImageFile } from '../home/home.component';
 
 @Pipe({
   name: 'filetype'

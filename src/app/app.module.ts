@@ -11,19 +11,19 @@ import { TreeModule } from '@circlon/angular-tree-component';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 
-import { SearchPipe } from './search.pipe';
-import { SortPipe } from './sort.pipe';
-import { SubfolderPipe } from './subfolder.pipe';
-import { FiletypePipe } from './filetype.pipe';
+import { FiletypePipe } from './pipes/filetype.pipe';
+import { SearchPipe } from './pipes/search.pipe';
+import { SortPipe } from './pipes/sort.pipe';
+import { SubfolderPipe } from './pipes/subfolder.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
+    FiletypePipe,
     HomeComponent,
     SearchPipe,
     SortPipe,
-    SubfolderPipe,
-    FiletypePipe
+    SubfolderPipe
   ],
   imports: [
     AppRoutingModule,
