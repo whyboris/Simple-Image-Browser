@@ -28,6 +28,21 @@ html, body {
     transform: translate(-8px, 8px);
   }
 
+  .node-content-wrapper-focused {
+    // border: 1px solid red;
+    position: relative;
+
+    &:after {
+      border: 1px solid green;
+      content: "";
+      display: block;
+      height: 5px;
+      position: absolute;
+      right: 4px;
+      top: 6px;
+      width: 5px;
+    }
+  }
   // .node-wrapper {
   //   border-left: 1px solid red;
   // }

@@ -1,8 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { ITreeOptions } from '@circlon/angular-tree-component';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ITreeOptions, TREE_ACTIONS } from '@circlon/angular-tree-component';
 import { ElectronService, print } from '../electron.service';
-
-import { MyTreeOptions } from './tree-options';
 
 interface TreeNode {
   name: string;
@@ -20,26 +18,52 @@ export interface ImageFile {
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss', './gallery.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, AfterViewInit {
+
+  @ViewChild('tree') tree;
 
   constructor(
+    public cd: ChangeDetectorRef,
     public electronService: ElectronService,
   ) { }
 
-  expanded = false;
   allImages: ImageFile[] = [];
+  expanded = false;
   nodes: TreeNode[] = [];
-  showText: boolean = true;
-  searchString: string = '';
   numOfColumns: number = 5;
+  partialPath: string = '/';
+  rootName: string = 'HOME';
+  searchString: string = '';
+  showText: boolean = true;
 
-  options: ITreeOptions = MyTreeOptions;
+  options: ITreeOptions = {
+    actionMapping: {
+      mouse: {
+        click: (tree, node, $event) => {
+          // if (node.hasChildren) {
+          //   TREE_ACTIONS.TOGGLE_EXPANDED(tree, node, $event);
+          // }
+          TREE_ACTIONS.FOCUS(tree, node, $event);
+          this.toggleFolder(node.data.path);
+          console.log(node.data);
+        }
+      }
+    },
+    nodeHeight: 30,
+    levelPadding: 10
+  }
+
+  toggleFolder(partialPath: string) {
+    console.log(partialPath);
+    this.partialPath = partialPath;
+    this.cd.detectChanges();
+  }
 
   ngOnInit(): void {
 
-
     this.electronService.ipcRenderer.on('input-folder-chosen', (event, fullPath: string) => {
       print(fullPath);
+      this.rootName = fullPath.split('\\').pop();
     });
 
     this.electronService.ipcRenderer.on('files-coming-back', (event, data: ImageFile[]) => {
@@ -47,6 +71,10 @@ export class HomeComponent implements OnInit {
       this.processData(data);
     });
 
+  }
+
+  ngAfterViewInit(): void {
+    this.openFolder();
   }
 
   toggleTree(tree) {
@@ -99,15 +127,26 @@ export class HomeComponent implements OnInit {
 
     console.log(result)
 
-    result[0].name = "ROOT";
+    result[0].name = this.rootName;
 
     this.nodes = result;
+
+    setTimeout(() => {
+      this.cd.detectChanges();
+      this.toggleTree(this.tree);
+      this.cd.detectChanges();
+    }, 1);
 
   }
 
   openFolder(): void {
     print('clicked');
     this.electronService.ipcRenderer.send('choose-input');
+  }
+
+  filterTree(folderFilter: string): void {
+    console.log(folderFilter);
+    this.tree.treeModel.filterNodes(folderFilter, true);
   }
 
 }
