@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ITreeOptions, TREE_ACTIONS } from '@circlon/angular-tree-component';
 import { ElectronService, print } from '../electron.service';
 
@@ -18,9 +18,12 @@ export interface ImageFile {
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss', './gallery.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, AfterViewInit {
+
+  @ViewChild('tree') tree;
 
   constructor(
+    public cd: ChangeDetectorRef,
     public electronService: ElectronService,
   ) { }
 
@@ -37,9 +40,10 @@ export class HomeComponent implements OnInit {
     actionMapping: {
       mouse: {
         click: (tree, node, $event) => {
-          if (node.hasChildren) {
-            TREE_ACTIONS.TOGGLE_EXPANDED(tree, node, $event);
-          }
+          // if (node.hasChildren) {
+          //   TREE_ACTIONS.TOGGLE_EXPANDED(tree, node, $event);
+          // }
+          TREE_ACTIONS.FOCUS(tree, node, $event);
           this.toggleFolder(node.data.path);
           console.log(node.data);
         }
@@ -52,6 +56,7 @@ export class HomeComponent implements OnInit {
   toggleFolder(partialPath: string) {
     console.log(partialPath);
     this.partialPath = partialPath;
+    this.cd.detectChanges();
   }
 
   ngOnInit(): void {
@@ -66,6 +71,10 @@ export class HomeComponent implements OnInit {
       this.processData(data);
     });
 
+  }
+
+  ngAfterViewInit(): void {
+    this.openFolder();
   }
 
   toggleTree(tree) {
@@ -121,6 +130,12 @@ export class HomeComponent implements OnInit {
     result[0].name = this.rootName;
 
     this.nodes = result;
+
+    setTimeout(() => {
+      this.cd.detectChanges();
+      this.toggleTree(this.tree);
+      this.cd.detectChanges();
+    }, 1);
 
   }
 
