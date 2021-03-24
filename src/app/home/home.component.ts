@@ -144,4 +144,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.electronService.ipcRenderer.send('choose-input');
   }
 
+  filterTree(folderFilter: string): void {
+    console.log(folderFilter);
+    this.tree.treeModel.filterNodes(folderFilter, true);
+  }
+
 }

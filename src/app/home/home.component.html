@@ -91,6 +91,7 @@
       <div class="btn-group pull-right">
         <input
           #search
+          placeholder="file filter"
           [(ngModel)]="searchString"
           (keydown.esc)="searchString = ''"
           type="text"
@@ -114,6 +115,15 @@
           [nodes]="nodes"
           [options]="options"
         ></tree-root>
+
+        <input
+          placeholder="folder filter"
+          (keyup)="filterTree($event.target.value)"
+          (keydown.esc)="$event.target.value = ''"
+          type="text"
+          class="input-filter folder-filter"
+        />
+
       </div>
 
       <div class="pane">
