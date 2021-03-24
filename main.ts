@@ -3,7 +3,7 @@ import * as path from 'path';
 import * as url from 'url';
 
 import { fdir } from 'fdir';
-import { ImageFile } from './src/app/home/home.component';
+import { AllowedExtension, ImageFile } from './src/app/home/home.component';
 
 let win: BrowserWindow = null;
 const args = process.argv.slice(1),
@@ -108,7 +108,7 @@ ipcMain.on('choose-input', (event) => {
   }).catch(err => {});
 });
 
-const acceptableFiles = ['jpg', 'png'];
+const acceptableFiles: AllowedExtension[] = ['jpg', 'png'];
 
 let allFiles = [];
 
@@ -132,13 +132,14 @@ let allFiles = [];
 
       const parsed = path.parse(fullPath);
 
-      if (!acceptableFiles.includes(parsed.ext.substr(1).toLowerCase())) {
+      if (!acceptableFiles.includes(parsed.ext.substr(1).toLowerCase() as AllowedExtension)) {
         return;
       }
 
       const partial: string = path.relative(inputDir, parsed.dir).replace(/\\/g, '/');
 
       const newItem: ImageFile = {
+        extension: parsed.ext.replace('.', '') as AllowedExtension,
         fullPath: fullPath,
         name: parsed.base,
         partialPath: '/' + partial,

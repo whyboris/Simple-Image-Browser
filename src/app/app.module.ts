@@ -14,6 +14,7 @@ import { HomeComponent } from './home/home.component';
 import { SearchPipe } from './search.pipe';
 import { SortPipe } from './sort.pipe';
 import { SubfolderPipe } from './subfolder.pipe';
+import { FiletypePipe } from './filetype.pipe';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { SubfolderPipe } from './subfolder.pipe';
     HomeComponent,
     SearchPipe,
     SortPipe,
-    SubfolderPipe
+    SubfolderPipe,
+    FiletypePipe
   ],
   imports: [
     AppRoutingModule,

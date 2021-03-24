@@ -7,7 +7,10 @@ interface TreeNode {
   children?: TreeNode[];
 }
 
+export type AllowedExtension = 'jpg' | 'png' | 'gif';
+
 export interface ImageFile {
+  extension: AllowedExtension;
   fullPath: string;
   name: string;
   partialPath: string;
@@ -28,6 +31,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   ) { }
 
   allImages: ImageFile[] = [];
+  allowedExtensions: AllowedExtension[] = ['png','jpg'];
   expanded = false;
   nodes: TreeNode[] = [];
   numOfColumns: number = 5;
@@ -35,6 +39,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
   rootName: string = 'HOME';
   searchString: string = '';
   showText: boolean = true;
+  showPng: boolean = true;
+  showGif: boolean = true;
+  showJpg: boolean = true;
 
   options: ITreeOptions = {
     actionMapping: {

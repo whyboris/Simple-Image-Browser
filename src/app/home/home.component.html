@@ -54,15 +54,27 @@
       </div>
 
       <div class="btn-group">
-        <button class="btn btn-default">
+        <button
+          class="btn btn-default"
+          [ngClass]="{ active: showJpg }"
+          (click)="showJpg = !showJpg"
+        >
           <span>jpg</span>
         </button>
 
-        <button class="btn btn-default">
+        <button
+          class="btn btn-default"
+          [ngClass]="{ active: showPng }"
+          (click)="showPng = !showPng"
+        >
           <span>png</span>
         </button>
 
-        <button class="btn btn-default">
+        <button
+          class="btn btn-default"
+          [ngClass]="{ active: showGif }"
+          (click)="showGif = !showGif"
+        >
           <span>gif</span>
         </button>
       </div>
@@ -136,7 +148,7 @@
 
           <div
             class="img-container"
-            *ngFor="let image of allImages | subfolder : partialPath | search : searchString | sort"
+            *ngFor="let image of allImages | subfolder : partialPath | filetype : showPng : showJpg : showGif | search : searchString | sort"
           >
 
             <img [src]="'file://' + image.fullPath" />
