@@ -1,5 +1,9 @@
 {
   "compileOnSave": false,
+  "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true,
+    "strictTemplates": true
+  },
   "compilerOptions": {
     "module": "es2020",
     "outDir": "./dist/out-tsc",

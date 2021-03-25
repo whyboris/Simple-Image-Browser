@@ -1,25 +1,37 @@
-import { app, BrowserWindow, screen, ipcMain, dialog, protocol } from 'electron';
+import { app, BrowserWindow, ipcMain, dialog, protocol } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
+const electron = require('electron');
+
+const windowStateKeeper = require('electron-window-state');
 
 import { fdir } from 'fdir';
-import { ImageFile } from './src/app/home/home.component';
+
+import { AllowedExtension, ImageFile } from './src/app/home/home.component';
 
 let win: BrowserWindow = null;
 const args = process.argv.slice(1),
   serve = args.some(val => val === '--serve');
 
+electron.Menu.setApplicationMenu(null);
+
 function createWindow(): BrowserWindow {
 
-  const electronScreen = screen;
-  const size = electronScreen.getPrimaryDisplay().workAreaSize;
+  const mainWindowState = windowStateKeeper({
+    defaultWidth: 850,
+    defaultHeight: 850
+  });
 
   // Create the browser window.
   win = new BrowserWindow({
-    x: 0,
-    y: 0,
-    width: size.width,
-    height: size.height,
+    x: mainWindowState.x,
+    y: mainWindowState.y,
+    width: mainWindowState.width,
+    height: mainWindowState.height,
+    minWidth: 420,
+    minHeight: 250,
+    center: true,
+    frame: false,
     webPreferences: {
       nodeIntegration: true,
       // allowRunningInsecureContent: (serve) ? true : false,
@@ -94,6 +106,29 @@ try {
   // throw e;
 }
 
+ipcMain.on('close', (event) => {
+  app.exit();
+});
+
+ipcMain.on('maximize', (event) => {
+  if (BrowserWindow.getFocusedWindow()) {
+    BrowserWindow.getFocusedWindow().maximize();
+  }
+});
+
+ipcMain.on('un-maximize', (event) => {
+  if (BrowserWindow.getFocusedWindow()) {
+    BrowserWindow.getFocusedWindow().unmaximize();
+  }
+});
+
+ipcMain.on('minimize', (event) => {
+  if (BrowserWindow.getFocusedWindow()) {
+    BrowserWindow.getFocusedWindow().minimize();
+  }
+});
+
+
 ipcMain.on('choose-input', (event) => {
   dialog.showOpenDialog(win, {
     properties: ['openDirectory']
@@ -108,7 +143,7 @@ ipcMain.on('choose-input', (event) => {
   }).catch(err => {});
 });
 
-const acceptableFiles = ['jpg', 'png'];
+const acceptableFiles: AllowedExtension[] = ['jpg', 'png'];
 
 let allFiles = [];
 
@@ -132,13 +167,14 @@ let allFiles = [];
 
       const parsed = path.parse(fullPath);
 
-      if (!acceptableFiles.includes(parsed.ext.substr(1).toLowerCase())) {
+      if (!acceptableFiles.includes(parsed.ext.substr(1).toLowerCase() as AllowedExtension)) {
         return;
       }
 
       const partial: string = path.relative(inputDir, parsed.dir).replace(/\\/g, '/');
 
       const newItem: ImageFile = {
+        extension: parsed.ext.replace('.', '') as AllowedExtension,
         fullPath: fullPath,
         name: parsed.base,
         partialPath: '/' + partial,

@@ -2,9 +2,41 @@
 
   <header class="toolbar toolbar-header">
 
-    <h1 class="title">Image Viewer</h1>
+    <!-- <h1 class="title">Image Viewer</h1> -->
 
     <div class="toolbar-actions">
+
+      <div class="btn-group">
+        <button
+          class="btn btn-default"
+          (click)="exit()"
+        >
+          <span
+            class="icon icon-cancel"
+            title="close app"
+          ></span>
+        </button>
+
+        <button
+          class="btn btn-default"
+          (click)="maximize()"
+        >
+          <span
+            class="icon icon-popup"
+            title="close app"
+          ></span>
+        </button>
+
+        <button
+          class="btn btn-default"
+          (click)="minimize()"
+        >
+          <span
+            class="icon icon-down-open"
+            title="close app"
+          ></span>
+        </button>
+      </div>
 
       <div class="btn-group">
         <button
@@ -54,15 +86,27 @@
       </div>
 
       <div class="btn-group">
-        <button class="btn btn-default">
+        <button
+          class="btn btn-default"
+          [ngClass]="{ active: showJpg }"
+          (click)="showJpg = !showJpg"
+        >
           <span>jpg</span>
         </button>
 
-        <button class="btn btn-default">
+        <button
+          class="btn btn-default"
+          [ngClass]="{ active: showPng }"
+          (click)="showPng = !showPng"
+        >
           <span>png</span>
         </button>
 
-        <button class="btn btn-default">
+        <button
+          class="btn btn-default"
+          [ngClass]="{ active: showGif }"
+          (click)="showGif = !showGif"
+        >
           <span>gif</span>
         </button>
       </div>
@@ -136,7 +180,7 @@
 
           <div
             class="img-container"
-            *ngFor="let image of allImages | subfolder : partialPath | search : searchString | sort"
+            *ngFor="let image of allImages | subfolder : partialPath | filetype : showPng : showJpg : showGif | search : searchString | sort"
           >
 
             <img [src]="'file://' + image.fullPath" />
