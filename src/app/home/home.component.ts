@@ -9,6 +9,8 @@ interface TreeNode {
 
 export type AllowedExtension = 'jpg' | 'png' | 'gif' | 'jpeg';
 
+type AllowedView = 'view1' | 'view2' | 'view3';
+
 export interface ImageFile {
   extension: AllowedExtension;
   fullPath: string;
@@ -44,7 +46,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   showPng: boolean = true;
   showText: boolean = true;
 
-  view2: boolean = false;
+  currentView: AllowedView = 'view1';
 
   options: ITreeOptions = {
     actionMapping: {

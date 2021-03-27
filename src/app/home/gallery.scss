@@ -1,6 +1,5 @@
 .gallery-pane {
   line-height: 0;
-  column-count: 5;
   column-gap: 10px;
 
   .img-container {
@@ -25,8 +24,27 @@
     }
 
     img {
-      width: 100% !important;
-      height: auto !important;
+      width: 100%;
+      height: auto;
+    }
+  }
+}
+
+.gallery-2 {
+  max-height: 100%;
+}
+
+.gallery-3 {
+  display: inline-block;
+
+  .img-container {
+    display: inline-block;
+    height: 177px;
+    margin-right: 10px;
+
+    img {
+      width: initial;
+      height: 177px;
     }
   }
 }

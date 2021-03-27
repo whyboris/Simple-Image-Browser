@@ -65,13 +65,36 @@
         <button
           class="btn btn-default"
           title="layout"
-          (click)="view2 = !view2"
-          [ngClass]="{ active: view2 }"
+          (click)="currentView = 'view1'"
+          [ngClass]="{ active: currentView === 'view1' }"
         >
           <span
             class="icon icon-layout"
           ></span>
         </button>
+
+        <button
+          class="btn btn-default"
+          title="layout"
+          (click)="currentView = 'view2'"
+          [ngClass]="{ active: currentView === 'view2' }"
+        >
+          <span
+            class="icon icon-layout"
+          ></span>
+        </button>
+
+        <button
+          class="btn btn-default"
+          title="layout"
+          (click)="currentView = 'view3'"
+          [ngClass]="{ active: currentView === 'view3' }"
+        >
+          <span
+            class="icon icon-layout"
+          ></span>
+        </button>
+
       </div>
 
       <div class="btn-group">
@@ -177,9 +200,12 @@
         <div
           *ngIf="allImages.length > 0"
           class="gallery-pane"
+          [ngClass]="{
+            'gallery-2': currentView === 'view2',
+            'gallery-3': currentView === 'view3'
+          }"
           [ngStyle]="{
-            'column-count': numOfColumns,
-            'max-height': view2 ? '100%' : 'initial'
+            'column-count': currentView === 'view3' ? 'initial' : numOfColumns
           }"
         >
 
@@ -191,7 +217,8 @@
                                            | sort"
           >
 
-            <img [src]="'file://' + image.fullPath" />
+            <img
+              [src]="'file://' + image.fullPath" />
 
             <span *ngIf="showText">
               {{ image.name }}
