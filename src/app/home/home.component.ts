@@ -9,7 +9,7 @@ interface TreeNode {
 
 export type AllowedExtension = 'jpg' | 'png' | 'gif' | 'jpeg';
 
-type AllowedView = 'view1' | 'view2' | 'view3';
+type AllowedView = 'view1' | 'view2' | 'view3' | 'view4' | 'view5';
 
 export interface ImageFile {
   extension: AllowedExtension;
