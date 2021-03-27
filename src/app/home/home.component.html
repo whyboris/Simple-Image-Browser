@@ -65,6 +65,8 @@
         <button
           class="btn btn-default"
           title="layout"
+          (click)="view2 = !view2"
+          [ngClass]="{ active: view2 }"
         >
           <span
             class="icon icon-layout"
@@ -174,13 +176,19 @@
 
         <div
           *ngIf="allImages.length > 0"
-          class="image-thumb"
-          [ngStyle]="{ 'column-count': numOfColumns }"
+          class="gallery-pane"
+          [ngStyle]="{
+            'column-count': numOfColumns,
+            'max-height': view2 ? '100%' : 'initial'
+          }"
         >
 
           <div
             class="img-container"
-            *ngFor="let image of allImages | subfolder : partialPath | filetype : showPng : showJpg : showGif | search : searchString | sort"
+            *ngFor="let image of allImages | subfolder : partialPath
+                                           | filetype : showPng : showJpg : showGif
+                                           | search : searchString
+                                           | sort"
           >
 
             <img [src]="'file://' + image.fullPath" />
