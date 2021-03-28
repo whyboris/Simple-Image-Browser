@@ -65,11 +65,48 @@
         <button
           class="btn btn-default"
           title="layout"
+          (click)="currentView = 'view1'"
+          [ngClass]="{ active: currentView === 'view1' }"
         >
-          <span
-            class="icon icon-layout"
-          ></span>
+          <span>1</span>
         </button>
+
+        <button
+          class="btn btn-default"
+          title="layout"
+          (click)="currentView = 'view2'"
+          [ngClass]="{ active: currentView === 'view2' }"
+        >
+          <span>2</span>
+        </button>
+
+        <button
+          class="btn btn-default"
+          title="layout"
+          (click)="currentView = 'view3'"
+          [ngClass]="{ active: currentView === 'view3' }"
+        >
+          <span>3</span>
+        </button>
+
+        <button
+          class="btn btn-default"
+          title="layout"
+          (click)="currentView = 'view4'"
+          [ngClass]="{ active: currentView === 'view4' }"
+        >
+          <span>4</span>
+        </button>
+
+        <button
+          class="btn btn-default"
+          title="layout"
+          (click)="currentView = 'view5'"
+          [ngClass]="{ active: currentView === 'view5' }"
+        >
+          <span>5</span>
+        </button>
+
       </div>
 
       <div class="btn-group">
@@ -174,16 +211,28 @@
 
         <div
           *ngIf="allImages.length > 0"
-          class="image-thumb"
-          [ngStyle]="{ 'column-count': numOfColumns }"
+          class="gallery-pane"
+          [ngClass]="{
+            'gallery-2': currentView === 'view2',
+            'gallery-3': currentView === 'view3',
+            'gallery-4': currentView === 'view4',
+            'gallery-5': currentView === 'view5'
+          }"
+          [ngStyle]="{
+            'column-count': currentView === 'view1' || currentView === 'view2' ? numOfColumns : 'initial'
+          }"
         >
 
           <div
             class="img-container"
-            *ngFor="let image of allImages | subfolder : partialPath | filetype : showPng : showJpg : showGif | search : searchString | sort"
+            *ngFor="let image of allImages | subfolder : partialPath
+                                           | filetype : showPng : showJpg : showGif
+                                           | search : searchString
+                                           | sort"
           >
 
-            <img [src]="'file://' + image.fullPath" />
+            <img
+              [src]="'file://' + image.fullPath" />
 
             <span *ngIf="showText">
               {{ image.name }}

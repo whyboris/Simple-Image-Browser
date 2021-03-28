@@ -143,7 +143,7 @@ ipcMain.on('choose-input', (event) => {
   }).catch(err => {});
 });
 
-const acceptableFiles: AllowedExtension[] = ['jpg', 'png'];
+const acceptableFiles: AllowedExtension[] = ['jpg', 'png', 'jpeg'];
 
 let allFiles = [];
 
@@ -176,7 +176,7 @@ let allFiles = [];
       const newItem: ImageFile = {
         extension: parsed.ext.replace('.', '') as AllowedExtension,
         fullPath: fullPath,
-        name: parsed.base,
+        name: parsed.base.replace(parsed.ext, ''),
         partialPath: '/' + partial,
       }
 

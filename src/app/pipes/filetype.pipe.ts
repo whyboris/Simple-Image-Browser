@@ -11,6 +11,8 @@ export class FiletypePipe implements PipeTransform {
       switch(image.extension) {
         case 'jpg':
           return showJpg;
+        case 'jpeg':
+          return showJpg;
         case 'png':
           return showPng;
         case 'gif':
