@@ -1,10 +1,10 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { ITreeOptions, TREE_ACTIONS } from '@circlon/angular-tree-component';
+import { ITreeOptions, TreeNode, TREE_ACTIONS } from '@circlon/angular-tree-component';
 import { ElectronService, print } from '../electron.service';
 
-interface TreeNode {
+interface MyTreeNode {
   name: string;
-  children?: TreeNode[];
+  children?: MyTreeNode[];
 }
 
 export type AllowedExtension = 'jpg' | 'png' | 'gif' | 'jpeg';
@@ -33,7 +33,7 @@ export interface ImageFile {
 })
 export class HomeComponent implements OnInit, AfterViewInit {
 
-  @ViewChild('tree') tree;
+  @ViewChild('tree') tree: TreeNode;
 
   constructor(
     public cd: ChangeDetectorRef,
@@ -44,7 +44,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   allowedExtensions: AllowedExtension[] = ['png','jpg'];
   appMaximized: boolean = false;
   expanded = false;
-  nodes: TreeNode[] = [];
+  nodes: MyTreeNode[] = [];
   numOfColumns: number = 5;
   partialPath: string = '/';
   rootName: string = 'HOME';
