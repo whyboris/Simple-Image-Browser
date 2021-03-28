@@ -1,15 +1,23 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { ITreeOptions, TREE_ACTIONS } from '@circlon/angular-tree-component';
+import { ITreeOptions, TreeNode, TREE_ACTIONS } from '@circlon/angular-tree-component';
 import { ElectronService, print } from '../electron.service';
 
-interface TreeNode {
+interface MyTreeNode {
   name: string;
-  children?: TreeNode[];
+  children?: MyTreeNode[];
 }
 
 export type AllowedExtension = 'jpg' | 'png' | 'gif' | 'jpeg';
 
 type AllowedView = 'view1' | 'view2' | 'view3' | 'view4' | 'view5';
+
+interface RowNumbers {
+  view1: number;
+  view2: number;
+  view3: number;
+  view4: number;
+  view5: number;
+}
 
 export interface ImageFile {
   extension: AllowedExtension;
@@ -25,7 +33,7 @@ export interface ImageFile {
 })
 export class HomeComponent implements OnInit, AfterViewInit {
 
-  @ViewChild('tree') tree;
+  @ViewChild('tree') tree: TreeNode;
 
   constructor(
     public cd: ChangeDetectorRef,
@@ -36,15 +44,28 @@ export class HomeComponent implements OnInit, AfterViewInit {
   allowedExtensions: AllowedExtension[] = ['png','jpg'];
   appMaximized: boolean = false;
   expanded = false;
-  nodes: TreeNode[] = [];
+  nodes: MyTreeNode[] = [];
   numOfColumns: number = 5;
   partialPath: string = '/';
   rootName: string = 'HOME';
   searchString: string = '';
+
   showGif: boolean = true;
   showJpg: boolean = true;
   showPng: boolean = true;
-  showText: boolean = true;
+
+  showText: boolean = false;
+
+  previewWidth: number = 100;
+  previewHeight: number = 100;
+
+  imagesPerRow: RowNumbers = {
+    view1: 5,
+    view2: 5,
+    view3: 5,
+    view4: 5,
+    view5: 5,
+  }
 
   currentView: AllowedView = 'view1';
 
@@ -180,5 +201,57 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.electronService.ipcRenderer.send('minimize');
   }
 
+  changeView(view: AllowedView): void {
+    this.saveImagesPerRow();
+    this.currentView = view;
+    this.restoreImagesPerRow();
+    if (view === 'view3' || view === 'view4' || view === 'view5') {
+      this.computeDimensions();
+    }
+  }
+
+  increaseSize(): void {
+    this.numOfColumns = this.numOfColumns - 1;
+    this.computeDimensions();
+  }
+
+  decreaseSize(): void {
+    this.numOfColumns = this.numOfColumns + 1;
+    this.computeDimensions();
+  }
+
+  saveImagesPerRow(): void {
+    this.imagesPerRow[this.currentView] = this.numOfColumns;
+  }
+
+  restoreImagesPerRow(): void {
+    this.numOfColumns = this.imagesPerRow[this.currentView];
+  }
+
+  computeDimensions(): void {
+    if (this.currentView === 'view3' || this.currentView === 'view4' || this.currentView === 'view5') {
+      const galleryWidth = document.getElementById('the-gallery').getBoundingClientRect().width - 20; // 20 is scroll bar offset
+
+      print(galleryWidth);
+
+      const previewWidth = galleryWidth / this.numOfColumns - 10; // 10 px is margin on side
+      let previewHeight: number = 0;
+
+      if (this.currentView === 'view4') {
+        previewHeight = previewWidth * 2 / 3;
+      } else {
+        previewHeight = previewWidth * 3 / 2;
+      }
+
+      print(previewWidth);
+      print(previewHeight);
+      print(this.currentView);
+
+      this.previewWidth = previewWidth;
+      this.previewHeight = previewHeight;
+
+      this.cd.detectChanges();
+    }
+  }
 
 }
