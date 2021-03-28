@@ -49,10 +49,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
   partialPath: string = '/';
   rootName: string = 'HOME';
   searchString: string = '';
+
   showGif: boolean = true;
   showJpg: boolean = true;
   showPng: boolean = true;
-  showText: boolean = true;
+
+  showText: boolean = false;
 
   previewWidth: number = 100;
   previewHeight: number = 100;
@@ -203,7 +205,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.saveImagesPerRow();
     this.currentView = view;
     this.restoreImagesPerRow();
-    if (view === 'view4' || view === 'view5') {
+    if (view === 'view3' || view === 'view4' || view === 'view5') {
       this.computeDimensions();
     }
   }
