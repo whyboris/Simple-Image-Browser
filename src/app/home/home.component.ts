@@ -11,6 +11,14 @@ export type AllowedExtension = 'jpg' | 'png' | 'gif' | 'jpeg';
 
 type AllowedView = 'view1' | 'view2' | 'view3' | 'view4' | 'view5';
 
+interface RowNumbers {
+  view1: number;
+  view2: number;
+  view3: number;
+  view4: number;
+  view5: number;
+}
+
 export interface ImageFile {
   extension: AllowedExtension;
   fullPath: string;
@@ -48,6 +56,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   previewWidth: number = 100;
   previewHeight: number = 100;
+
+  imagesPerRow: RowNumbers = {
+    view1: 5,
+    view2: 5,
+    view3: 5,
+    view4: 5,
+    view5: 5,
+  }
 
   currentView: AllowedView = 'view1';
 
@@ -184,7 +200,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   changeView(view: AllowedView): void {
+    this.saveImagesPerRow();
     this.currentView = view;
+    this.restoreImagesPerRow();
     if (view === 'view4' || view === 'view5') {
       this.computeDimensions();
     }
@@ -198,6 +216,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
   decreaseSize(): void {
     this.numOfColumns = this.numOfColumns + 1;
     this.computeDimensions();
+  }
+
+  saveImagesPerRow(): void {
+    this.imagesPerRow[this.currentView] = this.numOfColumns;
+  }
+
+  restoreImagesPerRow(): void {
+    this.numOfColumns = this.imagesPerRow[this.currentView];
   }
 
   computeDimensions(): void {
