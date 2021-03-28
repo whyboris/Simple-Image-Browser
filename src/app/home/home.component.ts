@@ -46,6 +46,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
   showPng: boolean = true;
   showText: boolean = true;
 
+  previewWidth: number = 100;
+  previewHeight: number = 100;
+
   currentView: AllowedView = 'view1';
 
   options: ITreeOptions = {
@@ -180,5 +183,47 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.electronService.ipcRenderer.send('minimize');
   }
 
+  changeView(view: AllowedView): void {
+    this.currentView = view;
+    if (view === 'view4' || view === 'view5') {
+      this.computeDimensions();
+    }
+  }
+
+  increaseSize(): void {
+    this.numOfColumns = this.numOfColumns - 1;
+    this.computeDimensions();
+  }
+
+  decreaseSize(): void {
+    this.numOfColumns = this.numOfColumns + 1;
+    this.computeDimensions();
+  }
+
+  computeDimensions(): void {
+    if (this.currentView === 'view4' || this.currentView === 'view5') {
+      const galleryWidth = document.getElementById('the-gallery').getBoundingClientRect().width - 20; // 20 is scroll bar offset
+
+      print(galleryWidth);
+
+      const previewWidth = galleryWidth / this.numOfColumns - 10; // 10 px is margin on side
+      let previewHeight: number = 0;
+
+      if (this.currentView === 'view4') {
+        previewHeight = previewWidth * 2 / 3;
+      } else {
+        previewHeight = previewWidth * 3 / 2;
+      }
+
+      print(previewWidth);
+      print(previewHeight);
+      print(this.currentView);
+
+      this.previewWidth = previewWidth;
+      this.previewHeight = previewHeight;
+
+      this.cd.detectChanges();
+    }
+  }
 
 }
