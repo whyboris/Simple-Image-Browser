@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { ITreeOptions, TreeNode, TREE_ACTIONS } from '@circlon/angular-tree-component';
+import { ITreeOptions, TreeComponent, TreeNode, TREE_ACTIONS } from '@circlon/angular-tree-component';
 import { ElectronService, print } from '../electron.service';
 
 interface MyTreeNode {
@@ -55,6 +55,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   showPng: boolean = true;
 
   showText: boolean = false;
+  showTree: boolean = true;
 
   previewWidth: number = 100;
   previewHeight: number = 100;
@@ -110,7 +111,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.openFolder();
   }
 
-  toggleTree(tree) {
+  toggleTree(tree: TreeComponent | TreeNode): void {
     if (this.expanded) {
       tree.treeModel.collapseAll();
     } else {
@@ -252,6 +253,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
       this.cd.detectChanges();
     }
+  }
+
+  showHideTree(): void {
+    this.showTree = !this.showTree;
   }
 
 }
