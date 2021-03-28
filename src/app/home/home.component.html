@@ -198,9 +198,10 @@
         ></tree-root>
 
         <input
+          #folderFilter
           placeholder="folder filter"
-          (keyup)="filterTree($event.target.value)"
-          (keydown.esc)="$event.target.value = ''"
+          (keyup)="filterTree(folderFilter.value)"
+          (keydown.esc)="folderFilter.value = ''"
           type="text"
           class="input-filter folder-filter"
         />
