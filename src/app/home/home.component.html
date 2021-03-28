@@ -237,7 +237,11 @@
           >
 
             <img
-              [src]="'file://' + image.fullPath" />
+              [src]="'file://' + image.fullPath"
+              [ngStyle]="{
+                'height': currentView === 'view3' ? previewHeight + 'px' : '100%'
+              }"
+            >
 
             <span *ngIf="showText">
               {{ image.name }}

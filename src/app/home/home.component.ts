@@ -201,7 +201,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   computeDimensions(): void {
-    if (this.currentView === 'view4' || this.currentView === 'view5') {
+    if (this.currentView === 'view3' || this.currentView === 'view4' || this.currentView === 'view5') {
       const galleryWidth = document.getElementById('the-gallery').getBoundingClientRect().width - 20; // 20 is scroll bar offset
 
       print(galleryWidth);
