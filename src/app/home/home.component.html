@@ -41,6 +41,17 @@
       <div class="btn-group">
         <button
           class="btn btn-default"
+          [ngClass]="{ active: !showTree }"
+          (click)="showHideTree()"
+          title="show / hide tree"
+        >
+          <span
+            class="icon icon-left-open"
+          ></span>
+        </button>
+
+        <button
+          class="btn btn-default"
           (click)="openFolder()"
         >
           <span
@@ -189,7 +200,7 @@
 
     <div class="pane-group">
 
-      <div class="pane-sm sidebar">
+      <div class="pane-sm sidebar" [ngClass]="{ 'tree-hidden': !showTree }">
         <tree-root
           #tree
           class="my-tree"
