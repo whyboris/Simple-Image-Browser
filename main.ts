@@ -116,6 +116,12 @@ ipcMain.on('maximize', (event) => {
   }
 });
 
+ipcMain.on('full-screen-status', (event, flag: boolean) => {
+  if (BrowserWindow.getFocusedWindow()) {
+    BrowserWindow.getFocusedWindow().setFullScreen(flag);
+  }
+});
+
 ipcMain.on('un-maximize', (event) => {
   if (BrowserWindow.getFocusedWindow()) {
     BrowserWindow.getFocusedWindow().unmaximize();
