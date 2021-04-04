@@ -45,6 +45,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
       this.showPrevious();
     } else if (event.key === 'ArrowRight') {
       this.showNext();
+    } else if (event.key === 'Escape' && this.isFullScreen) {
+      this.toggleFullScreen();
     }
   }
 
@@ -56,6 +58,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
   showNext(): void {
     this.updatePreview(this.currentIndex + 1);
     console.log('next');
+  }
+
+  toggleFullScreen(): void {
+    this.isFullScreen = !this.isFullScreen;
+    this.electronService.ipcRenderer.send('full-screen-status', this.isFullScreen);
   }
 
   constructor(
@@ -86,6 +93,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   currentImage: string = '';
   currentIndex: number = 0;
+
+  isFullScreen: boolean = false;
 
   imagesPerRow: RowNumbers = {
     view1: 5,
