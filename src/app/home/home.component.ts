@@ -1,6 +1,8 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ITreeOptions, TreeComponent, TreeNode, TREE_ACTIONS } from '@circlon/angular-tree-component';
+
 import { ElectronService, print } from '../electron.service';
+import { ImageService } from '../image.service';
 
 interface MyTreeNode {
   name: string;
@@ -35,8 +37,22 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   @ViewChild('tree') tree: TreeNode;
 
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if (event.key === 'Escape' && this.currentImage !== '') {
+      this.currentImage = '';
+    } else if (event.key === 'ArrowLeft') {
+      this.updatePreview(this.currentIndex - 1);
+      console.log('previous');
+    } else if (event.key === 'ArrowRight') {
+      this.updatePreview(this.currentIndex + 1);
+      console.log('next');
+    }
+  }
+
   constructor(
     public cd: ChangeDetectorRef,
+    public imageService: ImageService,
     public electronService: ElectronService,
   ) { }
 
@@ -59,6 +75,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   previewWidth: number = 100;
   previewHeight: number = 100;
+
+  currentImage: string = '';
+  currentIndex: number = 0;
 
   imagesPerRow: RowNumbers = {
     view1: 5,
@@ -257,6 +276,17 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   showHideTree(): void {
     this.showTree = !this.showTree;
+  }
+
+  updatePreview(index: number): void {
+    if (index > this.imageService.images.length - 1) {
+      index = 0;
+    } else if (index < 0) {
+      index = this.imageService.images.length - 1;
+    }
+    this.currentIndex = index;
+    this.currentImage = this.imageService.images[index].fullPath;
+    this.cd.detectChanges();
   }
 
 }

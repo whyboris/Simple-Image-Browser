@@ -14,3 +14,19 @@
   overflow: hidden;
   width: 0;
 }
+
+.full-screen-overlay {
+  border: 10px solid red;
+  background: black;
+  height: 100vh;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100vw;
+
+  img {
+    height: 100%;
+    object-fit: contain;
+    width: 100%;
+  }
+}

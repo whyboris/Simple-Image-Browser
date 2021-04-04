@@ -241,7 +241,9 @@
             *ngFor="let image of allImages | subfolder : partialPath
                                            | filetype : showPng : showJpg : showGif
                                            | search : searchString
-                                           | sort"
+                                           | sort
+                                           | save
+                                  index as idx"
             [ngStyle]="{
               'width': (currentView === 'view4' || currentView === 'view5') ? previewWidth + 'px' : 'initial',
               'height': (currentView === 'view4' || currentView === 'view5') ? previewHeight + 'px' : 'initial'
@@ -249,6 +251,7 @@
           >
 
             <img
+              (click)="updatePreview(idx)"
               [src]="'file://' + image.fullPath"
               [ngStyle]="{
                 'height': currentView === 'view3' ? previewHeight + 'px' : '100%'
@@ -267,6 +270,10 @@
 
     </div>
 
+  </div>
+
+  <div class="full-screen-overlay" *ngIf="currentImage !== ''">
+    <img [src]="'file://' + currentImage">
   </div>
 
   <footer class="toolbar toolbar-footer">
