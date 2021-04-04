@@ -12,6 +12,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 
 import { FiletypePipe } from './pipes/filetype.pipe';
+import { SavePipe } from './pipes/save.pipe';
 import { SearchPipe } from './pipes/search.pipe';
 import { SortPipe } from './pipes/sort.pipe';
 import { SubfolderPipe } from './pipes/subfolder.pipe';
@@ -21,6 +22,7 @@ import { SubfolderPipe } from './pipes/subfolder.pipe';
     AppComponent,
     FiletypePipe,
     HomeComponent,
+    SavePipe,
     SearchPipe,
     SortPipe,
     SubfolderPipe
