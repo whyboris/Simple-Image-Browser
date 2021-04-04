@@ -42,12 +42,20 @@ export class HomeComponent implements OnInit, AfterViewInit {
     if (event.key === 'Escape' && this.currentImage !== '') {
       this.currentImage = '';
     } else if (event.key === 'ArrowLeft') {
-      this.updatePreview(this.currentIndex - 1);
-      console.log('previous');
+      this.showPrevious();
     } else if (event.key === 'ArrowRight') {
-      this.updatePreview(this.currentIndex + 1);
-      console.log('next');
+      this.showNext();
     }
+  }
+
+  showPrevious(): void {
+    this.updatePreview(this.currentIndex - 1);
+    console.log('previous');
+  }
+
+  showNext(): void {
+    this.updatePreview(this.currentIndex + 1);
+    console.log('next');
   }
 
   constructor(

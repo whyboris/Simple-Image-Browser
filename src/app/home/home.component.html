@@ -273,7 +273,11 @@
   </div>
 
   <div class="full-screen-overlay" *ngIf="currentImage !== ''">
-    <img [src]="'file://' + currentImage">
+    <img
+      (click)="showNext()"
+      (contextmenu)="showPrevious()"
+      [src]="'file://' + currentImage"
+    >
   </div>
 
   <footer class="toolbar toolbar-footer">
