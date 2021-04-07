@@ -31,6 +31,8 @@
   height: calc(100vh - 35px);
   position: absolute;
   transform: translateX(0);
+  transition-delay: 0;
+  transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1); // ease out cubic
   transition-duration: 500ms;
   width: 190px;
   z-index: 2;
@@ -56,5 +58,7 @@
 
 .sidebar-hidden {
   transform: translateX(-160px);
+  transition-delay: 250ms;
   transition-duration: 500ms;
+  transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1); // ease out cubic
 }

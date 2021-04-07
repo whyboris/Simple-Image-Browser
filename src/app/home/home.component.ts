@@ -85,8 +85,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
   showJpg: boolean = true;
   showPng: boolean = true;
 
+  autohide: boolean = false;
   showText: boolean = false;
   showTree: boolean = true;
+  forceHide: boolean = false;
 
   previewWidth: number = 100;
   previewHeight: number = 100;
@@ -293,6 +295,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   showHideTree(): void {
     this.showTree = !this.showTree;
+    this.forceHide = !this.forceHide;
   }
 
   updatePreview(index: number): void {

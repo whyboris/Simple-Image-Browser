@@ -41,12 +41,23 @@
       <div class="btn-group">
         <button
           class="btn btn-default"
-          [ngClass]="{ active: !showTree }"
+          [ngClass]="{ active: forceHide }"
           (click)="showHideTree()"
           title="show / hide tree"
         >
           <span
             class="icon icon-left-open"
+          ></span>
+        </button>
+
+        <button
+          class="btn btn-default"
+          [ngClass]="{ active: autohide }"
+          (click)="autohide = !autohide"
+          title="toggle autohide sidebar"
+        >
+          <span
+            class="icon icon-eye"
           ></span>
         </button>
 
@@ -212,7 +223,7 @@
 
       <div
         class="the-sidebar"
-        [ngClass]="{ 'sidebar-hidden': !showTree }"
+        [ngClass]="{ 'sidebar-hidden': (autohide && !showTree) || forceHide }"
         (mouseover)="showTree = true"
         (mouseout)="showTree = false"
       >
