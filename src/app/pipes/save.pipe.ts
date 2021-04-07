@@ -13,7 +13,7 @@ export class SavePipe implements PipeTransform {
   ) { }
 
   transform(images: ImageFile[]): ImageFile[] {
-    console.log(images);
+    // console.log(images);
     this.imageService.images = images;
     return images;
   }
