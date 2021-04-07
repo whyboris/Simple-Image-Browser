@@ -85,8 +85,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
   showJpg: boolean = true;
   showPng: boolean = true;
 
+  autohide: boolean = false;
   showText: boolean = false;
   showTree: boolean = true;
+  forceHide: boolean = false;
 
   previewWidth: number = 100;
   previewHeight: number = 100;
@@ -137,7 +139,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     });
 
     this.electronService.ipcRenderer.on('files-coming-back', (event, data: ImageFile[]) => {
-      print(data);
+      // print(data);
       this.processData(data);
     });
 
@@ -171,11 +173,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
       }
     });
 
-    print(mapOfEverything);
+    // print(mapOfEverything);
 
     let paths = Array.from(mapOfEverything.keys());
 
-    print(paths);
+    // print(paths);
 
     // thank you Nenad Vracar for the algorithm: https://stackoverflow.com/a/57344801/5017391
     let result = [];
@@ -195,7 +197,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       }, level)
     });
 
-    console.log(result)
+    // console.log(result);
 
     result[0].name = this.rootName;
 
@@ -293,6 +295,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   showHideTree(): void {
     this.showTree = !this.showTree;
+    this.forceHide = !this.forceHide;
   }
 
   updatePreview(index: number): void {

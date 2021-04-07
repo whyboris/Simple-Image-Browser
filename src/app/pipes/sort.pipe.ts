@@ -7,7 +7,7 @@ import { ImageFile } from '../home/home.component';
 export class SortPipe implements PipeTransform {
 
   transform(images: ImageFile[]): ImageFile[] {
-    console.log(images);
+    // console.log(images);
     return images.sort((a, b) => a.name.localeCompare(b.name, undefined, {sensitivity: 'base'}));
   }
 

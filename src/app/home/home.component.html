@@ -41,12 +41,23 @@
       <div class="btn-group">
         <button
           class="btn btn-default"
-          [ngClass]="{ active: !showTree }"
+          [ngClass]="{ active: forceHide }"
           (click)="showHideTree()"
           title="show / hide tree"
         >
           <span
             class="icon icon-left-open"
+          ></span>
+        </button>
+
+        <button
+          class="btn btn-default"
+          [ngClass]="{ active: autohide }"
+          (click)="autohide = !autohide"
+          title="toggle autohide sidebar"
+        >
+          <span
+            class="icon icon-eye"
           ></span>
         </button>
 
@@ -208,17 +219,22 @@
   </header>
 
 
-  <div class="window-content">
+  <div class="sidebar-and-gallery">
 
-    <div class="pane-group">
-
-      <div class="pane-sm sidebar" [ngClass]="{ 'tree-hidden': !showTree }">
-        <tree-root
-          #tree
-          class="my-tree"
-          [nodes]="nodes"
-          [options]="options"
-        ></tree-root>
+      <div
+        class="the-sidebar"
+        [ngClass]="{ 'sidebar-hidden': (autohide && !showTree) || forceHide }"
+        (mouseover)="showTree = true"
+        (mouseout)="showTree = false"
+      >
+        <div class="tree-container">
+          <tree-root
+            #tree
+            class="my-tree"
+            [nodes]="nodes"
+            [options]="options"
+          ></tree-root>
+        </div>
 
         <input
           #folderFilter
@@ -231,7 +247,7 @@
 
       </div>
 
-      <div class="pane">
+      <div class="the-gallery">
 
         <div
           *ngIf="allImages.length > 0"
@@ -257,7 +273,7 @@
                                            | save
                                   index as idx"
             [ngStyle]="{
-              'width': (currentView === 'view4' || currentView === 'view5') ? previewWidth + 'px' : 'initial',
+              'width':  (currentView === 'view4' || currentView === 'view5') ? previewWidth +  'px' : 'initial',
               'height': (currentView === 'view4' || currentView === 'view5') ? previewHeight + 'px' : 'initial'
             }"
           >
@@ -280,8 +296,6 @@
 
       </div>
 
-    </div>
-
   </div>
 
   <div class="full-screen-overlay" *ngIf="currentImage !== ''">
@@ -291,9 +305,5 @@
       [src]="'file://' + currentImage"
     >
   </div>
-
-  <footer class="toolbar toolbar-footer">
-    <h1 class="title">Footer</h1>
-  </footer>
 
 </div>
