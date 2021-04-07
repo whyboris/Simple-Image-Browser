@@ -4,6 +4,8 @@ import { ITreeOptions, TreeComponent, TreeNode, TREE_ACTIONS } from '@circlon/an
 import { ElectronService, print } from '../electron.service';
 import { ImageService } from '../image.service';
 
+import { AllSettings } from '../../interfaces/settings-object.interface';
+
 interface MyTreeNode {
   name: string;
   children?: MyTreeNode[];
@@ -98,6 +100,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   isFullScreen: boolean = false;
 
+  allSettings: AllSettings = {
+    hello: 'hi',
+  }
+
   imagesPerRow: RowNumbers = {
     view1: 5,
     view2: 5,
@@ -132,6 +138,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+
+    this.electronService.ipcRenderer.send('just-started');
+
+    this.electronService.ipcRenderer.on('settings-returning', (event, data: any) => {
+      console.log('settings returning:');
+      console.log(data);
+    });
 
     this.electronService.ipcRenderer.on('input-folder-chosen', (event, fullPath: string) => {
       print(fullPath);
@@ -222,7 +235,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   exit(): void {
-    this.electronService.ipcRenderer.send('close');
+    this.electronService.ipcRenderer.send('close', this.allSettings);
   }
 
   maximize(): void {
