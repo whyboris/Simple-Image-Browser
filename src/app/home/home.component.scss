@@ -1,3 +1,29 @@
+@import "../variables";
+
+.settings-modal {
+  background-color: $gray-10;
+  border: 1px solid $gray-50;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  box-sizing: border-box;
+  height: calc(100vh - 215px);
+  left: 200px;
+  min-width: 270px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  padding: 20px 5px 25px;
+  position: fixed;
+  top: 205px; // coordinate with `all-settings-tabs'
+  width: calc(100% - 250px);
+  z-index: 500;
+
+  @include scrollBar;
+
+  .defaultSettingsButton {
+    border-radius: 5px !important;
+  }
+}
+
 .pane {
   padding: 10px;
 }

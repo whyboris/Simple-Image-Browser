@@ -1,0 +1,113 @@
+// =============================================================
+// Grayscale colors
+// -------------------------------------------------------------
+$white:   #FFFFFF;
+$gray-05: #F2F2F2;
+$gray-10: #E6E6E6;
+$gray-15: #d8d8d8;
+$gray-20: #CCCCCC;
+$gray-30: #B3B3B3;
+$gray-40: #999999;
+$gray-50: #808080;
+$gray-60: #666666;
+$gray-70: #4D4D4D;
+$gray-80: #333333;
+$gray-85: #222222; // only used on `defaultSettingsButtonDark`
+$gray-90: #1A1A1A;
+$black:   #000000;
+
+
+// =============================================================
+// MAIN COLORS
+// -------------------------------------------------------------
+$pretty-red:   #ff6666;
+$dark-red:     #990000;
+$pretty-green: #66b452;
+$pretty-blue:  #729aff;
+$dark-blue:    #0031ad; // only on file/text view on hover
+$light-blue:   #b5cbff; // only on flat settings button active
+//                           using `$pretty-blue` is not bright enough
+
+// =============================================================
+// Filter / tag colors -- also see `filters.ts`
+// -------------------------------------------------------------
+$show-similar-to:          #aaffaa;
+$manual-tag-color:         #f1ceb8;
+$manual-tag-frequency:     #edc1a6;
+$manual-tag-remove-border: #db8651;
+
+
+// =============================================================
+// ONE-OFF COLORS
+// -------------------------------------------------------------
+$wizard-screenshot:  #c7dabb; // occurs on Wizard
+$pretty-red-lighter: #ff9999; // occurs on `delete mode` button in tags
+
+
+// =============================================================
+// MAC window button colors -- do not change
+// -------------------------------------------------------------
+$close-button:    #fe6058;
+$maximize-button: #29ca42;
+$minimize-botton: #fec02f;
+
+
+// =============================================================
+// Layout variables
+// -------------------------------------------------------------
+$settings-height: 32px;
+$sidebar-width: 190px;
+$top-region: 45px;
+
+
+// =============================================================
+// MIXINS
+// -------------------------------------------------------------
+
+@mixin scrollBar {
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $gray-50;
+    border-radius: 5px;
+  }
+}
+
+@mixin scrollBarSquare {
+  &::-webkit-scrollbar-thumb {
+    border-radius: 0;
+  }
+}
+
+@mixin scrollBarHidden {
+  &::-webkit-scrollbar-track {
+    visibility: hidden;
+  }
+
+  &::-webkit-scrollbar {
+    visibility: hidden;
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    visibility: hidden;
+  }
+}
+
+@mixin scrollBarShown {
+  &::-webkit-scrollbar-track {
+    visibility: initial;
+  }
+
+  &::-webkit-scrollbar {
+    visibility: initial;
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $gray-50;
+    visibility: initial;
+  }
+}

@@ -1,0 +1,398 @@
+@import "variables";
+
+$transition-length: 300ms;
+
+h2, h3 {
+  color: $gray-60;
+  font-size: 16px;
+  margin: 15px 0 0 10px;
+}
+
+h3 {
+  font-size: 14px;
+}
+
+.gearButton {
+  cursor: pointer;
+  fill: $gray-40;
+  font-size: 14px;
+  height: 15px;
+  position: absolute;
+  right: 10px;
+  top: 8px;
+  transition: 370ms;
+  width: 15px;
+
+  &:hover {
+    fill: $gray-50;
+    text-shadow: 0 0 7px rgba(255, 255, 255, 0.5);
+    transition: 370ms;
+  }
+}
+
+.credits-and-help {
+  color: $gray-60;
+  cursor: pointer;
+  font-size: 14px;
+  margin: 60px 70px 0;
+  text-align: center;
+}
+
+.app-version {
+  margin-bottom: 40px;
+  pointer-events: none;
+  position: relative;
+  text-align: right;
+
+  img {
+    transform: translate(-30px, -20px);
+  }
+
+  span {
+    color: $gray-40;
+    font-size: 12px;
+  }
+
+  .version-message {
+    bottom: -25px;
+    font-size: 12px;
+    position: absolute;
+    right: 30px;
+  }
+
+  .you-have-latest {
+    color: $pretty-blue;
+  }
+
+  .version-error {
+    color: $gray-40;
+  }
+
+  .check-new-version {
+    cursor: pointer;
+    pointer-events: all;
+
+    &:hover {
+      color: $pretty-blue;
+    }
+  }
+}
+
+.close-settings {
+  cursor: pointer;
+  float: right;
+  margin-right: 3px;
+  opacity: 1;
+  position: sticky;
+  top: 1px;
+  transform: translate(0, -11px);
+  transition-duration: 300ms;
+  z-index: 101;
+
+  &:hover {
+    color: $dark-red;
+    transition-duration: 300ms;
+  }
+}
+
+.close-settings-fade-out-override {
+  position: absolute;
+  right: 4px;
+  top: 7px;
+  transform: none;
+}
+
+.gearButtonActive {
+  color: $gray-60;
+  transform: rotate(180deg);
+  transform-origin: 7.5px 7.5px;
+  transition: 370ms;
+}
+
+.buttonSpacer {
+  display: inline-block;
+  height: 10px;
+  margin: 3px;
+  transition: $transition-length;
+  width: 10px;
+}
+
+.buttonSpacerExpanded {
+  transition: $transition-length;
+  width: 30px;
+}
+
+.gallerySettingsButtons {
+  left: 245px;
+  position: absolute;
+  top: 4px;
+  z-index: 2;
+}
+
+.search-buttons-settings,
+.galleryButtonsSettings {
+  left: 25px;
+  max-width: calc(100% - 30px);
+  position: relative;
+  top: 20px;
+  transform: translate(-10px, 0);
+  transition: 100ms;
+}
+
+.extraSettings {
+  margin: 15px 15px 15px 50px;
+}
+
+.misc-settings {
+  margin: 60px 20px 20px 10px;
+}
+
+.extraSettingsText {
+  color: $gray-50;
+  font-size: 12px;
+  left: 27px;
+  line-height: 20px;
+}
+
+.setting-heading {
+  border-top: 1px solid $gray-40;
+  display: block;
+  margin-bottom: 24px;
+  padding-top: 20px;
+  text-align: center;
+}
+
+.button-description {
+  display: block;
+  margin-bottom: 12px;
+  max-height: 41px;
+  min-height: 41px;   // also hardcoded in home.component as [ngStyle]
+  position: relative;
+
+  input {
+    display: none;
+  }
+}
+
+.button-description-text {
+  -webkit-box-orient: vertical !important;
+  color: $black;
+  display: -webkit-box !important;
+  font-size: 14px;
+  left: 80px;
+  -webkit-line-clamp: 3 !important;
+  overflow: hidden;
+  position: absolute;
+  top: 2px;
+}
+
+.eye-icon-container {
+  cursor: pointer;
+  display: block;
+  left: 42px;
+  position: absolute;
+  top: 1px;
+}
+
+.eye-open {
+  &:before {
+    content: '\f17f';
+    display: inline-block;
+    font-family: "vh-icon-font";
+  }
+}
+
+.eye-closed {
+  &:before {
+    content: '\f17b';
+    display: inline-block;
+    font-family: "vh-icon-font";
+  }
+}
+
+.showButtonLabel {
+  bottom: 0;
+  color: $gray-40;
+  font-size: 10px;
+  left: 0;
+  position: absolute;
+  text-align: center;
+  transform: translate(-17px, 45px);
+  width: 50px;
+}
+
+.shortcut-menu {
+  font-size: 14px;
+  margin: 40px 30px;
+}
+
+.language-drop-down {
+  border-radius: 5px;
+  padding: 6px;
+
+  &:disabled {
+    cursor: initial;
+    pointer-events: none;
+  }
+}
+
+.monospace {
+  font-family: monospace;
+}
+
+.num-select {
+  border: 1px solid $gray-50;
+  margin: 0 3px 0 !important;
+  user-select: none;
+  width: 30px;
+}
+
+.ss-num-selection {
+  font-size: 12px;
+  margin-left: 10px;
+}
+
+input[type="radio"] {
+  -webkit-appearance: inherit;
+  border: 1px solid $gray-50;
+  border-radius: 10px;
+  cursor: pointer;
+  height: 15px;
+  outline: none;
+  transform: translate(0, 5px);
+  width: 15px;
+}
+
+input[type="radio"]:checked:before {
+  background: $pretty-blue;
+  border: 3px solid $gray-10;
+  border-radius: 10px;
+  content:"";
+  height: 7px;
+  position: absolute;
+  width: 7px;
+}
+
+.dim-row {
+  opacity: 0.5;
+}
+
+.modal-fade-out {
+  background: linear-gradient($gray-10, $gray-10, transparent);
+  display: block;
+  height: 50px;
+  margin-bottom: -50px;
+  position: sticky;
+  top: 0;
+  transform: translate(0, -20px);
+  width: 100%;
+  z-index: 2;
+}
+
+.more-info {
+  border: 1px solid $pretty-blue;
+  border-radius: 50%;
+  color: $pretty-blue;
+  cursor: none;
+  display: inline-block;
+  font-size: 11px;
+  font-style: italic;
+  height: 12px;
+  text-align: center;
+  transition-duration: 150ms;
+  transition-property: color border-color;
+  width: 12px;
+
+  &:hover {
+    border-color: white;
+    color: white;
+    transition-duration: 150ms;
+    transition-property: color border-color;
+  }
+}
+
+.tooltip-text {
+  opacity: 0;
+  transition-delay: 500ms;
+  transition-duration: 500ms;
+  transition-property: opacity;
+}
+
+.more-info:hover + .tooltip-text {
+  opacity: 1;
+  transition-delay: 0ms;
+  transition-duration: 0ms;
+  transition-property: opacity;
+}
+
+.sort-dropdown {
+  margin: 15px 0 10px;
+  max-width: 166px;
+  min-width: 166px;
+  outline: none;
+}
+
+.sort-dropdown-dark-mode {
+  background: black;
+  color: white;
+}
+
+.zoom-buttons {
+  margin: 20px;
+
+  button:first-child {
+    border-radius: 50% !important;
+  }
+
+  button:last-child {
+    border-radius: 50% !important;
+  }
+
+  button {
+    border-radius: 10px;
+    display: inline-block;
+    font-size: 16px;
+    min-height: 36px;
+    min-width: 36px;
+    vertical-align: top
+  }
+}
+
+.all-settings-tabs {
+  left: 210px;
+  pointer-events: none;
+  position: fixed;
+  top: 159px;
+  width: calc(100% - 255px);
+  z-index: 501;
+
+  button {
+    background-color: $gray-15;
+    border: 1px solid $gray-50;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    font-size: 12px;
+    margin: 10px 10px -1px;
+    padding: 8px;
+    pointer-events: all;
+    position: relative;
+    transition: 300ms;
+    transition-property: text-shadow background-color;
+  }
+
+  .active-tab {
+    background-color: $gray-10;
+    border-bottom: 1px solid $gray-10;
+    text-shadow:0px 0px 1px black;
+    transition: 300ms;
+    transition-property: text-shadow background-color;
+    z-index: 10;
+  }
+}
+
+@media (max-width: 900px) {
+  .all-settings-tabs {
+    left: 40px;
+    width: calc(100% - 60px);
+  }
+}
