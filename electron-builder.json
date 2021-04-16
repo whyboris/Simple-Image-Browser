@@ -1,5 +1,7 @@
 {
-  "productName": "simple-image-browser",
+  "productName": "Simple Image Browser",
+  "appId": "com.simpleimagebrowser.simpleimagebrowser",
+  "copyright": "Copyright © 2021 Boris Yakubchik",
   "directories": {
     "output": "release/"
   },
@@ -20,7 +22,7 @@
         "!tslint.json"
     ],
   "win": {
-    "icon": "dist/assets/icons",
+    "icon": "dist/assets/icons/icon.ico",
     "target": [
       "nsis"
     ]

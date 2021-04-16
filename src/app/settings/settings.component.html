@@ -1,0 +1,127 @@
+<div [id]=i *ngFor="let group of settingsMetaGroup; index as i">
+
+  <div *ngIf="settingTabToShow == i">
+
+    <span
+      class="setting-heading"
+      style="border-top: 0"
+    >
+      {{ settingsMetaGroupLabels[i] | translate }}
+    </span>
+
+    <div *ngFor="let buttonKey of group">
+      <div *ngIf="buttonKey !== 'break'; else insertBreak">
+        <div
+          class="search-buttons-settings"
+        >
+
+          <span class="setting-heading" *ngIf="settingsButtons[buttonKey]['settingsHeading']">
+            {{ settingsButtons[buttonKey]['settingsHeading'] | translate }}
+          </span>
+
+          <div
+            class="button-description"
+          >
+            <app-button
+              (toggleButton)="toggleButton.emit($event)"
+              [button]="buttonKey"
+              [neverDarkMode]="true"
+              [settingsButtons]="settingsButtons"
+            ></app-button>
+
+            <span
+              *ngIf="settingsButtons[buttonKey].iconName"
+              (click)="toggleHideButton.emit(buttonKey)"
+              class="eye-icon-container icon {{ settingsButtons[buttonKey].hidden ? 'eye-closed' : 'eye-open' }}"
+              title="{{ 'SETTINGS.showHideText' | translate }}"
+            ></span>
+
+            <span
+              class="button-description-text"
+            >
+              {{ settingsButtons[buttonKey].description | translate }}
+
+              <span
+                *ngIf="settingsButtons[buttonKey].moreInfo"
+                class="more-info"
+              >
+                i
+              </span>
+              <span class="tooltip-text">
+                {{ settingsButtons[buttonKey].moreInfo | translate }}
+              </span>
+
+            </span>
+
+          </div>
+
+        </div>
+      </div>
+
+      <ng-template #insertBreak>
+        <br>
+      </ng-template>
+    </div>
+  </div>
+
+
+
+  <div class="misc-settings" *ngIf="settingTabToShow == 1 && i == 1">
+
+    <!-- ZOOM BUTTONS -->
+
+    <span class="setting-heading">
+      {{ 'SETTINGS.changeAppZoom' | translate }}
+    </span>
+
+    <div class="zoom-buttons">
+      <button
+        (click)="decreaseZoomLevel.emit()"
+      >
+        <app-icon [icon]="'icon-minus'"></app-icon>
+      </button>
+      <button
+        (click)="resetZoomLevel.emit()"
+        style="margin: 0 10px; max-width: initial; padding: 0 15px;"
+      >
+        <span>{{ 'SETTINGS.resetZoom' | translate }}</span>
+      </button>
+      <button
+        (click)="increaseZoomLevel.emit()"
+      >
+        <app-icon [icon]="'icon-plus'"></app-icon>
+      </button>
+    </div>
+
+    <span class="setting-heading">
+      {{ 'SETTINGS.changeLanguage' | translate }}
+    </span>
+
+    <div style="margin: 20px">
+      <select #langSelect class="language-drop-down monospace" (change)="switchLanguage(langSelect.value)">
+        <option value="en" [selected]="appState.language == 'en'">English</option>
+        <option value="ar" [selected]="appState.language == 'ar'">Arabic ------ العربية</option>
+        <option value="bn" [selected]="appState.language == 'bn'">Bengali ----- বাংলা</option>
+        <option value="zh" [selected]="appState.language == 'zh'">Chinese ----- 中文</option>
+        <option value="cs" [selected]="appState.language == 'cs'">Czech ------- Česky</option>
+        <option value="nl" [selected]="appState.language == 'nl'">Dutch ------- Nederlands</option>
+        <option value="fr" [selected]="appState.language == 'fr'">French ------ Française</option>
+        <option value="de" [selected]="appState.language == 'de'">German ------ Deutsch</option>
+        <option value="hi" [selected]="appState.language == 'hi'">Hindi ------- हिंदी</option>
+        <option value="it" [selected]="appState.language == 'it'">Italian ----- Italiana</option>
+        <option value="ja" [selected]="appState.language == 'ja'">Japanese ---- 日本語</option>
+        <option value="ko" [selected]="appState.language == 'ko'">Korean ------ 한국어</option>
+        <option value="ms" [selected]="appState.language == 'ms'">Melay ------- Melayu</option>
+        <option value="pl" [selected]="appState.language == 'pl'">Polish ------ Polski</option>
+        <option value="pt" [selected]="appState.language == 'pt'">Portuguese -- Português</option>
+        <option value="ru" [selected]="appState.language == 'ru'">Russian ----- Русский</option>
+        <option value="es" [selected]="appState.language == 'es'">Spanish ----- Espanhol</option>
+        <option value="tr" [selected]="appState.language == 'tr'">Turkish ----- Türkçe</option>
+        <option value="uk" [selected]="appState.language == 'uk'">Ukrainian --- Українська</option>
+        <option value="vi" [selected]="appState.language == 'vi'">Vietnamese -- Tiếng Việt</option>
+      </select>
+    </div>
+
+  </div>
+
+</div>

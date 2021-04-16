@@ -1,6 +1,6 @@
 {
   "name": "simple-image-browser",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "Simple Image Browser",
   "homepage": "https://github.com/whyboris/Simple-Image-Browser",
   "repository": {
@@ -38,6 +38,7 @@
     "lint": "ng lint"
   },
   "dependencies": {
+    "@ngx-translate/core": "13.0.0",
     "electron-window-state": "5.0.3",
     "fdir": "5.0.0"
   },

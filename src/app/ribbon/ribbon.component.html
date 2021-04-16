@@ -1,0 +1,19 @@
+<ng-container *ngFor="let btnGroup of settingsButtonsGroups; index as i">
+  <div
+    class="settings-buttons-group"
+  ><ng-container
+      *ngFor="let buttonKey of btnGroup"
+    ><!--
+   --><button
+        *ngIf="!settingsButtons[buttonKey].hidden && settingsButtons[buttonKey].iconName"
+        (click)="toggleButton.emit(buttonKey)"
+        class="defaultSettingsButton"
+        [ngClass]="{ defaultSettingsButtonToggled: settingsButtons[buttonKey].toggled }"
+        title="{{ settingsButtons[buttonKey].hoverText | translate }}"
+      >
+        <app-icon class="icon" [icon]="settingsButtons[buttonKey].iconName"></app-icon>
+      </button><!--
+  --></ng-container><!--
+  --><!--
+--></div>
+</ng-container>

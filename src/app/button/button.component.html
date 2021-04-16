@@ -1,0 +1,10 @@
+<button
+  (click)="toggleButton.emit(button)"
+  class="defaultSettingsButton"
+  title="{{ settingsButtons[button].hoverText | translate }}"
+>
+  <app-icon
+    class="icon"
+    [icon]="settingsButtons[button].iconName ? settingsButtons[button].iconName : 'icon-default-button'"
+  ></app-icon>
+</button>

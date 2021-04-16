@@ -1,0 +1,184 @@
+@import "variables";
+
+$button-toggle-length: 275ms;
+
+button {
+  cursor: pointer !important;
+  outline: none;
+}
+
+.close-modal-icon {
+  display: inline-block;
+  transition-duration: 150ms;
+  transition-property: fill;
+  width: 15px;
+
+  &:hover {
+    fill: $pretty-red;
+  }
+}
+
+.flatSettingsButton {
+  background: transparent;
+  border: none;
+  fill: $gray-50;
+  margin-right: 8px;
+  margin-top: 2px;
+
+  min-width: 15px;
+  padding: 0;
+  transition-duration: $button-toggle-length;
+  transition-property: color;
+
+  &:hover {
+    text-shadow: 0 0 3px $white;
+    transition-duration: $button-toggle-length;
+  }
+
+  &:active {
+    fill: $light-blue;
+    transition-duration: $button-toggle-length;
+  }
+
+  &:last-child {
+    margin-right: 12px;
+  }
+
+}
+
+.flatSettingsButtonToggled {
+  fill: $pretty-blue;
+  transition-duration: $button-toggle-length;
+}
+
+.defaultSettingsButton {
+  background: $gray-15;
+  border: 1px solid $gray-30; // keep ordered above `border-` properties
+  border-left: 1px solid $gray-10;
+  border-radius: 0;
+  border-top: 1px solid $gray-10;
+  box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+  box-sizing: border-box;
+  margin: 0;
+  max-height: 21px;
+  max-width: 21px;
+  min-height: 21px;
+  min-width: 21px;
+  padding: 2px;
+  text-align: center;
+  transition-duration: $button-toggle-length;
+  transition-property: color, transform, background-color, margin, opacity;
+
+  & .icon {
+    fill: $gray-70;
+  }
+
+  &:first-child {
+    border-bottom-left-radius: 5px !important;
+    border-top-left-radius: 5px !important;
+  }
+
+  &:last-child {
+    border-bottom-right-radius: 5px !important;
+    border-top-right-radius: 5px !important;
+  }
+
+  &:hover {
+    background-color: $gray-10;
+  }
+
+  &:active {
+    background: $gray-30 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    border-left: 0px;
+    border-right: 1px solid rgba(255, 255, 255, 0.5);
+    border-right: 0;
+    border-top: 0px;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    margin-bottom: 1px;
+    transform: translate(1px, 1px);
+
+    & .icon {
+      fill: $white;
+    }
+  }
+
+  span {
+    cursor: pointer;
+    transition-duration: $button-toggle-length;
+  }
+}
+
+.defaultSettingsButtonToggled {
+  background: $gray-40 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  border-left: 0px;
+  border-right: 1px solid $gray-40;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: none;
+  margin-bottom: 1px;
+  transform: translateY(1px);
+
+  &:hover {
+    background-color: $gray-30 !important;
+  }
+
+  & .icon {
+    fill: $white;
+  }
+
+  span {
+    transition-duration: $button-toggle-length;
+  }
+}
+
+.defaultSettingsButtonDark {
+  background: $gray-85;
+  border: 1px solid $gray-90;
+  border-left: 1px solid $gray-70;
+  border-top: 1px solid $gray-70;
+
+  &:hover {
+    background-color: $gray-60 !important;
+  }
+
+  & .icon {
+    fill: $gray-40;
+  }
+}
+
+.defaultSettingsButtonDarkToggled {
+  background: $black !important;
+  border-bottom: 1px solid $gray-85;
+  border-left: 1px solid $black;
+  border-right: 1px solid $gray-85;
+  border-top: 1px solid $gray-80;
+
+  & .icon {
+    fill: white;
+  }
+}
+
+.eye-icon-container {
+  cursor: pointer;
+  display: block;
+  left: 42px;
+  position: absolute;
+  top: 1px;
+}
+
+.eye-open {
+  &:before {
+    content: '\f17f';
+    display: inline-block;
+    font-family: "vh-icon-font";
+  }
+}
+
+.eye-closed {
+  &:before {
+    content: '\f17b';
+    display: inline-block;
+    font-family: "vh-icon-font";
+  }
+}

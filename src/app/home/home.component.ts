@@ -1,8 +1,14 @@
 import { AfterViewInit, ChangeDetectorRef, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ITreeOptions, TreeComponent, TreeNode, TREE_ACTIONS } from '@circlon/angular-tree-component';
 
+import { TranslateService } from '@ngx-translate/core';
+
 import { ElectronService, print } from '../electron.service';
 import { ImageService } from '../image.service';
+
+import { AllSettings } from '../../interfaces/settings-object.interface';
+import { SettingsButtons, SettingsButtonsGroups, SettingsButtonKey } from './settings-buttons';
+import { LanguageLookup, SupportedLanguage } from '../languages';
 
 interface MyTreeNode {
   name: string;
@@ -31,7 +37,7 @@ export interface ImageFile {
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss', './gallery.scss']
+  styleUrls: ['./home.component.scss', './gallery.scss', '../settings.scss']
 })
 export class HomeComponent implements OnInit, AfterViewInit {
 
@@ -68,6 +74,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   constructor(
     public cd: ChangeDetectorRef,
     public imageService: ImageService,
+    public translate: TranslateService,
     public electronService: ElectronService,
   ) { }
 
@@ -97,6 +104,23 @@ export class HomeComponent implements OnInit, AfterViewInit {
   currentIndex: number = 0;
 
   isFullScreen: boolean = false;
+
+  allSettings: AllSettings = {
+    appState: {
+      zoomLevel: {}
+    },
+    buttons: {
+      autoFileTags: {} as any,
+    }
+  }
+
+  appState: any = {};
+  settingsButtonsGroups: any = SettingsButtonsGroups;
+  settingsButtons: any = SettingsButtons;
+
+  settingsModalOpen: boolean = true;
+
+  settingTabToShow: number = 2;
 
   imagesPerRow: RowNumbers = {
     view1: 5,
@@ -131,7 +155,32 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.cd.detectChanges();
   }
 
+  changeLanguage(language: SupportedLanguage): void {
+
+    console.log(language);
+
+    this.translate.use(language);
+    this.translate.setTranslation(language, LanguageLookup[language]);
+    this.appState.language = language;
+  }
+
+  toggleButton(button: SettingsButtonKey | string): void { // `| string` is temporary
+    console.log(button);
+    this.settingsButtons[button].toggled = !this.settingsButtons[button].toggled;
+  }
+
   ngOnInit(): void {
+
+    this.translate.setDefaultLang('en');
+    const English    = require('../../../i18n/en.json');
+    this.translate.setTranslation('en', English);
+
+    this.electronService.ipcRenderer.send('just-started');
+
+    this.electronService.ipcRenderer.on('settings-returning', (event, data: any) => {
+      console.log('settings returning:');
+      console.log(data);
+    });
 
     this.electronService.ipcRenderer.on('input-folder-chosen', (event, fullPath: string) => {
       print(fullPath);
@@ -146,7 +195,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.openFolder();
+    // this.openFolder();
   }
 
   toggleTree(tree: TreeComponent | TreeNode): void {
@@ -222,7 +271,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   exit(): void {
-    this.electronService.ipcRenderer.send('close');
+    this.electronService.ipcRenderer.send('close', this.allSettings);
   }
 
   maximize(): void {

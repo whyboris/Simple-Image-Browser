@@ -1,3 +1,35 @@
+<div
+  *ngIf="settingsModalOpen"
+  class="all-settings-tabs"
+>
+  <button (click)="settingTabToShow = 0" [ngClass]="{ 'active-tab': settingTabToShow === 0 }">
+    {{ 'SETTINGS.tab1' | translate }}
+  </button>
+  <button (click)="settingTabToShow = 1" [ngClass]="{ 'active-tab': settingTabToShow === 1 }">
+    {{ 'SETTINGS.tab2' | translate }}
+  </button>
+  <button (click)="settingTabToShow = 2" [ngClass]="{ 'active-tab': settingTabToShow === 2 }">
+    {{ 'SETTINGS.tab3' | translate }}
+  </button>
+  <button (click)="settingTabToShow = 3" [ngClass]="{ 'active-tab': settingTabToShow === 3 }">
+    {{ 'SETTINGS.tab4' | translate }}
+  </button>
+  <button (click)="settingTabToShow = 4" [ngClass]="{ 'active-tab': settingTabToShow === 4 }">
+    {{ 'SETTINGS.tab5' | translate }}
+  </button>
+</div>
+
+<div *ngIf="settingsModalOpen" class="settings-modal">
+
+  <app-settings
+    (changeLanguage)="changeLanguage($event)"
+
+    [settingTabToShow]="settingTabToShow"
+    [settingsButtons]="settingsButtons"
+  ></app-settings>
+
+</div>
+
 <div class="window">
 
   <header class="toolbar toolbar-header">
@@ -5,6 +37,16 @@
     <!-- <h1 class="title">Image Viewer</h1> -->
 
     <div class="toolbar-actions">
+
+      <!-- ALL THE BUTTONS IN THE RIBBON -->
+      <div class="btn-group">
+        <app-ribbon
+          (toggleButton)="toggleButton($event)"
+          [appState]="appState"
+          [settingsButtonsGroups]="settingsButtonsGroups"
+          [settingsButtons]="settingsButtons"
+        ></app-ribbon>
+      </div>
 
       <div class="btn-group">
         <button

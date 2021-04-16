@@ -1,0 +1,14 @@
+{
+  "BUTTONS": {
+    "a": "button A",
+    "b": "button B",
+    "c": "button C",
+    "d": "button D"
+  },
+  "SETTINGS": {
+    "resetZoom": "Reset Zoom!",
+    "tab1": "main settings",
+    "tab2": "second settings",
+    "tab3": "third settings"
+  }
+}

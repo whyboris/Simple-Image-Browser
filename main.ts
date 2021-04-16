@@ -9,6 +9,11 @@ import { fdir } from 'fdir';
 
 import { AllowedExtension, ImageFile } from './src/app/home/home.component';
 
+import { AllSettings } from './src/interfaces/settings-object.interface';
+
+const fs = require('fs');
+const pathToAppData = path.join(app.getPath('appData'), 'simple-image-browser');
+
 let win: BrowserWindow = null;
 const args = process.argv.slice(1),
   serve = args.some(val => val === '--serve');
@@ -106,8 +111,36 @@ try {
   // throw e;
 }
 
-ipcMain.on('close', (event) => {
-  app.exit();
+ipcMain.on('just-started', (event) => {
+
+  console.log('just started');
+  console.log(pathToAppData);
+
+  fs.readFile(path.join(pathToAppData, 'settings.json'), (err, data) => {
+    if (!err) {
+      try {
+        const previouslySavedSettings: AllSettings = JSON.parse(data);
+        event.sender.send('settings-returning', previouslySavedSettings);
+      } catch (err) {
+        // error parsing
+      }
+    }
+  });
+});
+
+ipcMain.on('close', (event, settings: AllSettings) => {
+
+  const json = JSON.stringify(settings);
+
+  try {
+    fs.statSync(pathToAppData);
+  } catch (e) {
+    fs.mkdirSync(pathToAppData);
+  }
+
+  fs.writeFile(path.join(pathToAppData, 'settings.json'), json, 'utf8', () => {
+    app.exit();
+  });
 });
 
 ipcMain.on('maximize', (event) => {
@@ -157,7 +190,7 @@ let allFiles = [];
  * Use `fdir` to quickly generate file list and add it to `metadataQueue`
  * @param inputDir    -- full path to the input folder
  */
- function superFastSystemScan(inputDir: string, event): void {
+function superFastSystemScan(inputDir: string, event): void {
 
   allFiles = [];
 
