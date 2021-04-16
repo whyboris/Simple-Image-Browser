@@ -20,7 +20,7 @@ const Turkish    = require('../../i18n/tr.json');
 const Ukrainian  = require('../../i18n/uk.json');
 const Vietnamese = require('../../i18n/vi.json');
 
-export const LanguageLookup: Record<string, any> = {
+export const LanguageLookup: Record<SupportedLanguage, any> = {
   'ar': Arabic,
   'bn': Bengali,
   'cs': Czech,
@@ -44,23 +44,23 @@ export const LanguageLookup: Record<string, any> = {
 };
 
 export type SupportedLanguage =
-  'en'
-| 'ar'
-| 'bn'
-| 'cs'
-| 'de'
-| 'es'
-| 'fr'
-| 'hi'
-| 'it'
-| 'ja'
-| 'ko'
-| 'ms'
-| 'nl'
-| 'pl'
-| 'pt'
-| 'ru'
-| 'tr'
-| 'uk'
-| 'vi'
-| 'zh';
+ 'ar' |
+ 'bn' |
+ 'cs' |
+ 'de' |
+ 'en' |
+ 'es' |
+ 'fr' |
+ 'hi' |
+ 'it' |
+ 'ja' |
+ 'ko' |
+ 'ms' |
+ 'nl' |
+ 'pl' |
+ 'pt' |
+ 'ru' |
+ 'tr' |
+ 'uk' |
+ 'vi' |
+ 'zh';

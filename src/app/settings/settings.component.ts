@@ -14,7 +14,7 @@ import { SupportedLanguage } from '../languages';
 })
 export class SettingsComponent {
 
-  @Output() changeLanguage = new EventEmitter<SupportedLanguage>();
+  @Output() changeLanguage = new EventEmitter<string | SupportedLanguage>();
   @Output() toggleButton = new EventEmitter<string>();
 
   @Input() settingTabToShow: number = 2;
