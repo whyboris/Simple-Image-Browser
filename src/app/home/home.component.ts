@@ -155,7 +155,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.cd.detectChanges();
   }
 
-  changeLanguage(language: SupportedLanguage | string): void {
+  changeLanguage(language: SupportedLanguage): void {
 
     console.log(language);
 

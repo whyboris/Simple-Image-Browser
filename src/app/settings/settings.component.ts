@@ -14,7 +14,7 @@ import { SupportedLanguage } from '../languages';
 })
 export class SettingsComponent {
 
-  @Output() changeLanguage = new EventEmitter<string | SupportedLanguage>();
+  @Output() changeLanguage = new EventEmitter<SupportedLanguage>();
   @Output() toggleButton = new EventEmitter<string>();
 
   @Input() settingTabToShow: number = 2;
@@ -34,5 +34,13 @@ export class SettingsComponent {
   @Output() increaseZoomLevel = new EventEmitter<any>();
   @Output() resetZoomLevel = new EventEmitter<any>();
   @Output() toggleHideButton = new EventEmitter<any>();
+
+  /**
+   * Emit language change to parent component
+   * @param lang
+   */
+  switchLanguage(lang: string): void {
+    this.changeLanguage.emit(lang as SupportedLanguage);
+  }
 
 }

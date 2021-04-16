@@ -1,6 +1,5 @@
 <div [id]=i *ngFor="let group of settingsMetaGroup; index as i">
 
-
   <div *ngIf="settingTabToShow == i">
 
     <span
@@ -99,7 +98,7 @@
     </span>
 
     <div style="margin: 20px">
-      <select #langSelect class="language-drop-down monospace" (change)="changeLanguage.emit(langSelect.value)">
+      <select #langSelect class="language-drop-down monospace" (change)="switchLanguage(langSelect.value)">
         <option value="en" [selected]="appState.language == 'en'">English</option>
         <option value="ar" [selected]="appState.language == 'ar'">Arabic ------ العربية</option>
         <option value="bn" [selected]="appState.language == 'bn'">Bengali ----- বাংলা</option>
