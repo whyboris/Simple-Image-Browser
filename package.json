@@ -40,10 +40,10 @@
   "dependencies": {
     "@ngx-translate/core": "13.0.0",
     "electron-window-state": "5.0.3",
-    "fdir": "5.0.0"
+    "fdir": "5.1.0"
   },
   "devDependencies": {
-    "@angular-builders/custom-webpack": "11.1.1",
+    "@angular-builders/custom-webpack": "12.0.0",
     "@angular-devkit/build-angular": "12.0.0",
     "@angular-eslint/builder": "12.0.0",
     "@angular-eslint/eslint-plugin": "12.0.0",
@@ -63,10 +63,10 @@
     "@circlon/angular-tree-component": "11.0.4",
     "@ngx-translate/http-loader": "6.0.0",
     "@types/node": "14.14.35",
-    "@typescript-eslint/eslint-plugin": "4.15.0",
-    "@typescript-eslint/eslint-plugin-tslint": "4.15.0",
-    "@typescript-eslint/parser": "4.15.0",
-    "electron": "12.0.7",
+    "@typescript-eslint/eslint-plugin": "4.24.0",
+    "@typescript-eslint/eslint-plugin-tslint": "4.24.0",
+    "@typescript-eslint/parser": "4.24.0",
+    "electron": "12.0.9",
     "electron-builder": "22.10.5",
     "electron-reload": "1.5.0",
     "eslint": "7.20.0",
@@ -74,9 +74,9 @@
     "eslint-plugin-jsdoc": "31.6.1",
     "eslint-plugin-prefer-arrow": "1.2.3",
     "npm-run-all": "4.1.5",
-    "rxjs": "7.0.1",
+    "rxjs": "7.1.0",
     "ts-node": "9.1.1",
-    "tslib": "2.1.0",
+    "tslib": "2.2.0",
     "typescript": "4.2.4",
     "wait-on": "5.3.0",
     "zone.js": "0.11.4"
