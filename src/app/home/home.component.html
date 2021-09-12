@@ -197,6 +197,14 @@
 
         <button
           class="btn btn-default"
+          [ngClass]="{ active: showJxl }"
+          (click)="showJxl = !showJxl"
+        >
+          <span>jxl</span>
+        </button>
+
+        <button
+          class="btn btn-default"
           [ngClass]="{ active: showPng }"
           (click)="showPng = !showPng"
         >
@@ -309,7 +317,7 @@
           <div
             class="img-container"
             *ngFor="let image of allImages | subfolder : partialPath
-                                           | filetype : showPng : showJpg : showGif
+                                           | filetype : showPng : showJpg : showJxl : showGif
                                            | search : searchString
                                            | sort
                                            | save

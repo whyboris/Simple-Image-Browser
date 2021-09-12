@@ -9,6 +9,7 @@
       "projectType": "application",
       "architect": {
         "build": {
+          "defaultConfiguration": "dev",
           "builder": "@angular-builders/custom-webpack:browser",
           "options": {
             "outputPath": "dist",
@@ -60,6 +61,7 @@
           }
         },
         "serve": {
+          "defaultConfiguration": "dev",
           "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
             "browserTarget": "simple-image-browser:build"

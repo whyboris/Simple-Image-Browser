@@ -15,7 +15,7 @@ interface MyTreeNode {
   children?: MyTreeNode[];
 }
 
-export type AllowedExtension = 'jpg' | 'png' | 'gif' | 'jpeg';
+export type AllowedExtension = 'jpg' | 'png' | 'gif' | 'jpeg' | 'jxl';
 
 type AllowedView = 'view1' | 'view2' | 'view3' | 'view4' | 'view5';
 
@@ -79,7 +79,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   ) { }
 
   allImages: ImageFile[] = [];
-  allowedExtensions: AllowedExtension[] = ['png','jpg'];
+  allowedExtensions: AllowedExtension[] = ['png','jpg', 'jxl'];
   appMaximized: boolean = false;
   expanded = false;
   nodes: MyTreeNode[] = [];
@@ -90,6 +90,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   showGif: boolean = true;
   showJpg: boolean = true;
+  showJxl: boolean = true;
   showPng: boolean = true;
 
   autohide: boolean = false;
@@ -188,7 +189,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     });
 
     this.electronService.ipcRenderer.on('files-coming-back', (event, data: ImageFile[]) => {
-      // print(data);
+      print(data);
       this.processData(data);
     });
 
@@ -246,7 +247,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       }, level)
     });
 
-    // console.log(result);
+    console.log(result);
 
     result[0].name = this.rootName;
 

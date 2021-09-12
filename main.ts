@@ -75,6 +75,8 @@ function createWindow(): BrowserWindow {
   return win;
 }
 
+app.commandLine.appendSwitch('enable-features', 'JXL');
+
 try {
   // This method will be called when Electron has finished
   // initialization and is ready to create browser windows.
@@ -182,7 +184,7 @@ ipcMain.on('choose-input', (event) => {
   }).catch(err => {});
 });
 
-const acceptableFiles: AllowedExtension[] = ['jpg', 'png', 'jpeg'];
+const acceptableFiles: AllowedExtension[] = ['jpg', 'png', 'jpeg', 'jxl'];
 
 let allFiles = [];
 
