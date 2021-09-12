@@ -9,9 +9,10 @@ export type SettingsButtonKey = 'folder'
  | 'view4'
  | 'zoomIn'
  | 'zoomOut'
- | 'jpg'
- | 'png'
  | 'gif'
+ | 'jpg'
+ | 'jxl'
+ | 'png'
  | 'view5';
 
 // Add `SettingsButtons` items here so they show up in the buttons ribbon and in the settings
@@ -37,6 +38,7 @@ export const SettingsButtonsGroups: SettingsButtonKey[][] = [
   ],
   [ // 4 -- file formats
     'jpg',
+    'jxl',
     'png',
     'gif'
   ]
@@ -156,6 +158,14 @@ export const SettingsButtons: SettingsButtonsType = {
     iconName: 'icon-jpg',
     moreInfo: 'BUTTONS.jpgInfo',
     hoverText: 'BUTTONS.jpgHover',
+    toggled: false
+  },
+  'jxl': {
+    description: 'BUTTONS.jxl',
+    hidden: false,
+    iconName: 'icon-jxl',
+    moreInfo: 'BUTTONS.jxlInfo',
+    hoverText: 'BUTTONS.jxlHover',
     toggled: false
   },
   'png': {
