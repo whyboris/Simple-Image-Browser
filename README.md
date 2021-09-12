@@ -16,12 +16,12 @@ Main dependencies in use:
 
 | Library          | Version  | Date            | Comment                                           |
 | ---------------- | -------- | --------------- | ------------------------------------------------- |
-| Angular          | v12.1.1  | July 2021       |                                                   |
-| Angular-CLI      | v12.1.1  | July 2021       |                                                   |
-| Electron         | v13.1.6  | July 2021       | (internally uses Node `v14.16.0` and Chromium 91) |
+| Angular          | v12.2.5  | Sept 2021       |                                                   |
+| Angular-CLI      | v12.2.5  | Sept 2021       |                                                   |
+| Electron         | v14.0.0  | Sept 2021       | (internally uses Node `v14.17.0` and Chromium 93) |
 | Electron Builder | v22.11.7 | July 2021       |                                                   |
 
-- **Node**: I recommend using the same version as _Electron_ uses internally, but version 10 or above should work.
+- I recommend using the same version of `node` as _Electron_ uses internally, but version 14 or above should work.
 
 
 ## Thank you
