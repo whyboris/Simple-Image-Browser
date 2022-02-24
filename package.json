@@ -82,6 +82,6 @@
     "zone.js": "0.11.4"
   },
   "browserslist": [
-    "chrome 91"
+    "chrome 98"
   ]
 }
