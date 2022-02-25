@@ -15,8 +15,8 @@ const fs = require('fs');
 const pathToAppData = path.join(app.getPath('appData'), 'simple-image-browser');
 
 let win: BrowserWindow = null;
-const args = process.argv.slice(1),
-  serve = args.some(val => val === '--serve');
+const args = process.argv.slice(1);
+const serve = args.some(val => val === '--serve');
 
 electron.Menu.setApplicationMenu(null);
 
@@ -80,7 +80,8 @@ try {
   // This method will be called when Electron has finished
   // initialization and is ready to create browser windows.
   // Some APIs can only be used after this event occurs.
-  // Added 400 ms to fix the black background issue while using transparent window. More detais at https://github.com/electron/electron/issues/15947
+  // Added 400 ms to fix the black background issue while using transparent window.
+  // More detais at https://github.com/electron/electron/issues/15947
   app.on('ready', () => setTimeout(createWindow, 400));
 
   // Quit when all windows are closed.
@@ -122,7 +123,7 @@ ipcMain.on('just-started', (event) => {
       try {
         const previouslySavedSettings: AllSettings = JSON.parse(data);
         event.sender.send('settings-returning', previouslySavedSettings);
-      } catch (err) {
+      } catch (err2) {
         // error parsing
       }
     }
@@ -207,7 +208,7 @@ function superFastSystemScan(inputDir: string, event): void {
 
       const parsed = path.parse(fullPath);
 
-      if (!acceptableFiles.includes(parsed.ext.substr(1).toLowerCase() as AllowedExtension)) {
+      if (!acceptableFiles.includes(parsed.ext.substring(1).toLowerCase() as AllowedExtension)) {
         return;
       }
 
@@ -215,10 +216,10 @@ function superFastSystemScan(inputDir: string, event): void {
 
       const newItem: ImageFile = {
         extension: parsed.ext.replace('.', '') as AllowedExtension,
-        fullPath: fullPath,
+        fullPath,
         name: parsed.base.replace(parsed.ext, ''),
         partialPath: '/' + partial,
-      }
+      };
 
       allFiles.push(newItem);
 
