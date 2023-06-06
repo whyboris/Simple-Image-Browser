@@ -119,7 +119,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   settingsButtonsGroups: any = SettingsButtonsGroups;
   settingsButtons: any = SettingsButtons;
 
-  settingsModalOpen: boolean = true;
+  settingsModalOpen: boolean = false; // <--- edit this for settings
 
   settingTabToShow: number = 2;
 
