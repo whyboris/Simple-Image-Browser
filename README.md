@@ -14,14 +14,14 @@ How to start:
 
 Main dependencies in use:
 
-| Library          | Version   | Date     | Comment                                            |
-| ---------------- | --------- | -------- | -------------------------------------------------- |
-| Angular          | v15.1.2   | Jan 2023 |                                                    |
-| Angular-CLI      | v15.1.3   | Jan 2023 |                                                    |
-| Electron         | v22.1.0   | Jan 2023 | (internally uses Node `v16.17.1` and Chromium 108) |
-| Electron Builder | v23.6.0   | Jan 2023 |                                                    |
+| Library          | Version | Date      | Comment                                            |
+| ---------------- | :-----: | --------- | -------------------------------------------------- |
+| Angular          | 16      | Sept 2023 |                                                    |
+| Angular-CLI      | 16      | Sept 2023 |                                                    |
+| Electron         | 26      | Sept 2023 | (internally uses Node `v18.16.1` and Chromium 116) |
+| Electron Builder | 24      | Sept 2023 |                                                    |
 
-- I recommend using the same version of `node` as _Electron_ uses internally, but version 16 or above should work.
+- I recommend using the same (or higher) version of `node` as _Electron_ uses internally ([fnm](https://github.com/Schniz/fnm) lets you switch easily)
 
 ## Thank you
 
