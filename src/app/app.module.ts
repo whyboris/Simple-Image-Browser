@@ -7,7 +7,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { TreeModule } from '@circlon/angular-tree-component';
+import { MatTreeModule } from '@angular/material/tree';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -40,12 +40,12 @@ import { SubfolderPipe } from './pipes/subfolder.pipe';
   ],
   imports: [
     AppRoutingModule,
+    MatTreeModule,
     BrowserModule,
     CommonModule,
     FormsModule,
     HttpClientModule,
-    TranslateModule.forRoot(),
-    TreeModule
+    TranslateModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

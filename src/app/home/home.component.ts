@@ -1,5 +1,7 @@
 import { AfterViewInit, ChangeDetectorRef, Component, HostListener, OnInit, ViewChild } from '@angular/core';
-import { ITreeOptions, TreeComponent, TreeNode, TREE_ACTIONS } from '@circlon/angular-tree-component';
+
+import {MatTreeFlatDataSource, MatTreeFlattener, MatTreeModule} from '@angular/material/tree';
+import {FlatTreeControl} from '@angular/cdk/tree';
 
 import { TranslateService } from '@ngx-translate/core';
 
@@ -34,6 +36,37 @@ export interface ImageFile {
   partialPath: string;
 }
 
+interface FoodNode {
+  name: string;
+  children?: FoodNode[];
+}
+
+const TREE_DATA: FoodNode[] = [
+  {
+    name: 'Fruit',
+    children: [{name: 'Apple'}, {name: 'Banana'}, {name: 'Fruit loops'}],
+  },
+  {
+    name: 'Vegetables',
+    children: [
+      {
+        name: 'Green',
+        children: [{name: 'Broccoli'}, {name: 'Brussels sprouts'}],
+      },
+      {
+        name: 'Orange',
+        children: [{name: 'Pumpkins'}, {name: 'Carrots'}],
+      },
+    ],
+  },
+];
+
+interface ExampleFlatNode {
+  expandable: boolean;
+  name: string;
+  level: number;
+}
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -41,7 +74,29 @@ export interface ImageFile {
 })
 export class HomeComponent implements OnInit, AfterViewInit {
 
-  @ViewChild('tree') tree: TreeNode;
+  private _transformer = (node: FoodNode, level: number) => {
+    return {
+      expandable: !!node.children && node.children.length > 0,
+      name: node.name,
+      level: level,
+    };
+  };
+
+  hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
+
+  treeControl = new FlatTreeControl<ExampleFlatNode>(
+    node => node.level,
+    node => node.expandable,
+  );
+
+  treeFlattener = new MatTreeFlattener(
+    this._transformer,
+    node => node.level,
+    node => node.expandable,
+    node => node.children,
+  );
+
+  dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
@@ -76,7 +131,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
     public imageService: ImageService,
     public translate: TranslateService,
     public electronService: ElectronService,
-  ) { }
+  ) {
+    this.dataSource.data = TREE_DATA;
+  }
 
   allImages: ImageFile[] = [];
   allowedExtensions: AllowedExtension[] = ['png','jpg', 'jxl'];
@@ -119,7 +176,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   settingsButtonsGroups: any = SettingsButtonsGroups;
   settingsButtons: any = SettingsButtons;
 
-  settingsModalOpen: boolean = true;
+  settingsModalOpen: boolean = false; // <--- edit this for settings
 
   settingTabToShow: number = 2;
 
@@ -132,23 +189,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   currentView: AllowedView = 'view1';
-
-  options: ITreeOptions = {
-    actionMapping: {
-      mouse: {
-        click: (tree, node, $event) => {
-          // if (node.hasChildren) {
-          //   TREE_ACTIONS.TOGGLE_EXPANDED(tree, node, $event);
-          // }
-          TREE_ACTIONS.FOCUS(tree, node, $event);
-          this.toggleFolder(node.data.path);
-          console.log(node.data);
-        }
-      }
-    },
-    nodeHeight: 30,
-    levelPadding: 10
-  }
 
   toggleFolder(partialPath: string) {
     console.log(partialPath);
@@ -199,7 +239,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     // this.openFolder();
   }
 
-  toggleTree(tree: TreeComponent | TreeNode): void {
+  toggleTree(tree: any): void {
     if (this.expanded) {
       tree.treeModel.collapseAll();
     } else {
@@ -255,7 +295,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     setTimeout(() => {
       this.cd.detectChanges();
-      this.toggleTree(this.tree);
+      this.toggleTree("lol");
       this.cd.detectChanges();
     }, 1);
 
@@ -268,7 +308,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   filterTree(folderFilter: string): void {
     console.log(folderFilter);
-    this.tree.treeModel.filterNodes(folderFilter, true);
+    // this.tree.treeModel.filterNodes(folderFilter, true);
+    console.log('disabled tree stuff');
   }
 
   exit(): void {
