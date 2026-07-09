@@ -29,4 +29,3 @@ This software would not be possible without the tremendous work by other people.
 
 - [Tauri](https://github.com/tauri-apps/tauri)
 - [Angular](https://github.com/angular/angular)
-- [Quill](https://github.com/quilljs/quill)
