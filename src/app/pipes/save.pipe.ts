@@ -3,9 +3,7 @@ import { ImageFile } from '../home/home.component';
 
 import { ImageService } from '../image.service';
 
-@Pipe({
-  name: 'save'
-})
+@Pipe({ name: 'save' })
 export class SavePipe implements PipeTransform {
 
   constructor(

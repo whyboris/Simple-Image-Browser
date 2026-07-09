@@ -1,14 +1,18 @@
-import { AfterViewInit, ChangeDetectorRef, Component, HostListener, OnInit, ViewChild } from '@angular/core';
-import { ITreeOptions, TreeComponent, TreeNode, TREE_ACTIONS } from '@circlon/angular-tree-component';
+import { AfterViewInit, ChangeDetectorRef, Component, HostListener, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 
-import { TranslateService } from '@ngx-translate/core';
+import { FormsModule } from '@angular/forms'
 
-import { ElectronService, print } from '../electron.service';
+// import { ITreeOptions, TreeComponent, TreeNode, TREE_ACTIONS } from '@circlon/angular-tree-component';
+
+// import { TranslateService } from '@ngx-translate/core';
+
 import { ImageService } from '../image.service';
 
 import { AllSettings } from '../../interfaces/settings-object.interface';
 import { SettingsButtons, SettingsButtonsGroups, SettingsButtonKey } from './settings-buttons';
 import { LanguageLookup, SupportedLanguage } from '../languages';
+import { SettingsComponent } from '../settings/settings.component';
+import { RibbonComponent } from '../ribbon/ribbon.component';
 
 interface MyTreeNode {
   name: string;
@@ -35,13 +39,15 @@ export interface ImageFile {
 }
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss', './gallery.scss', '../settings.scss']
+    selector: 'app-root',
+    templateUrl: './home.component.html',
+    imports: [ FormsModule, SettingsComponent, RibbonComponent ],
+    styleUrls: ['./home.component.scss', './gallery.scss', '../settings.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager
 })
 export class HomeComponent implements OnInit, AfterViewInit {
 
-  @ViewChild('tree') tree: TreeNode;
+  // @ViewChild('tree') tree: TreeNode;
 
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
@@ -68,14 +74,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   toggleFullScreen(): void {
     this.isFullScreen = !this.isFullScreen;
-    this.electronService.ipcRenderer.send('full-screen-status', this.isFullScreen);
+
+    // FIX: full screen tauri
   }
 
   constructor(
     public cd: ChangeDetectorRef,
-    public imageService: ImageService,
-    public translate: TranslateService,
-    public electronService: ElectronService,
+    public imageService: ImageService
   ) { }
 
   allImages: ImageFile[] = [];
@@ -133,22 +138,22 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   currentView: AllowedView = 'view1';
 
-  options: ITreeOptions = {
-    actionMapping: {
-      mouse: {
-        click: (tree, node, $event) => {
-          // if (node.hasChildren) {
-          //   TREE_ACTIONS.TOGGLE_EXPANDED(tree, node, $event);
-          // }
-          TREE_ACTIONS.FOCUS(tree, node, $event);
-          this.toggleFolder(node.data.path);
-          console.log(node.data);
-        }
-      }
-    },
-    nodeHeight: 30,
-    levelPadding: 10
-  }
+  // options: ITreeOptions = {
+  //   actionMapping: {
+  //     mouse: {
+  //       click: (tree, node, $event) => {
+  //         // if (node.hasChildren) {
+  //         //   TREE_ACTIONS.TOGGLE_EXPANDED(tree, node, $event);
+  //         // }
+  //         TREE_ACTIONS.FOCUS(tree, node, $event);
+  //         this.toggleFolder(node.data.path);
+  //         console.log(node.data);
+  //       }
+  //     }
+  //   },
+  //   nodeHeight: 30,
+  //   levelPadding: 10
+  // }
 
   toggleFolder(partialPath: string) {
     console.log(partialPath);
@@ -160,8 +165,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     console.log(language);
 
-    this.translate.use(language);
-    this.translate.setTranslation(language, LanguageLookup[language]);
+    // this.translate.use(language);
+    // this.translate.setTranslation(language, LanguageLookup[language]);
     this.appState.language = language;
   }
 
@@ -172,26 +177,26 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
 
-    this.translate.setDefaultLang('en');
-    const English    = require('../../../i18n/en.json');
-    this.translate.setTranslation('en', English);
+    // this.translate.setDefaultLang('en');
+    // const English    = require('../../../i18n/en.json');
+    // this.translate.setTranslation('en', English);
 
-    this.electronService.ipcRenderer.send('just-started');
+    // this.electronService.ipcRenderer.send('just-started');
 
-    this.electronService.ipcRenderer.on('settings-returning', (event, data: any) => {
-      console.log('settings returning:');
-      console.log(data);
-    });
+    // this.electronService.ipcRenderer.on('settings-returning', (event, data: any) => {
+    //   console.log('settings returning:');
+    //   console.log(data);
+    // });
 
-    this.electronService.ipcRenderer.on('input-folder-chosen', (event, fullPath: string) => {
-      print(fullPath);
-      this.rootName = fullPath.split('\\').pop();
-    });
+    // this.electronService.ipcRenderer.on('input-folder-chosen', (event, fullPath: string) => {
+    //   console.log(fullPath);
+    //   this.rootName = fullPath.split('\\').pop();
+    // });
 
-    this.electronService.ipcRenderer.on('files-coming-back', (event, data: ImageFile[]) => {
-      print(data);
-      this.processData(data);
-    });
+    // this.electronService.ipcRenderer.on('files-coming-back', (event, data: ImageFile[]) => {
+    //   console.log(data);
+    //   this.processData(data);
+    // });
 
   }
 
@@ -199,12 +204,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
     // this.openFolder();
   }
 
-  toggleTree(tree: TreeComponent | TreeNode): void {
-    if (this.expanded) {
-      tree.treeModel.collapseAll();
-    } else {
-      tree.treeModel.expandAll();
-    }
+  toggleTree(/*tree: TreeComponent | TreeNode*/): void {
+    // if (this.expanded) {
+    //   tree.treeModel.collapseAll();
+    // } else {
+    //   tree.treeModel.expandAll();
+    // }
 
     this.expanded = !this.expanded;
   }
@@ -223,11 +228,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
       }
     });
 
-    // print(mapOfEverything);
+    // console.log(mapOfEverything);
 
     let paths = Array.from(mapOfEverything.keys());
 
-    // print(paths);
+    // console.log(paths);
 
     // thank you Nenad Vracar for the algorithm: https://stackoverflow.com/a/57344801/5017391
     let result = [];
@@ -255,39 +260,39 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     setTimeout(() => {
       this.cd.detectChanges();
-      this.toggleTree(this.tree);
+      // this.toggleTree(this.tree);
       this.cd.detectChanges();
     }, 1);
 
   }
 
   openFolder(): void {
-    print('clicked');
-    this.electronService.ipcRenderer.send('choose-input');
+    console.log('clicked');
+    // this.electronService.ipcRenderer.send('choose-input');
   }
 
   filterTree(folderFilter: string): void {
     console.log(folderFilter);
-    this.tree.treeModel.filterNodes(folderFilter, true);
+    // this.tree.treeModel.filterNodes(folderFilter, true);
   }
 
   exit(): void {
-    this.electronService.ipcRenderer.send('close', this.allSettings);
+    // this.electronService.ipcRenderer.send('close', this.allSettings);
   }
 
   maximize(): void {
     if (this.appMaximized) {
-      this.electronService.ipcRenderer.send('un-maximize');
+      // this.electronService.ipcRenderer.send('un-maximize');
       this.appMaximized = false;
     } else {
-      this.electronService.ipcRenderer.send('maximize');
+      // this.electronService.ipcRenderer.send('maximize');
       this.appMaximized = true;
     }
 
   }
 
   minimize(): void {
-    this.electronService.ipcRenderer.send('minimize');
+    // this.electronService.ipcRenderer.send('minimize');
   }
 
   changeView(view: AllowedView): void {
@@ -321,7 +326,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     if (this.currentView === 'view3' || this.currentView === 'view4' || this.currentView === 'view5') {
       const galleryWidth = document.getElementById('the-gallery').getBoundingClientRect().width - 20; // 20 is scroll bar offset
 
-      print(galleryWidth);
+      console.log(galleryWidth);
 
       const previewWidth = galleryWidth / this.numOfColumns - 10; // 10 px is margin on side
       let previewHeight: number = 0;
@@ -332,9 +337,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
         previewHeight = previewWidth * 3 / 2;
       }
 
-      print(previewWidth);
-      print(previewHeight);
-      print(this.currentView);
+      console.log(previewWidth);
+      console.log(previewHeight);
+      console.log(this.currentView);
 
       this.previewWidth = previewWidth;
       this.previewHeight = previewHeight;

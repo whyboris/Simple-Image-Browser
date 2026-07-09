@@ -1,9 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { ImageFile } from '../home/home.component';
 
-@Pipe({
-  name: 'search'
-})
+@Pipe({ name: 'search' })
 export class SearchPipe implements PipeTransform {
 
   transform(images: ImageFile[], searchString: string): ImageFile[] {

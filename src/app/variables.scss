@@ -107,7 +107,7 @@ $top-region: 45px;
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: $gray-50;
+    background-color: variables.$gray-50;
     visibility: initial;
   }
 }

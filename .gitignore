@@ -1,17 +1,10 @@
-/node_modules
+.angular
 
 /dist
-/release
-/tmp
-/out-tsc
-/app-builds
-/remote
-
-*.js
-*.js.map
-*.log
+/node_modules
 
 .DS_Store
 Thumbs.db
 
-.angular
+src/**/*.js
+src/**/*.map.js

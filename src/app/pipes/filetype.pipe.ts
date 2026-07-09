@@ -1,9 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { ImageFile } from '../home/home.component';
 
-@Pipe({
-  name: 'filetype'
-})
+@Pipe({ name: 'filetype' })
 export class FiletypePipe implements PipeTransform {
 
   transform(images: ImageFile[], showPng: boolean, showJpg: boolean, showJxl: boolean, showGif: boolean): ImageFile[] {
