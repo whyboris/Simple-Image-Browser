@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
-  selector: 'app-svg-definitions',
-  templateUrl: './svg-definitions.component.html'
+    selector: 'app-svg-definitions',
+    templateUrl: './svg-definitions.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager
 })
 export class SvgDefinitionsComponent {}

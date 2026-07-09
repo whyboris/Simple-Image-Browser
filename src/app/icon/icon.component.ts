@@ -1,13 +1,14 @@
-import { Component, Input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, input } from '@angular/core';
 
 @Component({
-  selector: 'app-icon',
-  templateUrl: './icon.component.html',
-  styleUrls: ['./icon.component.scss', '../fonts/icons.scss']
+    selector: 'app-icon',
+    templateUrl: './icon.component.html',
+    styleUrls: ['./icon.component.scss', '../fonts/icons.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager
 })
 export class IconComponent {
 
-  @Input() icon: string;
+  readonly icon = input<string>();
 
   constructor() { }
 

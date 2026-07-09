@@ -1,34 +1,34 @@
-<div
-  *ngIf="settingsModalOpen"
-  class="all-settings-tabs"
->
-  <button (click)="settingTabToShow = 0" [ngClass]="{ 'active-tab': settingTabToShow === 0 }">
-    {{ 'SETTINGS.tab1' | translate }}
-  </button>
-  <button (click)="settingTabToShow = 1" [ngClass]="{ 'active-tab': settingTabToShow === 1 }">
-    {{ 'SETTINGS.tab2' | translate }}
-  </button>
-  <button (click)="settingTabToShow = 2" [ngClass]="{ 'active-tab': settingTabToShow === 2 }">
-    {{ 'SETTINGS.tab3' | translate }}
-  </button>
-  <button (click)="settingTabToShow = 3" [ngClass]="{ 'active-tab': settingTabToShow === 3 }">
-    {{ 'SETTINGS.tab4' | translate }}
-  </button>
-  <button (click)="settingTabToShow = 4" [ngClass]="{ 'active-tab': settingTabToShow === 4 }">
-    {{ 'SETTINGS.tab5' | translate }}
-  </button>
-</div>
+@if (settingsModalOpen) {
+  <div
+    class="all-settings-tabs"
+    >
+    <button (click)="settingTabToShow = 0" [class]="{ 'active-tab': settingTabToShow === 0 }">
+      {{ 'SETTINGS.tab1'  }}
+    </button>
+    <button (click)="settingTabToShow = 1" [class]="{ 'active-tab': settingTabToShow === 1 }">
+      {{ 'SETTINGS.tab2'  }}
+    </button>
+    <button (click)="settingTabToShow = 2" [class]="{ 'active-tab': settingTabToShow === 2 }">
+      {{ 'SETTINGS.tab3'  }}
+    </button>
+    <button (click)="settingTabToShow = 3" [class]="{ 'active-tab': settingTabToShow === 3 }">
+      {{ 'SETTINGS.tab4'  }}
+    </button>
+    <button (click)="settingTabToShow = 4" [class]="{ 'active-tab': settingTabToShow === 4 }">
+      {{ 'SETTINGS.tab5'  }}
+    </button>
+  </div>
+}
 
-<div *ngIf="settingsModalOpen" class="settings-modal">
-
-  <app-settings
-    (changeLanguage)="changeLanguage($event)"
-
-    [settingTabToShow]="settingTabToShow"
-    [settingsButtons]="settingsButtons"
-  ></app-settings>
-
-</div>
+@if (settingsModalOpen) {
+  <div class="settings-modal">
+    <app-settings
+      (changeLanguage)="changeLanguage($event)"
+      [settingTabToShow]="settingTabToShow"
+      [settingsButtons]="settingsButtons"
+    ></app-settings>
+  </div>
+}
 
 <div class="window">
 
@@ -52,7 +52,7 @@
         <button
           class="btn btn-default"
           (click)="exit()"
-        >
+          >
           <span
             class="icon icon-cancel"
             title="close app"
@@ -62,7 +62,7 @@
         <button
           class="btn btn-default"
           (click)="maximize()"
-        >
+          >
           <span
             class="icon icon-popup"
             title="close app"
@@ -72,7 +72,7 @@
         <button
           class="btn btn-default"
           (click)="minimize()"
-        >
+          >
           <span
             class="icon icon-down-open"
             title="close app"
@@ -83,10 +83,10 @@
       <div class="btn-group">
         <button
           class="btn btn-default"
-          [ngClass]="{ active: forceHide }"
+          [class]="{ active: forceHide }"
           (click)="showHideTree()"
           title="show / hide tree"
-        >
+          >
           <span
             class="icon icon-left-open"
           ></span>
@@ -94,10 +94,10 @@
 
         <button
           class="btn btn-default"
-          [ngClass]="{ active: autohide }"
+          [class]="{ active: autohide }"
           (click)="autohide = !autohide"
           title="toggle autohide sidebar"
-        >
+          >
           <span
             class="icon icon-eye"
           ></span>
@@ -106,7 +106,7 @@
         <button
           class="btn btn-default"
           (click)="openFolder()"
-        >
+          >
           <span
             class="icon icon-folder"
             title="open folder"
@@ -115,10 +115,10 @@
 
         <button
           class="btn btn-default"
-          [ngClass]="{ active: expanded }"
-          (click)="toggleTree(tree)"
+          [class]="{ active: expanded }"
+          (click)="toggleTree()"
           title="expand / collapse tree"
-        >
+          >
           <span
             class="icon icon-flow-cascade"
           ></span>
@@ -130,8 +130,8 @@
           class="btn btn-default"
           title="layout"
           (click)="changeView('view1')"
-          [ngClass]="{ active: currentView === 'view1' }"
-        >
+          [class]="{ active: currentView === 'view1' }"
+          >
           <span>1</span>
         </button>
 
@@ -139,8 +139,8 @@
           class="btn btn-default"
           title="layout"
           (click)="changeView('view2')"
-          [ngClass]="{ active: currentView === 'view2' }"
-        >
+          [class]="{ active: currentView === 'view2' }"
+          >
           <span>2</span>
         </button>
 
@@ -148,8 +148,8 @@
           class="btn btn-default"
           title="layout"
           (click)="changeView('view3')"
-          [ngClass]="{ active: currentView === 'view3' }"
-        >
+          [class]="{ active: currentView === 'view3' }"
+          >
           <span>3</span>
         </button>
 
@@ -157,8 +157,8 @@
           class="btn btn-default"
           title="layout"
           (click)="changeView('view4')"
-          [ngClass]="{ active: currentView === 'view4' }"
-        >
+          [class]="{ active: currentView === 'view4' }"
+          >
           <span>4</span>
         </button>
 
@@ -166,8 +166,8 @@
           class="btn btn-default"
           title="layout"
           (click)="changeView('view5')"
-          [ngClass]="{ active: currentView === 'view5' }"
-        >
+          [class]="{ active: currentView === 'view5' }"
+          >
           <span>5</span>
         </button>
 
@@ -177,8 +177,8 @@
         <button
           (click)="showText = !showText"
           class="btn btn-default"
-          [ngClass]="{ active: showText }"
-        >
+          [class]="{ active: showText }"
+          >
           <span
             class="icon icon-language"
             title="show / hide file name"
@@ -189,33 +189,33 @@
       <div class="btn-group">
         <button
           class="btn btn-default"
-          [ngClass]="{ active: showJpg }"
+          [class]="{ active: showJpg }"
           (click)="showJpg = !showJpg"
-        >
+          >
           <span>jpg</span>
         </button>
 
         <button
           class="btn btn-default"
-          [ngClass]="{ active: showJxl }"
+          [class]="{ active: showJxl }"
           (click)="showJxl = !showJxl"
-        >
+          >
           <span>jxl</span>
         </button>
 
         <button
           class="btn btn-default"
-          [ngClass]="{ active: showPng }"
+          [class]="{ active: showPng }"
           (click)="showPng = !showPng"
-        >
+          >
           <span>png</span>
         </button>
 
         <button
           class="btn btn-default"
-          [ngClass]="{ active: showGif }"
+          [class]="{ active: showGif }"
           (click)="showGif = !showGif"
-        >
+          >
           <span>gif</span>
         </button>
       </div>
@@ -224,7 +224,7 @@
         <button
           (click)="decreaseSize()"
           class="btn btn-default"
-        >
+          >
           <span
             class="icon icon-minus"
             title="zoom out"
@@ -233,7 +233,7 @@
         <button
           (click)="increaseSize()"
           class="btn btn-default"
-        >
+          >
           <span
             class="icon icon-plus"
             title="zoom in"
@@ -245,7 +245,7 @@
         <button
           (click)="toggleFullScreen()"
           class="btn btn-default"
-        >
+          >
           <span
             class="icon icon-resize-full"
             title="full screen"
@@ -261,7 +261,7 @@
           (keydown.esc)="searchString = ''"
           type="text"
           class="input-filter"
-        />
+          />
       </div>
 
     </div>
@@ -271,89 +271,87 @@
 
   <div class="sidebar-and-gallery">
 
-      <div
-        class="the-sidebar"
-        [ngClass]="{ 'sidebar-hidden': (autohide && !showTree) || forceHide }"
-        (mouseover)="showTree = true"
-        (mouseout)="showTree = false"
+    <div
+      class="the-sidebar"
+      [class]="{ 'sidebar-hidden': (autohide && !showTree) || forceHide }"
+      (mouseover)="showTree = true"
+      (mouseout)="showTree = false"
       >
-        <div class="tree-container">
-          <tree-root
-            #tree
-            class="my-tree"
-            [nodes]="nodes"
-            [options]="options"
-          ></tree-root>
-        </div>
-
-        <input
-          #folderFilter
-          placeholder="folder filter"
-          (keyup)="filterTree(folderFilter.value)"
-          (keydown.esc)="folderFilter.value = ''"
-          type="text"
-          class="input-filter folder-filter"
-        />
-
+      <div class="tree-container">
+        <!--  <tree-root
+          #tree
+          class="my-tree"
+          [nodes]="nodes"
+          [options]="options"
+        ></tree-root>  -->
       </div>
 
-      <div class="the-gallery">
+      <input
+        #folderFilter
+        placeholder="folder filter"
+        (keyup)="filterTree(folderFilter.value)"
+        (keydown.esc)="folderFilter.value = ''"
+        type="text"
+        class="input-filter folder-filter"
+        />
 
+    </div>
+
+    <div class="the-gallery">
+
+      @if (allImages.length > 0) {
         <div
-          *ngIf="allImages.length > 0"
           class="gallery-pane"
           id="the-gallery"
-          [ngClass]="{
+          [class]="{
             'gallery-2': currentView === 'view2',
             'gallery-3': currentView === 'view3',
             'gallery-4': currentView === 'view4',
             'gallery-5': currentView === 'view5'
           }"
-          [ngStyle]="{
+          [style]="{
             'column-count': currentView === 'view1' || currentView === 'view2' ? numOfColumns : 'initial'
           }"
-        >
-
-          <div
-            class="img-container"
-            *ngFor="let image of allImages | subfolder : partialPath
-                                           | filetype : showPng : showJpg : showJxl : showGif
-                                           | search : searchString
-                                           | sort
-                                           | save
-                                  index as idx"
-            [ngStyle]="{
-              'width':  (currentView === 'view4' || currentView === 'view5') ? previewWidth +  'px' : 'initial',
-              'height': (currentView === 'view4' || currentView === 'view5') ? previewHeight + 'px' : 'initial'
-            }"
           >
+          @for(image of allImages; track image; let idx = $index) {
+            <div
+              class="img-container"
 
-            <img
-              (click)="updatePreview(idx)"
-              [src]="'file://' + image.fullPath"
-              [ngStyle]="{
-                'height': currentView === 'view3' ? previewHeight + 'px' : '100%'
+
+              [style]="{
+                'width':  (currentView === 'view4' || currentView === 'view5') ? previewWidth +  'px' : 'initial',
+                'height': (currentView === 'view4' || currentView === 'view5') ? previewHeight + 'px' : 'initial'
               }"
-            >
-
-            <span *ngIf="showText">
-              {{ image.name }}
-            </span>
-
-          </div>
-
+              >
+              <img
+                (click)="updatePreview(idx)"
+                [src]="'file://' + image.fullPath"
+                [style]="{
+                  'height': currentView === 'view3' ? previewHeight + 'px' : '100%'
+                }"
+                >
+              @if (showText) {
+                <span>
+                  {{ image.name }}
+                </span>
+              }
+            </div>
+          }
         </div>
+      }
 
-      </div>
+    </div>
 
   </div>
 
-  <div class="full-screen-overlay" *ngIf="currentImage !== ''">
-    <img
-      (click)="showNext()"
-      (contextmenu)="showPrevious()"
-      [src]="'file://' + currentImage"
-    >
-  </div>
+  @if (currentImage !== '') {
+    <div class="full-screen-overlay">
+      <img
+        (click)="showNext()"
+        (contextmenu)="showPrevious()"
+        [src]="'file://' + currentImage"
+        >
+    </div>
+  }
 
 </div>

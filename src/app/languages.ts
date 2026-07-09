@@ -1,24 +1,24 @@
 // Languages
-const Arabic     = require('../../i18n/ar.json');
-const Bengali    = require('../../i18n/bn.json');
-const Chinese    = require('../../i18n/zh.json');
-const Czech      = require('../../i18n/cs.json');
-const Dutch      = require('../../i18n/nl.json');
-const English    = require('../../i18n/en.json');
-const French     = require('../../i18n/fr.json');
-const German     = require('../../i18n/de.json');
-const Hindi      = require('../../i18n/hi.json');
-const Italian    = require('../../i18n/it.json');
-const Japanese   = require('../../i18n/ja.json');
-const Korean     = require('../../i18n/ko.json');
-const Malay      = require('../../i18n/ms.json');
-const Polish     = require('../../i18n/pl.json');
-const Portuguese = require('../../i18n/pt.json');
-const Russian    = require('../../i18n/ru.json');
-const Spanish    = require('../../i18n/es.json');
-const Turkish    = require('../../i18n/tr.json');
-const Ukrainian  = require('../../i18n/uk.json');
-const Vietnamese = require('../../i18n/vi.json');
+import Arabic from '../../i18n/ar.json';
+import Bengali from '../../i18n/bn.json';
+import Chinese from '../../i18n/zh.json';
+import Czech from '../../i18n/cs.json';
+import Dutch from '../../i18n/nl.json';
+import English from '../../i18n/en.json';
+import French from '../../i18n/fr.json';
+import German from '../../i18n/de.json';
+import Hindi from '../../i18n/hi.json';
+import Italian from '../../i18n/it.json';
+import Japanese from '../../i18n/ja.json';
+import Korean from '../../i18n/ko.json';
+import Malay from '../../i18n/ms.json';
+import Polish from '../../i18n/pl.json';
+import Portuguese from '../../i18n/pt.json';
+import Russian from '../../i18n/ru.json';
+import Spanish from '../../i18n/es.json';
+import Turkish from '../../i18n/tr.json';
+import Ukrainian from '../../i18n/uk.json';
+import Vietnamese from '../../i18n/vi.json';
 
 export const LanguageLookup: Record<SupportedLanguage, any> = {
   'ar': Arabic,

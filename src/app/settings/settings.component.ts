@@ -1,24 +1,28 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, ChangeDetectionStrategy, input } from '@angular/core';
 import { SettingsMetaGroup, SettingsMetaGroupLabels, SettingsButtonsType } from '../home/settings-buttons';
 import { SupportedLanguage } from '../languages';
+import { IconComponent } from '../icon/icon.component';
+import { ButtonComponent } from '../button/button.component';
 
 @Component({
-  selector: 'app-settings',
-  templateUrl: './settings.component.html',
-  styleUrls: [
-    '../buttons.scss',
-    '../settings.scss',
-    // '../search-input.scss',
-    './settings.component.scss'
-  ]
+    selector: 'app-settings',
+    templateUrl: './settings.component.html',
+    imports: [ IconComponent, ButtonComponent ],
+    styleUrls: [
+        '../buttons.scss',
+        '../settings.scss',
+        // '../search-input.scss',
+        './settings.component.scss'
+    ],
+    changeDetection: ChangeDetectionStrategy.Eager
 })
 export class SettingsComponent {
 
   @Output() changeLanguage = new EventEmitter<SupportedLanguage>();
   @Output() toggleButton = new EventEmitter<string>();
 
-  @Input() settingTabToShow: number = 2;
-  @Input() settingsButtons: SettingsButtonsType;
+  readonly settingTabToShow = input<number>(2);
+  readonly settingsButtons = input<SettingsButtonsType>();
 
   settingsMetaGroup = SettingsMetaGroup;
   settingsMetaGroupLabels = SettingsMetaGroupLabels;
