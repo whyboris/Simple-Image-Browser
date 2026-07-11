@@ -1,18 +1,23 @@
 import { AfterViewInit, ChangeDetectorRef, Component, HostListener, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
-
 import { FormsModule } from '@angular/forms'
+
+import { open } from '@tauri-apps/plugin-dialog';
+import { invoke } from '@tauri-apps/api/core';
 
 // import { ITreeOptions, TreeComponent, TreeNode, TREE_ACTIONS } from '@circlon/angular-tree-component';
 
 // import { TranslateService } from '@ngx-translate/core';
 
 import { ImageService } from '../image.service';
+import { FileService } from '../file.service';
 
-import { AllSettings } from '../../interfaces/settings-object.interface';
-import { SettingsButtons, SettingsButtonsGroups, SettingsButtonKey } from './settings-buttons';
-import { LanguageLookup, SupportedLanguage } from '../languages';
 import { SettingsComponent } from '../settings/settings.component';
 import { RibbonComponent } from '../ribbon/ribbon.component';
+
+import { LanguageLookup, SupportedLanguage } from '../languages';
+import { SettingsButtons, SettingsButtonsGroups, SettingsButtonKey } from './settings-buttons';
+
+import { AllSettings } from '../../interfaces/settings-object.interface';
 
 interface MyTreeNode {
   name: string;
@@ -80,6 +85,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   constructor(
     public cd: ChangeDetectorRef,
+    public fileService: FileService,
     public imageService: ImageService
   ) { }
 
@@ -124,7 +130,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   settingsButtonsGroups: any = SettingsButtonsGroups;
   settingsButtons: any = SettingsButtons;
 
-  settingsModalOpen: boolean = true;
+  settingsModalOpen: boolean = false;
 
   settingTabToShow: number = 2;
 
@@ -266,9 +272,44 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   }
 
-  openFolder(): void {
+  async openFolder() {
     console.log('clicked');
-    // this.electronService.ipcRenderer.send('choose-input');
+    const folderPath: string | null = await open({
+      multiple: false,
+      directory: true,
+    });
+
+    let response: string[];
+
+    await invoke<any>("get_file_list", { "pathstring": folderPath }).then((fileList: string[]) => {
+      response = fileList;
+    });
+    console.log(response);
+    this.list_of_files_to_objects(response);
+  }
+
+  list_of_files_to_objects(list: string[]) {
+
+    // temporary; filter more file types later
+    const filtered: string[] = list.filter((filename: string) => filename.endsWith('.png'))
+
+    let allFiles: ImageFile[] = [];
+
+    for (const unparsed of filtered) {
+
+      const parsed = this.fileService.parse(unparsed);
+
+      const newItem: ImageFile = {
+        extension: parsed.ext.replace('.', '') as AllowedExtension,
+        fullPath: unparsed,
+        name: parsed.base.replace(parsed.ext, ''),
+        partialPath: '/' + parsed.name,
+      };
+
+      allFiles.push(newItem);
+    }
+
+    console.log(allFiles);
   }
 
   filterTree(folderFilter: string): void {

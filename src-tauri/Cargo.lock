@@ -3105,6 +3105,7 @@ dependencies = [
  "tauri-plugin-opener",
  "tauri-plugin-os",
  "tauri-plugin-window-state",
+ "walkdir",
 ]
 
 [[package]]
