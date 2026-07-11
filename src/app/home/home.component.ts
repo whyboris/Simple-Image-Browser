@@ -22,10 +22,7 @@ import { SettingsButtons, SettingsButtonsGroups, SettingsButtonKey } from './set
 import { AllSettings } from '../../interfaces/settings-object.interface';
 import { TreeViewComponent } from '../tree/tree.component';
 
-interface MyTreeNode {
-  name: string;
-  children?: MyTreeNode[];
-}
+import type { MyTreeNode } from '../interfaces';
 
 export type AllowedExtension = 'jpg' | 'png' | 'gif' | 'jpeg' | 'jxl';
 
@@ -55,14 +52,14 @@ export interface ImageFile {
 })
 export class HomeComponent implements OnInit, AfterViewInit {
 
-  tempTry = [
+  tempTry: MyTreeNode[] = [
     {
-      answer: "lol", child: [{ answer: "lol", child: [] }, { answer: "lol", child: [] }]
+      name: "lol1", children: [{ name: "lol2", children: [] }, { name: "lol3", children: [] }]
     },
     {
-      answer: "lol", child: []
+      name: "lol4", children: []
     },
-    { answer: "lol", child: []
+    { name: "lol5", children: []
 
     }]
 
@@ -223,12 +220,18 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   async ngAfterViewInit() {
+
+    const defaults = {
+      'hi': 'hello world',
+      'hihi': 'auto saved to store'
+    }
     // this.openFolder();
-    this.store = await load('store.json');
+    this.store = await load('store.json', { autoSave: true, defaults });
     const savedTheme = await this.store.get('theme');
+    const hi = await this.store.get('hi');
     console.log('STORE:');
     console.log(savedTheme);
-
+    console.log(hi);
   }
 
   toggleTree(/*tree: TreeComponent | TreeNode*/): void {
@@ -286,6 +289,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.nodes = result;
 
     console.log(this.nodes);
+
+    this.tempTry = this.nodes as MyTreeNode[];
 
     setTimeout(() => {
       this.cd.detectChanges();

@@ -1,9 +1,9 @@
 <ul>
   @for(eachChild of tree; track eachChild; let i = $index;) {
     <li>
-      {{ eachChild.answer }}
-      @if (eachChild.child.length) {
-        <tree-view [tree]="eachChild.child"></tree-view>
+      {{ eachChild.name }}
+      @if (eachChild.children.length) {
+        <tree-view [tree]="eachChild.children"></tree-view>
       }
     </li>
   }
