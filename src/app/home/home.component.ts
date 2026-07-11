@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms'
 
 import { open } from '@tauri-apps/plugin-dialog';
 import { invoke } from '@tauri-apps/api/core';
+import { convertFileSrc } from '@tauri-apps/api/core';
 
 // import { ITreeOptions, TreeComponent, TreeNode, TREE_ACTIONS } from '@circlon/angular-tree-component';
 
@@ -18,6 +19,7 @@ import { LanguageLookup, SupportedLanguage } from '../languages';
 import { SettingsButtons, SettingsButtonsGroups, SettingsButtonKey } from './settings-buttons';
 
 import { AllSettings } from '../../interfaces/settings-object.interface';
+import { TreeViewComponent } from '../tree/tree.component';
 
 interface MyTreeNode {
   name: string;
@@ -46,11 +48,22 @@ export interface ImageFile {
 @Component({
     selector: 'app-root',
     templateUrl: './home.component.html',
-    imports: [ FormsModule, SettingsComponent, RibbonComponent ],
+    imports: [ FormsModule, SettingsComponent, RibbonComponent, TreeViewComponent ],
     styleUrls: ['./home.component.scss', './gallery.scss', '../settings.scss'],
     changeDetection: ChangeDetectionStrategy.Eager
 })
 export class HomeComponent implements OnInit, AfterViewInit {
+
+  tempTry = [
+    {
+      answer: "lol", child: [{ answer: "lol", child: [] }, { answer: "lol", child: [] }]
+    },
+    {
+      answer: "lol", child: []
+    },
+    { answer: "lol", child: []
+
+    }]
 
   // @ViewChild('tree') tree: TreeNode;
 
@@ -264,6 +277,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     this.nodes = result;
 
+    console.log(this.nodes);
+
     setTimeout(() => {
       this.cd.detectChanges();
       // this.toggleTree(this.tree);
@@ -301,7 +316,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
       const newItem: ImageFile = {
         extension: parsed.ext.replace('.', '') as AllowedExtension,
-        fullPath: unparsed,
+        fullPath: convertFileSrc(unparsed),
         name: parsed.base.replace(parsed.ext, ''),
         partialPath: '/' + parsed.name,
       };
@@ -310,6 +325,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
     console.log(allFiles);
+
+    this.processData(allFiles);
   }
 
   filterTree(folderFilter: string): void {

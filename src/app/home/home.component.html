@@ -284,6 +284,8 @@
           [nodes]="nodes"
           [options]="options"
         ></tree-root>  -->
+        <tree-view [tree]="tempTry"></tree-view>
+
       </div>
 
       <input
@@ -325,7 +327,7 @@
               >
               <img
                 (click)="updatePreview(idx)"
-                [src]="'file://' + image.fullPath"
+                [src]="image.fullPath"
                 [style]="{
                   'height': currentView === 'view3' ? previewHeight + 'px' : '100%'
                 }"
