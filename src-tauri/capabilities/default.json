@@ -7,24 +7,37 @@
   ],
   "permissions": [
     "core:default",
-    "os:default",
-    "opener:default",
-    "opener:allow-open-path",
     "dialog:default",
-    "fs:default",
     "fs:allow-temp-read",
     "fs:allow-temp-write",
+    "fs:default",
+    "opener:allow-open-path",
+    "opener:default",
+    "os:default",
+    "store:default",
     {
       "identifier": "opener:allow-open-path",
-      "allow": [{ "path": "$TEMP/**" }]
+      "allow": [
+        {
+          "path": "$TEMP/**"
+        }
+      ]
     },
     {
       "identifier": "fs:allow-read-text-file",
-      "allow": [{ "path": "$TEMP/**" }]
+      "allow": [
+        {
+          "path": "$TEMP/**"
+        }
+      ]
     },
     {
       "identifier": "fs:allow-write-text-file",
-      "allow": [{ "path": "$TEMP/**" }]
+      "allow": [
+        {
+          "path": "$TEMP/**"
+        }
+      ]
     }
   ]
 }

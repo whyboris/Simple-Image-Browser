@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms'
 import { open } from '@tauri-apps/plugin-dialog';
 import { invoke } from '@tauri-apps/api/core';
 import { convertFileSrc } from '@tauri-apps/api/core';
+import { load } from '@tauri-apps/plugin-store';
 
 // import { ITreeOptions, TreeComponent, TreeNode, TREE_ACTIONS } from '@circlon/angular-tree-component';
 
@@ -101,6 +102,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     public fileService: FileService,
     public imageService: ImageService
   ) { }
+
+  store: any;
 
   allImages: ImageFile[] = [];
   allowedExtensions: AllowedExtension[] = ['png','jpg', 'jxl'];
@@ -219,8 +222,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   }
 
-  ngAfterViewInit(): void {
+  async ngAfterViewInit() {
     // this.openFolder();
+    this.store = await load('store.json');
+    const savedTheme = await this.store.get('theme');
+    console.log('STORE:');
+    console.log(savedTheme);
+
   }
 
   toggleTree(/*tree: TreeComponent | TreeNode*/): void {
@@ -335,6 +343,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   exit(): void {
+    this.store.set('theme', 'lol');
     // this.electronService.ipcRenderer.send('close', this.allSettings);
   }
 

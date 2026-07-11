@@ -2,8 +2,8 @@
 use serde::Serialize;
 // use std::fs;
 // use std::path::Path;
-use walkdir::WalkDir;
 use std::path::{Path, PathBuf};
+use walkdir::WalkDir;
 
 #[derive(Serialize)]
 pub struct FileOrDir {
@@ -28,10 +28,10 @@ fn rename() -> RustRenameResult {
 fn get_all_files(dir: &Path) -> Vec<PathBuf> {
     WalkDir::new(dir)
         .into_iter()
-        .filter_map(|e| e.ok())        // Filter out permission/read errors
+        .filter_map(|e| e.ok()) // Filter out permission/read errors
         .filter(|e| e.file_type().is_file()) // Filter out directories
-        .map(|e| e.into_path())        // Convert DirEntry to PathBuf
-        .collect()                     // Gather into a Vector
+        .map(|e| e.into_path()) // Convert DirEntry to PathBuf
+        .collect() // Gather into a Vector
 }
 
 #[tauri::command]
@@ -49,6 +49,7 @@ fn get_file_list(pathstring: &str) -> Vec<PathBuf> {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_store::Builder::new().build())
         .plugin(tauri_plugin_os::init())
         .plugin(tauri_plugin_window_state::Builder::new().build())
         .plugin(tauri_plugin_fs::init())
