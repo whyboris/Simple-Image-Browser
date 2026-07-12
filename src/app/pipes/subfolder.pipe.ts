@@ -1,5 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { ImageFile } from '../home/home.component';
+
+import { ImageFile } from '../interfaces';
 
 @Pipe({ name: 'subfolder' })
 export class SubfolderPipe implements PipeTransform {

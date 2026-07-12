@@ -25,28 +25,7 @@ import { SavePipe } from '../pipes/save.pipe';
 import { LanguageLookup, SupportedLanguage } from '../languages';
 import { SettingsButtons, SettingsButtonsGroups, SettingsButtonKey } from './settings-buttons';
 
-import type { AllSettings } from '../../interfaces/settings-object.interface';
-import type { MyTreeNode } from '../interfaces';
-
-export type AllowedExtension = 'jpg' | 'png' | 'gif' | 'jpeg' | 'jxl';
-
-type AllowedView = 'view1' | 'view2' | 'view3' | 'view4' | 'view5';
-
-interface RowNumbers {
-  view1: number;
-  view2: number;
-  view3: number;
-  view4: number;
-  view5: number;
-}
-
-export interface ImageFile {
-  extension: AllowedExtension;
-  fullPath: string;
-  safePath: string; // for Tauri to display stuff
-  name: string;
-  partialPath: string;
-}
+import type { AllowedExtension, AllowedView, AllSettings, ImageFile, RowNumbers, MyTreeNode } from '../interfaces';
 
 @Component({
     selector: 'app-root',
@@ -57,7 +36,7 @@ export interface ImageFile {
 })
 export class HomeComponent implements OnInit, AfterViewInit {
 
-  tempTry: MyTreeNode[] = [
+  treeData: MyTreeNode[] = [
     {
       name: "lol1", children: [{ name: "lol2", children: [] }, { name: "lol3", children: [] }]
     },
@@ -116,6 +95,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   partialPath: string = '/';
   rootName: string = 'HOME';
   searchString: string = '';
+
+  inputFolder: string = '';
 
   showGif: boolean = true;
   showJpg: boolean = true;
@@ -224,13 +205,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   }
 
-  async ngAfterViewInit() {
+  ngAfterViewInit() {
+    // this.handleSettings();
+    this.openFolder();
+  }
 
+  async handleSettings() {
     const defaults = {
       'hi': 'hello world',
       'hihi': 'auto saved to store'
-    }
-    // this.openFolder();
+    };
     this.store = await load('store.json', { autoSave: true, defaults });
     const savedTheme = await this.store.get('theme');
     const hi = await this.store.get('hi');
@@ -295,7 +279,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     console.log(this.nodes);
 
-    this.tempTry = this.nodes as MyTreeNode[];
+    this.treeData = this.nodes as MyTreeNode[];
 
     setTimeout(() => {
       this.cd.detectChanges();
@@ -306,11 +290,18 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   async openFolder() {
-    console.log('clicked');
     const folderPath: string | null = await open({
       multiple: false,
       directory: true,
     });
+
+    console.log(folderPath);
+
+    this.rootName = folderPath.split('\\').pop();
+
+    this.inputFolder = folderPath;
+
+    console.log(this.rootName);
 
     let response: string[];
 
@@ -321,10 +312,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.list_of_files_to_objects(response);
   }
 
+
   list_of_files_to_objects(list: string[]) {
 
     // temporary; filter more file types later
-    const filtered: string[] = list.filter((filename: string) => filename.endsWith('.png'))
+    const filtered: string[] = list.filter((filename: string) => filename.endsWith('.jpg'))
+
+    console.log(filtered);
 
     let allFiles: ImageFile[] = [];
 
@@ -332,12 +326,19 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
       const parsed = this.fileService.parse(unparsed);
 
+      //  const partial: string = path.relative(inputDir, parsed.dir).replace(/\\/g, '/');
+      // partial === partialPath
+      // ##############
+      console.log(this.inputFolder);
+
+      let partial = unparsed.replace(this.inputFolder, "").trim();
+
       const newItem: ImageFile = {
         extension: parsed.ext.replace('.', '') as AllowedExtension,
         fullPath: unparsed,
         safePath: convertFileSrc(unparsed),
         name: parsed.base.replace(parsed.ext, ''),
-        partialPath: '/' + parsed.name,
+        partialPath: partial.replace(/\\/g, '/'),
       };
 
       allFiles.push(newItem);
@@ -415,9 +416,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
         previewHeight = previewWidth * 3 / 2;
       }
 
-      console.log(previewWidth);
-      console.log(previewHeight);
-      console.log(this.currentView);
+      // console.log(previewWidth);
+      // console.log(previewHeight);
+      // console.log(this.currentView);
 
       this.previewWidth = previewWidth;
       this.previewHeight = previewHeight;

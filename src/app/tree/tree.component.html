@@ -1,10 +1,10 @@
 <ul>
   @for(eachChild of tree; track eachChild; let i = $index;) {
-    <li>
-      {{ eachChild.name }}
-      @if (eachChild.children.length) {
-        <tree-view [tree]="eachChild.children"></tree-view>
-      }
-    </li>
+    @if (eachChild.children.length) {
+      <li>
+        {{ eachChild.name }}
+          <tree-view [tree]="eachChild.children"></tree-view>
+      </li>
+    }
   }
 </ul>
