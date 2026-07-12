@@ -1,13 +1,12 @@
 import { AfterViewInit, ChangeDetectorRef, Component, HostListener, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms'
 
-import { open } from '@tauri-apps/plugin-dialog';
-import { invoke } from '@tauri-apps/api/core';
 import { convertFileSrc } from '@tauri-apps/api/core';
+import { invoke } from '@tauri-apps/api/core';
 import { load } from '@tauri-apps/plugin-store';
+import { open } from '@tauri-apps/plugin-dialog';
 
 // import { ITreeOptions, TreeComponent, TreeNode, TREE_ACTIONS } from '@circlon/angular-tree-component';
-
 // import { TranslateService } from '@ngx-translate/core';
 
 import { ImageService } from '../image.service';
@@ -15,13 +14,18 @@ import { FileService } from '../file.service';
 
 import { SettingsComponent } from '../settings/settings.component';
 import { RibbonComponent } from '../ribbon/ribbon.component';
+import { TreeViewComponent } from '../tree/tree.component';
+
+import { SubfolderPipe } from '../pipes/subfolder.pipe';
+import { FiletypePipe } from '../pipes/filetype.pipe';
+import { SearchPipe } from '../pipes/search.pipe';
+import { SortPipe } from '../pipes/sort.pipe';
+import { SavePipe } from '../pipes/save.pipe';
 
 import { LanguageLookup, SupportedLanguage } from '../languages';
 import { SettingsButtons, SettingsButtonsGroups, SettingsButtonKey } from './settings-buttons';
 
-import { AllSettings } from '../../interfaces/settings-object.interface';
-import { TreeViewComponent } from '../tree/tree.component';
-
+import type { AllSettings } from '../../interfaces/settings-object.interface';
 import type { MyTreeNode } from '../interfaces';
 
 export type AllowedExtension = 'jpg' | 'png' | 'gif' | 'jpeg' | 'jxl';
@@ -39,6 +43,7 @@ interface RowNumbers {
 export interface ImageFile {
   extension: AllowedExtension;
   fullPath: string;
+  safePath: string; // for Tauri to display stuff
   name: string;
   partialPath: string;
 }
@@ -46,7 +51,7 @@ export interface ImageFile {
 @Component({
     selector: 'app-root',
     templateUrl: './home.component.html',
-    imports: [ FormsModule, SettingsComponent, RibbonComponent, TreeViewComponent ],
+    imports: [ FormsModule, SettingsComponent, RibbonComponent, TreeViewComponent, SubfolderPipe, FiletypePipe, SearchPipe, SortPipe, SavePipe ],
     styleUrls: ['./home.component.scss', './gallery.scss', '../settings.scss'],
     changeDetection: ChangeDetectionStrategy.Eager
 })
@@ -103,7 +108,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   store: any;
 
   allImages: ImageFile[] = [];
-  allowedExtensions: AllowedExtension[] = ['png','jpg', 'jxl'];
+  allowedExtensions: AllowedExtension[] = ['png','jpg', 'jpeg', 'jxl'];
   appMaximized: boolean = false;
   expanded = false;
   nodes: MyTreeNode[] = [];
@@ -329,7 +334,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
       const newItem: ImageFile = {
         extension: parsed.ext.replace('.', '') as AllowedExtension,
-        fullPath: convertFileSrc(unparsed),
+        fullPath: unparsed,
+        safePath: convertFileSrc(unparsed),
         name: parsed.base.replace(parsed.ext, ''),
         partialPath: '/' + parsed.name,
       };
@@ -432,7 +438,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
       index = this.imageService.images.length - 1;
     }
     this.currentIndex = index;
-    this.currentImage = this.imageService.images[index].fullPath;
+
+    console.log(this.imageService.images);
+
+    this.currentImage = this.imageService.images[index].safePath;
     this.cd.detectChanges();
   }
 

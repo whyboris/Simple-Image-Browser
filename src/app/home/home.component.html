@@ -315,7 +315,12 @@
             'column-count': currentView === 'view1' || currentView === 'view2' ? numOfColumns : 'initial'
           }"
           >
-          @for(image of allImages; track image; let idx = $index) {
+          @for(image of allImages | subfolder : partialPath
+                                  | filetype : showPng : showJpg : showJxl : showGif
+                                  | search : searchString
+                                  | sort
+                                  | save;
+               track image; let idx = $index) {
             <div
               class="img-container"
 
@@ -327,7 +332,7 @@
               >
               <img
                 (click)="updatePreview(idx)"
-                [src]="image.fullPath"
+                [src]="image.safePath"
                 [style]="{
                   'height': currentView === 'view3' ? previewHeight + 'px' : '100%'
                 }"
@@ -351,7 +356,7 @@
       <img
         (click)="showNext()"
         (contextmenu)="showPrevious()"
-        [src]="'file://' + currentImage"
+        [src]="currentImage"
         >
     </div>
   }
