@@ -2,12 +2,12 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 import { ImageFile } from '../interfaces';
 
-@Pipe({ name: 'sort' })
-export class SortPipe implements PipeTransform {
+@Pipe({ name: 'limit' })
+export class LimitPipe implements PipeTransform {
 
   transform(images: ImageFile[]): ImageFile[] {
     // console.log(images);
-    return images.sort((a, b) => a.name.localeCompare(b.name, undefined, {sensitivity: 'base'}));
+    return images.slice(0, 20);
   }
 
 }

@@ -1,0 +1,36 @@
+div {
+  font-family: monospace;
+  padding-left: 10px;
+  position: relative;
+}
+
+.folder-name {
+  cursor: pointer;
+
+  &:hover {
+    color: lightgreen;
+  }
+}
+
+.selected {
+  font-weight: bold;
+  color: green;
+}
+
+.expand-icon {
+  cursor: pointer;
+  position: absolute;
+  opacity: 0.5;
+
+  &:hover {
+    color: red;
+  }
+}
+
+.root {
+  color: orange;
+
+  &:hover {
+    color: red;
+  }
+}

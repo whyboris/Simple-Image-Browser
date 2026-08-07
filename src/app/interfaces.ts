@@ -19,3 +19,33 @@ export interface SettingsButton {
   iconName?: string;        // if absent, defaults to `icon-default-button`
   settingsHeading?: string; // Long text to appear in the settings above the button
 }
+
+export type AllowedExtension = 'jpg' | 'png' | 'gif' | 'jpeg' | 'jxl';
+
+export type AllowedView = 'view1' | 'view2' | 'view3' | 'view4' | 'view5';
+
+export interface RowNumbers {
+  view1: number;
+  view2: number;
+  view3: number;
+  view4: number;
+  view5: number;
+}
+
+export interface ImageFile {
+  extension: AllowedExtension;
+  fullPath: string;
+  safePath: string; // for Tauri to display stuff
+  name: string;
+  partialPath: string;
+  folderPath?: string;
+}
+
+export interface myTree {
+  depth: number;
+  expanded: boolean;
+  hasChildren: boolean;
+  path: string;
+  selected: boolean;
+  display: boolean;
+}

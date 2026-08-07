@@ -1,53 +1,41 @@
-import { AfterViewInit, ChangeDetectorRef, Component, HostListener, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
-
+import { AfterViewInit, ChangeDetectorRef, Component, HostListener, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms'
 
-// import { ITreeOptions, TreeComponent, TreeNode, TREE_ACTIONS } from '@circlon/angular-tree-component';
+import { getCurrentWindow } from '@tauri-apps/api/window';
+import { invoke } from '@tauri-apps/api/core';
+import { load } from '@tauri-apps/plugin-store';
+import { open } from '@tauri-apps/plugin-dialog';
 
 // import { TranslateService } from '@ngx-translate/core';
 
+import { FileService } from '../file.service';
 import { ImageService } from '../image.service';
+import { UtilityService } from '../utility.service';
 
-import { AllSettings } from '../../interfaces/settings-object.interface';
-import { SettingsButtons, SettingsButtonsGroups, SettingsButtonKey } from './settings-buttons';
-import { LanguageLookup, SupportedLanguage } from '../languages';
-import { SettingsComponent } from '../settings/settings.component';
+import { DirViewComponent } from '../dir/dir.component';
 import { RibbonComponent } from '../ribbon/ribbon.component';
+import { SettingsComponent } from '../settings/settings.component';
 
-interface MyTreeNode {
-  name: string;
-  children?: MyTreeNode[];
-}
+import { FiletypePipe } from '../pipes/filetype.pipe';
+import { LimitPipe } from '../pipes/limit.pipe';
+import { SavePipe } from '../pipes/save.pipe';
+import { SearchPipe } from '../pipes/search.pipe';
+import { SortPipe } from '../pipes/sort.pipe';
+import { SubfolderPipe } from '../pipes/subfolder.pipe';
 
-export type AllowedExtension = 'jpg' | 'png' | 'gif' | 'jpeg' | 'jxl';
+import { LanguageLookup, SupportedLanguage } from '../languages';
+import { SettingsButtons, SettingsButtonsGroups, SettingsButtonKey } from './settings-buttons';
 
-type AllowedView = 'view1' | 'view2' | 'view3' | 'view4' | 'view5';
-
-interface RowNumbers {
-  view1: number;
-  view2: number;
-  view3: number;
-  view4: number;
-  view5: number;
-}
-
-export interface ImageFile {
-  extension: AllowedExtension;
-  fullPath: string;
-  name: string;
-  partialPath: string;
-}
+import type { AllowedExtension, AllowedView, AllSettings, ImageFile, RowNumbers, myTree } from '../interfaces';
 
 @Component({
     selector: 'app-root',
     templateUrl: './home.component.html',
-    imports: [ FormsModule, SettingsComponent, RibbonComponent ],
+    imports: [ FormsModule, LimitPipe, DirViewComponent, SettingsComponent, RibbonComponent, SubfolderPipe, FiletypePipe, SearchPipe, SortPipe, SavePipe ],
     styleUrls: ['./home.component.scss', './gallery.scss', '../settings.scss'],
     changeDetection: ChangeDetectionStrategy.Eager
 })
 export class HomeComponent implements OnInit, AfterViewInit {
-
-  // @ViewChild('tree') tree: TreeNode;
 
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
@@ -72,26 +60,35 @@ export class HomeComponent implements OnInit, AfterViewInit {
     console.log('next');
   }
 
-  toggleFullScreen(): void {
+  async toggleFullScreen() {
     this.isFullScreen = !this.isFullScreen;
 
-    // FIX: full screen tauri
+    await this.appWindow.setFullscreen(this.isFullScreen);
   }
 
   constructor(
     public cd: ChangeDetectorRef,
-    public imageService: ImageService
+    public fileService: FileService,
+    public imageService: ImageService,
+    public utilityService: UtilityService,
   ) { }
 
-  allImages: ImageFile[] = [];
-  allowedExtensions: AllowedExtension[] = ['png','jpg', 'jxl'];
+  store: any;
+
+  appWindow = getCurrentWindow();
+
+  allImages: ImageFile[] = []; // every image in gallery is an object here
+  dirData: myTree[]; // for the tree view in the sidebar
+
+  allowedExtensions: AllowedExtension[] = ['png','jpg', 'jpeg', 'jxl'];
   appMaximized: boolean = false;
   expanded = false;
-  nodes: MyTreeNode[] = [];
   numOfColumns: number = 5;
   partialPath: string = '/';
   rootName: string = 'HOME';
   searchString: string = '';
+
+  inputFolder: string = '';
 
   showGif: boolean = true;
   showJpg: boolean = true;
@@ -124,7 +121,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   settingsButtonsGroups: any = SettingsButtonsGroups;
   settingsButtons: any = SettingsButtons;
 
-  settingsModalOpen: boolean = true;
+  settingsModalOpen: boolean = false;
 
   settingTabToShow: number = 2;
 
@@ -138,23 +135,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   currentView: AllowedView = 'view1';
 
-  // options: ITreeOptions = {
-  //   actionMapping: {
-  //     mouse: {
-  //       click: (tree, node, $event) => {
-  //         // if (node.hasChildren) {
-  //         //   TREE_ACTIONS.TOGGLE_EXPANDED(tree, node, $event);
-  //         // }
-  //         TREE_ACTIONS.FOCUS(tree, node, $event);
-  //         this.toggleFolder(node.data.path);
-  //         console.log(node.data);
-  //       }
-  //     }
-  //   },
-  //   nodeHeight: 30,
-  //   levelPadding: 10
-  // }
-
   toggleFolder(partialPath: string) {
     console.log(partialPath);
     this.partialPath = partialPath;
@@ -162,9 +142,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   changeLanguage(language: SupportedLanguage): void {
-
     console.log(language);
-
     // this.translate.use(language);
     // this.translate.setTranslation(language, LanguageLookup[language]);
     this.appState.language = language;
@@ -176,123 +154,90 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-
     // this.translate.setDefaultLang('en');
     // const English    = require('../../../i18n/en.json');
     // this.translate.setTranslation('en', English);
-
-    // this.electronService.ipcRenderer.send('just-started');
-
-    // this.electronService.ipcRenderer.on('settings-returning', (event, data: any) => {
-    //   console.log('settings returning:');
-    //   console.log(data);
-    // });
-
-    // this.electronService.ipcRenderer.on('input-folder-chosen', (event, fullPath: string) => {
-    //   console.log(fullPath);
-    //   this.rootName = fullPath.split('\\').pop();
-    // });
-
-    // this.electronService.ipcRenderer.on('files-coming-back', (event, data: ImageFile[]) => {
-    //   console.log(data);
-    //   this.processData(data);
-    // });
-
   }
 
-  ngAfterViewInit(): void {
-    // this.openFolder();
+  ngAfterViewInit() {
+    // this.handleSettings();
+    this.openFolder();
   }
 
-  toggleTree(/*tree: TreeComponent | TreeNode*/): void {
-    // if (this.expanded) {
-    //   tree.treeModel.collapseAll();
-    // } else {
-    //   tree.treeModel.expandAll();
-    // }
+  async handleSettings() {
+    const defaults = {
+      'hi': 'hello world',
+      'hihi': 'auto saved to store'
+    };
+    this.store = await load('store.json', { autoSave: true, defaults });
+    const savedTheme = await this.store.get('theme');
+    const hi = await this.store.get('hi');
+    console.log('STORE:');
+    console.log(savedTheme);
+    console.log(hi);
+  }
 
+  toggleTree(): void {
     this.expanded = !this.expanded;
   }
 
-  processData(data: ImageFile[]): void {
+  treeMessage(data: any) {
+    console.log("Click received");
+    console.log(data);
 
-    this.allImages = data;
+    this.partialPath = data.path;
+  }
 
-    const mapOfEverything: Map<string, string[]> = new Map();
+  async openFolder() {
+    // const folderPath = "C:\\Users\\Boris\\Desktop\\images"
 
-    data.forEach(element => {
-      if (mapOfEverything.has(element.partialPath)) {
-        mapOfEverything.get(element.partialPath).push(element.fullPath);
-      } else {
-        mapOfEverything.set(element.partialPath, [element.fullPath]);
-      }
+    const folderPath: string | null = await open({
+      multiple: false,
+      directory: true,
     });
 
-    // console.log(mapOfEverything);
+    this.rootName = folderPath.split('\\').pop();
 
-    let paths = Array.from(mapOfEverything.keys());
+    this.inputFolder = folderPath;
 
-    // console.log(paths);
+    let response: string[];
 
-    // thank you Nenad Vracar for the algorithm: https://stackoverflow.com/a/57344801/5017391
-    let result = [];
-    let level = { result };
-
-    paths.forEach(path => {
-      path.split('/').reduce((r, name) => {
-        if (!r[name]) {
-          r[name] = { result: [] };
-          r.result.push({
-            name: name,
-            path: path,
-            children: r[name].result })
-        }
-
-        return r[name];
-      }, level)
+    await invoke<any>("get_file_list", { "pathstring": folderPath }).then((fileList: string[]) => {
+      response = fileList;
     });
 
-    console.log(result);
+    this.processImagesAndTree(response);
+  }
 
-    result[0].name = this.rootName;
+  processImagesAndTree(list: string[]) {
+    this.allImages = this.fileService.createImageFileObjects(this.filterOutNonImages(list), this.inputFolder);
 
-    this.nodes = result;
+    this.dirData = this.utilityService.processData(this.allImages, this.inputFolder);
 
     setTimeout(() => {
       this.cd.detectChanges();
-      // this.toggleTree(this.tree);
-      this.cd.detectChanges();
     }, 1);
-
   }
 
-  openFolder(): void {
-    console.log('clicked');
-    // this.electronService.ipcRenderer.send('choose-input');
+  filterOutNonImages(list: string[]): string[] {
+    return list.filter((filename: string) => filename.endsWith('.jpg')); // TODO - include more filetypes
   }
 
   filterTree(folderFilter: string): void {
+    console.log("filtering not re-implemented yet");
     console.log(folderFilter);
-    // this.tree.treeModel.filterNodes(folderFilter, true);
   }
 
   exit(): void {
-    // this.electronService.ipcRenderer.send('close', this.allSettings);
+    this.store.set('theme', 'lol');
   }
 
-  maximize(): void {
-    if (this.appMaximized) {
-      // this.electronService.ipcRenderer.send('un-maximize');
-      this.appMaximized = false;
-    } else {
-      // this.electronService.ipcRenderer.send('maximize');
-      this.appMaximized = true;
-    }
-
+  async maximize() {
+    await this.appWindow.toggleMaximize();
   }
 
-  minimize(): void {
-    // this.electronService.ipcRenderer.send('minimize');
+  async minimize() {
+    await this.appWindow.minimize();
   }
 
   changeView(view: AllowedView): void {
@@ -337,9 +282,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
         previewHeight = previewWidth * 3 / 2;
       }
 
-      console.log(previewWidth);
-      console.log(previewHeight);
-      console.log(this.currentView);
+      // console.log(previewWidth);
+      // console.log(previewHeight);
+      // console.log(this.currentView);
 
       this.previewWidth = previewWidth;
       this.previewHeight = previewHeight;
@@ -360,7 +305,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
       index = this.imageService.images.length - 1;
     }
     this.currentIndex = index;
-    this.currentImage = this.imageService.images[index].fullPath;
+
+    console.log(this.imageService.images);
+
+    this.currentImage = this.imageService.images[index].safePath;
     this.cd.detectChanges();
   }
 

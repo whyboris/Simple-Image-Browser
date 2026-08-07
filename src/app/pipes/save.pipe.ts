@@ -1,7 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { ImageFile } from '../home/home.component';
 
 import { ImageService } from '../image.service';
+
+import { ImageFile } from '../interfaces';
 
 @Pipe({ name: 'save' })
 export class SavePipe implements PipeTransform {
@@ -11,7 +12,7 @@ export class SavePipe implements PipeTransform {
   ) { }
 
   transform(images: ImageFile[]): ImageFile[] {
-    // console.log(images);
+    console.log(images);
     this.imageService.images = images;
     return images;
   }

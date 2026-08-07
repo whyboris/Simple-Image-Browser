@@ -1,5 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { ImageFile } from '../home/home.component';
+
+import { ImageFile } from '../interfaces';
 
 @Pipe({ name: 'search' })
 export class SearchPipe implements PipeTransform {

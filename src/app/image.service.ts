@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ImageFile } from './home/home.component';
+import { ImageFile } from './interfaces';
 
 @Injectable({
   providedIn: 'root'

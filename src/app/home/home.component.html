@@ -65,7 +65,7 @@
           >
           <span
             class="icon icon-popup"
-            title="close app"
+            title="maximize"
           ></span>
         </button>
 
@@ -75,7 +75,7 @@
           >
           <span
             class="icon icon-down-open"
-            title="close app"
+            title="minimize"
           ></span>
         </button>
       </div>
@@ -278,12 +278,7 @@
       (mouseout)="showTree = false"
       >
       <div class="tree-container">
-        <!--  <tree-root
-          #tree
-          class="my-tree"
-          [nodes]="nodes"
-          [options]="options"
-        ></tree-root>  -->
+        <dir-view [pathList]="dirData" (messageEvent)="treeMessage($event)"></dir-view>
       </div>
 
       <input
@@ -313,7 +308,13 @@
             'column-count': currentView === 'view1' || currentView === 'view2' ? numOfColumns : 'initial'
           }"
           >
-          @for(image of allImages; track image; let idx = $index) {
+          @for(image of allImages | subfolder : partialPath
+                                  | filetype : showPng : showJpg : showJxl : showGif
+                                  | search : searchString
+                                  | sort
+                                  | limit
+                                  | save;
+               track image; let idx = $index) {
             <div
               class="img-container"
 
@@ -324,8 +325,9 @@
               }"
               >
               <img
+                loading="lazy"
                 (click)="updatePreview(idx)"
-                [src]="'file://' + image.fullPath"
+                [src]="image.safePath"
                 [style]="{
                   'height': currentView === 'view3' ? previewHeight + 'px' : '100%'
                 }"
@@ -349,7 +351,7 @@
       <img
         (click)="showNext()"
         (contextmenu)="showPrevious()"
-        [src]="'file://' + currentImage"
+        [src]="currentImage"
         >
     </div>
   }

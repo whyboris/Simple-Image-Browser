@@ -68,6 +68,11 @@
     border: 1px solid green;
     height: 100%;
     width: calc(100% - 20px);
+
+    white-space: nowrap;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    padding-top: 10px;
   }
 }
 

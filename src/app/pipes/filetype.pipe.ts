@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { ImageFile } from '../home/home.component';
+import { ImageFile } from '../interfaces';
 
 @Pipe({ name: 'filetype' })
 export class FiletypePipe implements PipeTransform {

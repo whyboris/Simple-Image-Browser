@@ -1,4 +1,4 @@
-import { SettingsButton } from '../../interfaces/settings-object.interface';
+import { SettingsButton } from '../interfaces';
 
 export type SettingsButtonKey = 'folder'
  | 'hideTree'
