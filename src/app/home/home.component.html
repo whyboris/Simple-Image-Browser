@@ -278,16 +278,7 @@
       (mouseout)="showTree = false"
       >
       <div class="tree-container">
-        <!--  <tree-root
-          #tree
-          class="my-tree"
-          [nodes]="nodes"
-          [options]="options"
-        ></tree-root>
-        <tree-view [tree]="treeData" (messageEvent)="treeMessage($event)"></tree-view>
-        -->
         <dir-view [pathList]="dirData" (messageEvent)="treeMessage($event)"></dir-view>
-
       </div>
 
       <input

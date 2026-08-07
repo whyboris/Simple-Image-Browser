@@ -48,3 +48,12 @@ export interface ImageFile {
   partialPath: string;
   folderPath?: string;
 }
+
+export interface myTree {
+  depth: number;
+  expanded: boolean;
+  hasChildren: boolean;
+  path: string;
+  selected: boolean;
+  display: boolean;
+}

@@ -1,15 +1,6 @@
 import { Component, Input, output, signal } from "@angular/core";
 import { DirPipe } from "../pipes/dir.pipe";
-
-interface myTree {
-  depth: number;
-  expanded: boolean;
-  hasChildren: boolean;
-  path: string;
-  selected: boolean;
-  display: boolean;
-}
-
+import { myTree } from "../interfaces";
 
 @Component({
     selector: 'dir-view',
@@ -29,7 +20,13 @@ export class DirViewComponent {
     console.log(data);
     data.selected = !data.selected;
 
-    this.messageEvent.emit(data);
+    if (data.depth !== 0) {
+      this.messageEvent.emit(data);
+    } else {
+      const clone = JSON.parse(JSON.stringify(data));
+      clone.path = '/';
+      this.messageEvent.emit(clone);
+    }
   }
 
   expand(data: any) {

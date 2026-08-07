@@ -24,7 +24,7 @@ import { SavePipe } from '../pipes/save.pipe';
 import { LanguageLookup, SupportedLanguage } from '../languages';
 import { SettingsButtons, SettingsButtonsGroups, SettingsButtonKey } from './settings-buttons';
 
-import type { AllowedExtension, AllowedView, AllSettings, ImageFile, RowNumbers, MyTreeNode } from '../interfaces';
+import type { AllowedExtension, AllowedView, AllSettings, ImageFile, RowNumbers, MyTreeNode, myTree } from '../interfaces';
 import { DirViewComponent } from '../dir/dir.component';
 import { LimitPipe } from '../pipes/limit.pipe';
 
@@ -38,19 +38,6 @@ import { LimitPipe } from '../pipes/limit.pipe';
 export class HomeComponent implements OnInit, AfterViewInit {
 
   dirData: any;
-
-  treeData: MyTreeNode[] = [
-    {
-      name: "lol1", children: [{ name: "lol2", children: [] }, { name: "lol3", children: [] }]
-    },
-    {
-      name: "lol4", children: []
-    },
-    { name: "lol5", children: []
-
-    }]
-
-  // @ViewChild('tree') tree: TreeNode;
 
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
@@ -240,7 +227,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     this.allImages = data;
 
-    console.log(data);
+    // console.log(data);
 
     const mapOfEverything: Map<string, string[]> = new Map();
 
@@ -252,45 +239,81 @@ export class HomeComponent implements OnInit, AfterViewInit {
       }
     });
 
-    console.log(mapOfEverything);
+    // console.log(mapOfEverything);
 
     let paths = Array.from(mapOfEverything.keys());
 
     console.log("HELLO");
 
-    console.log(paths);
+    // console.log(paths);
 
     const onlyFolders = paths.map((el) => el.substring(0, el.lastIndexOf("/")));
 
     // bug -- a folder that has no images but has subfolders with images
     // there will be no intermediate folder - and the folder will not show up in sidebar
 
-    console.log(onlyFolders);
+    // console.log(onlyFolders);
+
+    // back fill HERE - while we have a set
+
+
+    const uniqueFoldersSet = new Set(onlyFolders);
+
+    // back fill the missing folders while we have a set!
+    console.log('hi')
+    console.log(uniqueFoldersSet);
+
+    const allFolders = new Set();
+
+    uniqueFoldersSet.forEach((element: string) => {
+      const parentPaths = this.getAllParentPaths(element);
+
+      parentPaths.forEach((parent) => allFolders.add(parent));
+
+      allFolders.add(element);
+    });
+
+    console.log(allFolders);
+
+    const backfilled = [...allFolders];
 
     const uniqueFolders = [...new Set(onlyFolders)];
 
-    console.log('hi')
-
+    console.log("DIFF");
     console.log(uniqueFolders);
+    console.log(backfilled);
 
-    const sorted = this.natural_sort(uniqueFolders);
+    const sorted = this.natural_sort(backfilled);
 
     console.log(sorted);
 
-    const dirData = [];
+    console.log(this.inputFolder)
 
-    uniqueFolders.forEach((path) => {
+    const root = this.inputFolder.replace(/\\/g, '/');
+
+    const dirData: myTree[] = [{
+      path: root.slice(root.lastIndexOf('/') + 1),
+      display: true,
+      depth: 0,
+      expanded: true,
+      hasChildren: true,
+      selected: true
+    }];
+
+    sorted.forEach((path) => {
 
       const depth = path.split('/').length - 1;
 
-      dirData.push({
-        path: path,
-        selected: false,
-        expanded: false,
-        hasChildren: uniqueFolders.some((elPath) => elPath !== path && elPath.includes(path + '/')),
-        depth: depth,
-        display: depth > 1 ? false : true,
-      })
+      if (path !== '') {
+        dirData.push({
+          path: path,
+          selected: false,
+          expanded: false,
+          hasChildren: sorted.some((elPath) => elPath !== path && elPath.includes(path + '/')),
+          depth: depth,
+          display: depth > 1 ? false : true,
+        })
+      }
     });
 
     this.dirData = dirData;
@@ -298,16 +321,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     console.log("CURRENT");
     console.log(this.dirData);
 
-
-    // var obj = {}
-    // uniqueFolders.forEach(function(path) {
-    //   path.split('/').reduce(function(r, e) {
-
-    //     return r[e] || (r[e] = {})
-    //   }, obj)
-    // })
-
-    // console.log(obj)
 
     // thank you Nenad Vracar for the algorithm: https://stackoverflow.com/a/57344801/5017391
     let result: MyTreeNode[] = [];
@@ -335,18 +348,25 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     this.nodes = result;
 
-    // console.log(this.nodes);
-
-    this.treeData = this.nodes as MyTreeNode[];
-
-    // console.log(this.treeData);
-
     setTimeout(() => {
       this.cd.detectChanges();
       // this.toggleTree(this.tree);
       this.cd.detectChanges();
     }, 1);
 
+  }
+
+  getAllParentPaths(folderPath: string): string[] {
+    const segments = folderPath.split('/').filter(Boolean);
+    const paths = [];
+
+    // Build the path incrementally up to the parent level
+    for (let i = 1; i < segments.length; i++) {
+      const parentPath = segments.slice(0, i).join('/');
+      paths.push(folderPath.startsWith('/') ? `/${parentPath}` : parentPath);
+    }
+
+    return paths;
   }
 
   public natural_sort(array: any[]): any[] {
@@ -365,7 +385,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     console.log("Click received");
     console.log(data);
 
-    this.partialPath = data.path
+    this.partialPath = data.path;
   }
 
   async openFolder() {
@@ -391,7 +411,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
     await invoke<any>("get_file_list", { "pathstring": folderPath }).then((fileList: string[]) => {
       response = fileList;
     });
-    console.log(response);
+
+    // console.log(response);
+
     this.list_of_files_to_objects(response);
   }
 
@@ -401,7 +423,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     // temporary; filter more file types later
     const filtered: string[] = list.filter((filename: string) => filename.endsWith('.jpg'))
 
-    console.log(filtered);
+    // console.log(filtered);
 
     let allFiles: ImageFile[] = [];
 
@@ -412,7 +434,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       //  const partial: string = path.relative(inputDir, parsed.dir).replace(/\\/g, '/');
       // partial === partialPath
       // ##############
-      console.log(this.inputFolder);
+      // console.log(this.inputFolder);
 
       let partial = unparsed.replace(this.inputFolder, "").trim();
 
@@ -428,7 +450,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       allFiles.push(newItem);
     }
 
-    console.log(allFiles);
+    // console.log(allFiles);
 
     this.processData(allFiles);
   }

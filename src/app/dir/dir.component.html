@@ -4,8 +4,8 @@
 
     <div>
 
-      @if (path.hasChildren) {
-        <span class="expand-icon" (click)="expand(path)">
+      @if (path.hasChildren && path.depth !== 0) {
+        <span class="expand-icon" [style]="{ left: path.depth * 16 - 5 + 'px' }" (click)="expand(path)">
           {{ path.expanded ? "-" : "+" }}
         </span>
       }
