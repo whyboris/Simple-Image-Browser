@@ -26,6 +26,7 @@ export class UtilityService {
 
     const allFolders = new Set();
 
+    // backfill folders that have no images in them but have subfolders with images
     uniqueFoldersSet.forEach((element: string) => {
       const parentPaths = this.getAllParentPaths(element);
 
@@ -36,10 +37,11 @@ export class UtilityService {
 
     const backfilled = [...allFolders];
 
-    const sorted = this.natural_sort(backfilled);
+    const sorted = this.naturalSort(backfilled);
 
     const root = inputFolder.replace(/\\/g, '/');
 
+    // add the root node
     const dirData: myTree[] = [{
       path: root.slice(root.lastIndexOf('/') + 1),
       display: true,
@@ -82,7 +84,7 @@ export class UtilityService {
     return paths;
   }
 
-  public natural_sort(array: any[]): any[] {
+  naturalSort(array: any[]): any[] {
     array.sort((a, b) =>
       a.localeCompare(b, navigator.languages[0] || navigator.language, {
         numeric: true,

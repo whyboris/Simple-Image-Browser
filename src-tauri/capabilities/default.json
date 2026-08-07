@@ -15,6 +15,8 @@
     "opener:default",
     "os:default",
     "store:default",
+    "core:window:allow-minimize",
+    "core:window:allow-toggle-maximize",
     {
       "identifier": "opener:allow-open-path",
       "allow": [

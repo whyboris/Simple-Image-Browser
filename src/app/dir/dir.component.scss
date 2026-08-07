@@ -20,6 +20,15 @@ div {
 .expand-icon {
   cursor: pointer;
   position: absolute;
+  opacity: 0.5;
+
+  &:hover {
+    color: red;
+  }
+}
+
+.root {
+  color: orange;
 
   &:hover {
     color: red;

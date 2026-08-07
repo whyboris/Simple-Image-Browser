@@ -5,12 +5,20 @@
     <div>
 
       @if (path.hasChildren && path.depth !== 0) {
-        <span class="expand-icon" [style]="{ left: path.depth * 16 - 5 + 'px' }" (click)="expand(path)">
+        <span
+          class="expand-icon"
+          [style]="{ left: path.depth * 16 - 5 + 'px' }"
+          (click)="expand(path)"
+        >
           {{ path.expanded ? "-" : "+" }}
         </span>
       }
 
-      <span class="folder-name" [class]="{ selected: path.selected }" [style]="{ marginLeft: path.depth * 16 + 'px' }" (click)="clicked(path)">
+      <span
+        class="folder-name"
+        [class]="{ selected: path.selected, root: path.depth === 0 }"
+        [style]="{ marginLeft: path.depth * 16 + 'px' }" (click)="clicked(path)"
+      >
         {{ path.path | dir }}
       </span>
 

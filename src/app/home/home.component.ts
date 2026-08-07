@@ -5,6 +5,7 @@ import { convertFileSrc } from '@tauri-apps/api/core';
 import { invoke } from '@tauri-apps/api/core';
 import { load } from '@tauri-apps/plugin-store';
 import { open } from '@tauri-apps/plugin-dialog';
+import { getCurrentWindow } from '@tauri-apps/api/window';
 
 // import { TranslateService } from '@ngx-translate/core';
 
@@ -77,6 +78,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   store: any;
 
+  appWindow = getCurrentWindow();
+
   allImages: ImageFile[] = [];
   allowedExtensions: AllowedExtension[] = ['png','jpg', 'jpeg', 'jxl'];
   appMaximized: boolean = false;
@@ -140,9 +143,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   changeLanguage(language: SupportedLanguage): void {
-
     console.log(language);
-
     // this.translate.use(language);
     // this.translate.setTranslation(language, LanguageLookup[language]);
     this.appState.language = language;
@@ -154,28 +155,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-
     // this.translate.setDefaultLang('en');
     // const English    = require('../../../i18n/en.json');
     // this.translate.setTranslation('en', English);
-
-    // this.electronService.ipcRenderer.send('just-started');
-
-    // this.electronService.ipcRenderer.on('settings-returning', (event, data: any) => {
-    //   console.log('settings returning:');
-    //   console.log(data);
-    // });
-
-    // this.electronService.ipcRenderer.on('input-folder-chosen', (event, fullPath: string) => {
-    //   console.log(fullPath);
-    //   this.rootName = fullPath.split('\\').pop();
-    // });
-
-    // this.electronService.ipcRenderer.on('files-coming-back', (event, data: ImageFile[]) => {
-    //   console.log(data);
-    //   this.processData(data);
-    // });
-
   }
 
   ngAfterViewInit() {
@@ -208,8 +190,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   async openFolder() {
-
-    // console.log('temp hardcoded - remove before git commit');
     // const folderPath = "C:\\Users\\Boris\\Desktop\\images"
 
     const folderPath: string | null = await open({
@@ -217,21 +197,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
       directory: true,
     });
 
-    console.log(folderPath);
-
     this.rootName = folderPath.split('\\').pop();
 
     this.inputFolder = folderPath;
-
-    console.log(this.rootName);
 
     let response: string[];
 
     await invoke<any>("get_file_list", { "pathstring": folderPath }).then((fileList: string[]) => {
       response = fileList;
     });
-
-    // console.log(response);
 
     this.list_of_files_to_objects(response);
   }
@@ -242,18 +216,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
     // temporary; filter more file types later
     const filtered: string[] = list.filter((filename: string) => filename.endsWith('.jpg'))
 
-    // console.log(filtered);
-
     let allFiles: ImageFile[] = [];
 
     for (const unparsed of filtered) {
 
       const parsed = this.fileService.parse(unparsed);
-
-      //  const partial: string = path.relative(inputDir, parsed.dir).replace(/\\/g, '/');
-      // partial === partialPath
-      // ##############
-      // console.log(this.inputFolder);
 
       let partial = unparsed.replace(this.inputFolder, "").trim();
 
@@ -268,8 +235,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
       allFiles.push(newItem);
     }
-
-    // console.log(allFiles);
 
     this.populateTree(allFiles);
   }
@@ -288,7 +253,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }, 1);
   }
 
-
   filterTree(folderFilter: string): void {
     console.log("filtering not re-implemented yet");
     console.log(folderFilter);
@@ -296,22 +260,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   exit(): void {
     this.store.set('theme', 'lol');
-    // this.electronService.ipcRenderer.send('close', this.allSettings);
   }
 
-  maximize(): void {
-    if (this.appMaximized) {
-      // this.electronService.ipcRenderer.send('un-maximize');
-      this.appMaximized = false;
-    } else {
-      // this.electronService.ipcRenderer.send('maximize');
-      this.appMaximized = true;
-    }
-
+  async maximize() {
+    await this.appWindow.toggleMaximize();
   }
 
-  minimize(): void {
-    // this.electronService.ipcRenderer.send('minimize');
+  async minimize() {
+    await this.appWindow.minimize();
   }
 
   changeView(view: AllowedView): void {
