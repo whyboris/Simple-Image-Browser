@@ -17,6 +17,7 @@
     "store:default",
     "core:window:allow-minimize",
     "core:window:allow-toggle-maximize",
+    "core:window:allow-set-fullscreen",
     {
       "identifier": "opener:allow-open-path",
       "allow": [

@@ -1,32 +1,32 @@
-import { AfterViewInit, ChangeDetectorRef, Component, HostListener, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, HostListener, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms'
 
+import { getCurrentWindow } from '@tauri-apps/api/window';
 import { invoke } from '@tauri-apps/api/core';
 import { load } from '@tauri-apps/plugin-store';
 import { open } from '@tauri-apps/plugin-dialog';
-import { getCurrentWindow } from '@tauri-apps/api/window';
 
 // import { TranslateService } from '@ngx-translate/core';
 
-import { ImageService } from '../image.service';
 import { FileService } from '../file.service';
+import { ImageService } from '../image.service';
 import { UtilityService } from '../utility.service';
 
-import { SettingsComponent } from '../settings/settings.component';
+import { DirViewComponent } from '../dir/dir.component';
 import { RibbonComponent } from '../ribbon/ribbon.component';
+import { SettingsComponent } from '../settings/settings.component';
 
-import { SubfolderPipe } from '../pipes/subfolder.pipe';
 import { FiletypePipe } from '../pipes/filetype.pipe';
+import { LimitPipe } from '../pipes/limit.pipe';
+import { SavePipe } from '../pipes/save.pipe';
 import { SearchPipe } from '../pipes/search.pipe';
 import { SortPipe } from '../pipes/sort.pipe';
-import { SavePipe } from '../pipes/save.pipe';
+import { SubfolderPipe } from '../pipes/subfolder.pipe';
 
 import { LanguageLookup, SupportedLanguage } from '../languages';
 import { SettingsButtons, SettingsButtonsGroups, SettingsButtonKey } from './settings-buttons';
 
 import type { AllowedExtension, AllowedView, AllSettings, ImageFile, RowNumbers, myTree } from '../interfaces';
-import { DirViewComponent } from '../dir/dir.component';
-import { LimitPipe } from '../pipes/limit.pipe';
 
 @Component({
     selector: 'app-root',
@@ -60,10 +60,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
     console.log('next');
   }
 
-  toggleFullScreen(): void {
+  async toggleFullScreen() {
     this.isFullScreen = !this.isFullScreen;
 
-    // FIX: full screen tauri
+    await this.appWindow.setFullscreen(this.isFullScreen);
   }
 
   constructor(
