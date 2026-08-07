@@ -40,7 +40,7 @@ fn get_file_list(pathstring: &str) -> Vec<PathBuf> {
     let files = get_all_files(path);
 
     for file in &files {
-        println!("{}", file.display());
+        // println!("{}", file.display());
     }
 
     return files;

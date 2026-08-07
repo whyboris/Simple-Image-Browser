@@ -6,11 +6,11 @@ import { invoke } from '@tauri-apps/api/core';
 import { load } from '@tauri-apps/plugin-store';
 import { open } from '@tauri-apps/plugin-dialog';
 
-// import { ITreeOptions, TreeComponent, TreeNode, TREE_ACTIONS } from '@circlon/angular-tree-component';
 // import { TranslateService } from '@ngx-translate/core';
 
 import { ImageService } from '../image.service';
 import { FileService } from '../file.service';
+import { UtilityService } from '../utility.service';
 
 import { SettingsComponent } from '../settings/settings.component';
 import { RibbonComponent } from '../ribbon/ribbon.component';
@@ -24,7 +24,7 @@ import { SavePipe } from '../pipes/save.pipe';
 import { LanguageLookup, SupportedLanguage } from '../languages';
 import { SettingsButtons, SettingsButtonsGroups, SettingsButtonKey } from './settings-buttons';
 
-import type { AllowedExtension, AllowedView, AllSettings, ImageFile, RowNumbers, MyTreeNode, myTree } from '../interfaces';
+import type { AllowedExtension, AllowedView, AllSettings, ImageFile, RowNumbers, myTree } from '../interfaces';
 import { DirViewComponent } from '../dir/dir.component';
 import { LimitPipe } from '../pipes/limit.pipe';
 
@@ -71,7 +71,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   constructor(
     public cd: ChangeDetectorRef,
     public fileService: FileService,
-    public imageService: ImageService
+    public imageService: ImageService,
+    public utilityService: UtilityService,
   ) { }
 
   store: any;
@@ -80,7 +81,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   allowedExtensions: AllowedExtension[] = ['png','jpg', 'jpeg', 'jxl'];
   appMaximized: boolean = false;
   expanded = false;
-  nodes: MyTreeNode[] = [];
   numOfColumns: number = 5;
   partialPath: string = '/';
   rootName: string = 'HOME';
@@ -132,23 +132,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   currentView: AllowedView = 'view1';
-
-  // options: ITreeOptions = {
-  //   actionMapping: {
-  //     mouse: {
-  //       click: (tree, node, $event) => {
-  //         // if (node.hasChildren) {
-  //         //   TREE_ACTIONS.TOGGLE_EXPANDED(tree, node, $event);
-  //         // }
-  //         TREE_ACTIONS.FOCUS(tree, node, $event);
-  //         this.toggleFolder(node.data.path);
-  //         console.log(node.data);
-  //       }
-  //     }
-  //   },
-  //   nodeHeight: 30,
-  //   levelPadding: 10
-  // }
 
   toggleFolder(partialPath: string) {
     console.log(partialPath);
@@ -213,173 +196,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
     console.log(hi);
   }
 
-  toggleTree(/*tree: TreeComponent | TreeNode*/): void {
-    // if (this.expanded) {
-    //   tree.treeModel.collapseAll();
-    // } else {
-    //   tree.treeModel.expandAll();
-    // }
-
+  toggleTree(): void {
     this.expanded = !this.expanded;
   }
-
-  processData(data: ImageFile[]): void {
-
-    this.allImages = data;
-
-    // console.log(data);
-
-    const mapOfEverything: Map<string, string[]> = new Map();
-
-    data.forEach(element => {
-      if (mapOfEverything.has(element.partialPath)) {
-        mapOfEverything.get(element.partialPath).push(element.fullPath);
-      } else {
-        mapOfEverything.set(element.partialPath, [element.fullPath]);
-      }
-    });
-
-    // console.log(mapOfEverything);
-
-    let paths = Array.from(mapOfEverything.keys());
-
-    console.log("HELLO");
-
-    // console.log(paths);
-
-    const onlyFolders = paths.map((el) => el.substring(0, el.lastIndexOf("/")));
-
-    // bug -- a folder that has no images but has subfolders with images
-    // there will be no intermediate folder - and the folder will not show up in sidebar
-
-    // console.log(onlyFolders);
-
-    // back fill HERE - while we have a set
-
-
-    const uniqueFoldersSet = new Set(onlyFolders);
-
-    // back fill the missing folders while we have a set!
-    console.log('hi')
-    console.log(uniqueFoldersSet);
-
-    const allFolders = new Set();
-
-    uniqueFoldersSet.forEach((element: string) => {
-      const parentPaths = this.getAllParentPaths(element);
-
-      parentPaths.forEach((parent) => allFolders.add(parent));
-
-      allFolders.add(element);
-    });
-
-    console.log(allFolders);
-
-    const backfilled = [...allFolders];
-
-    const uniqueFolders = [...new Set(onlyFolders)];
-
-    console.log("DIFF");
-    console.log(uniqueFolders);
-    console.log(backfilled);
-
-    const sorted = this.natural_sort(backfilled);
-
-    console.log(sorted);
-
-    console.log(this.inputFolder)
-
-    const root = this.inputFolder.replace(/\\/g, '/');
-
-    const dirData: myTree[] = [{
-      path: root.slice(root.lastIndexOf('/') + 1),
-      display: true,
-      depth: 0,
-      expanded: true,
-      hasChildren: true,
-      selected: true
-    }];
-
-    sorted.forEach((path) => {
-
-      const depth = path.split('/').length - 1;
-
-      if (path !== '') {
-        dirData.push({
-          path: path,
-          selected: false,
-          expanded: false,
-          hasChildren: sorted.some((elPath) => elPath !== path && elPath.includes(path + '/')),
-          depth: depth,
-          display: depth > 1 ? false : true,
-        })
-      }
-    });
-
-    this.dirData = dirData;
-
-    console.log("CURRENT");
-    console.log(this.dirData);
-
-
-    // thank you Nenad Vracar for the algorithm: https://stackoverflow.com/a/57344801/5017391
-    let result: MyTreeNode[] = [];
-    let level = { result };
-
-    uniqueFolders.forEach(path => {
-      path.split('/').reduce((r, name) => {
-
-        if (!r[name]) {
-          r[name] = { result: [] };
-          r.result.push({
-            name: name,
-            partial: path,
-            children: r[name].result })
-        }
-
-        return r[name];
-      }, level)
-    });
-
-    console.log("FINAL");
-    console.log(result);
-
-    result[0].name = this.rootName;
-
-    this.nodes = result;
-
-    setTimeout(() => {
-      this.cd.detectChanges();
-      // this.toggleTree(this.tree);
-      this.cd.detectChanges();
-    }, 1);
-
-  }
-
-  getAllParentPaths(folderPath: string): string[] {
-    const segments = folderPath.split('/').filter(Boolean);
-    const paths = [];
-
-    // Build the path incrementally up to the parent level
-    for (let i = 1; i < segments.length; i++) {
-      const parentPath = segments.slice(0, i).join('/');
-      paths.push(folderPath.startsWith('/') ? `/${parentPath}` : parentPath);
-    }
-
-    return paths;
-  }
-
-  public natural_sort(array: any[]): any[] {
-    array.sort((a, b) =>
-      a.localeCompare(b, navigator.languages[0] || navigator.language, {
-        numeric: true,
-        ignorePunctuation: true,
-      })
-    );
-
-    return array;
-  }
-
 
   treeMessage(data: any) {
     console.log("Click received");
@@ -452,13 +271,27 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     // console.log(allFiles);
 
-    this.processData(allFiles);
+    this.populateTree(allFiles);
   }
+
+  populateTree(allFiles: ImageFile[]): void {
+
+    this.allImages = allFiles;
+
+    this.dirData = this.utilityService.processData(allFiles, this.inputFolder);
+
+    console.log("dirData");
+    console.log(this.dirData);
+
+    setTimeout(() => {
+      this.cd.detectChanges();
+    }, 1);
+  }
+
 
   filterTree(folderFilter: string): void {
     console.log("filtering not re-implemented yet");
     console.log(folderFilter);
-    // this.tree.treeModel.filterNodes(folderFilter, true);
   }
 
   exit(): void {

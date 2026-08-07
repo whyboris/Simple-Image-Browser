@@ -20,14 +20,6 @@ export interface SettingsButton {
   settingsHeading?: string; // Long text to appear in the settings above the button
 }
 
-export interface MyTreeNode {
-  children?: MyTreeNode[];
-  expanded?: boolean;
-  name: string;
-  partial?: string;
-  selected?: boolean;
-}
-
 export type AllowedExtension = 'jpg' | 'png' | 'gif' | 'jpeg' | 'jxl';
 
 export type AllowedView = 'view1' | 'view2' | 'view3' | 'view4' | 'view5';
