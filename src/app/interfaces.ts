@@ -21,8 +21,11 @@ export interface SettingsButton {
 }
 
 export interface MyTreeNode {
-  name: string;
   children?: MyTreeNode[];
+  expanded?: boolean;
+  name: string;
+  partial?: string;
+  selected?: boolean;
 }
 
 export type AllowedExtension = 'jpg' | 'png' | 'gif' | 'jpeg' | 'jxl';
@@ -43,4 +46,5 @@ export interface ImageFile {
   safePath: string; // for Tauri to display stuff
   name: string;
   partialPath: string;
+  folderPath?: string;
 }

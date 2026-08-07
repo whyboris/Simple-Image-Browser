@@ -237,6 +237,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     this.allImages = data;
 
+    console.log(data);
+
     const mapOfEverything: Map<string, string[]> = new Map();
 
     data.forEach(element => {
@@ -247,23 +249,47 @@ export class HomeComponent implements OnInit, AfterViewInit {
       }
     });
 
-    // console.log(mapOfEverything);
+    console.log(mapOfEverything);
 
     let paths = Array.from(mapOfEverything.keys());
 
-    // console.log(paths);
+    console.log("HELLO");
+
+    console.log(paths);
+
+    const onlyFolders = paths.map((el) => el.substring(0, el.lastIndexOf("/")));
+
+    console.log(onlyFolders);
+
+    const uniqueFolders = [...new Set(onlyFolders)];
+
+    console.log(uniqueFolders);
+
+
+    var obj = {}
+    uniqueFolders.forEach(function(path) {
+      path.split('/').reduce(function(r, e) {
+
+        return r[e] || (r[e] = {})
+      }, obj)
+    })
+
+    console.log(obj)
 
     // thank you Nenad Vracar for the algorithm: https://stackoverflow.com/a/57344801/5017391
-    let result = [];
+    let result: MyTreeNode[] = [];
     let level = { result };
 
-    paths.forEach(path => {
+    uniqueFolders.forEach(path => {
       path.split('/').reduce((r, name) => {
+
+        console.log(r, name);
+
         if (!r[name]) {
           r[name] = { result: [] };
           r.result.push({
             name: name,
-            path: path,
+            partial: path,
             children: r[name].result })
         }
 
@@ -271,15 +297,18 @@ export class HomeComponent implements OnInit, AfterViewInit {
       }, level)
     });
 
+    console.log("FINAL");
     console.log(result);
 
     result[0].name = this.rootName;
 
     this.nodes = result;
 
-    console.log(this.nodes);
+    // console.log(this.nodes);
 
     this.treeData = this.nodes as MyTreeNode[];
+
+    // console.log(this.treeData);
 
     setTimeout(() => {
       this.cd.detectChanges();
@@ -289,11 +318,22 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   }
 
+  treeMessage(data: any) {
+    console.log("Click received");
+    console.log(data);
+
+    this.partialPath = data.partial
+  }
+
   async openFolder() {
-    const folderPath: string | null = await open({
-      multiple: false,
-      directory: true,
-    });
+
+    console.log('temp hardcoded - remove before git commit');
+    const folderPath = "C:\\Users\\Boris\\Desktop\\images"
+
+    // const folderPath: string | null = await open({
+    //   multiple: false,
+    //   directory: true,
+    // });
 
     console.log(folderPath);
 
@@ -339,6 +379,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         safePath: convertFileSrc(unparsed),
         name: parsed.base.replace(parsed.ext, ''),
         partialPath: partial.replace(/\\/g, '/'),
+        folderPath: partial.replace(/\\/g, '/').replace(parsed.base, "")
       };
 
       allFiles.push(newItem);
@@ -350,6 +391,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   filterTree(folderFilter: string): void {
+    console.log("filtering not re-implemented yet");
     console.log(folderFilter);
     // this.tree.treeModel.filterNodes(folderFilter, true);
   }

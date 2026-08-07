@@ -7,12 +7,12 @@ export class SubfolderPipe implements PipeTransform {
 
   transform(images: ImageFile[], subfolder: string): ImageFile[] {
 
-    console.log('subfolder pipe disabled');
-
-    return images;
+    if (!subfolder || subfolder === "/") {
+      return images;
+    }
 
     return images.filter((image: ImageFile) => {
-      return image.partialPath === subfolder;
+      return image.folderPath === subfolder + '/'; // hack `+ '/'` for now
     });
   }
 
