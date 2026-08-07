@@ -1,15 +1,28 @@
 div {
   font-family: monospace;
-  margin-left: 10px;
+  padding-left: 10px;
+  position: relative;
+}
+
+.folder-name {
   cursor: pointer;
-  padding-left: 20px;
+
+  &:hover {
+    color: lightgreen;
+  }
 }
 
 .selected {
   font-weight: bold;
+  color: green;
 }
 
 .expand-icon {
+  cursor: pointer;
   position: absolute;
-  left: 6px;
+  left: 10px;
+
+  &:hover {
+    color: red;
+  }
 }

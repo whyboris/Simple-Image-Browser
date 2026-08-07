@@ -283,8 +283,9 @@
           class="my-tree"
           [nodes]="nodes"
           [options]="options"
-        ></tree-root>  -->
+        ></tree-root>
         <tree-view [tree]="treeData" (messageEvent)="treeMessage($event)"></tree-view>
+        -->
         <dir-view [pathList]="dirData" (messageEvent)="treeMessage($event)"></dir-view>
 
       </div>
@@ -320,6 +321,7 @@
                                   | filetype : showPng : showJpg : showJxl : showGif
                                   | search : searchString
                                   | sort
+                                  | limit
                                   | save;
                track image; let idx = $index) {
             <div
@@ -332,6 +334,7 @@
               }"
               >
               <img
+                loading="lazy"
                 (click)="updatePreview(idx)"
                 [src]="image.safePath"
                 [style]="{

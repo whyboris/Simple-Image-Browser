@@ -21,11 +21,15 @@ export class DirViewComponent {
 
   @Input() public pathList: myTree[];
 
+  messageEvent = output<string>();
+
   clicked(data: any) {
     this.pathList.forEach(element => element.selected = false);
 
     console.log(data);
     data.selected = !data.selected;
+
+    this.messageEvent.emit(data);
   }
 
   expand(data: any) {
@@ -35,7 +39,7 @@ export class DirViewComponent {
     const change = !data.expanded;
 
     this.pathList.forEach((element) => {
-      if (element.path !== data.path && element.path.startsWith(data.path) && element.depth == data.depth + 1) {
+      if (element.path !== data.path && element.path.startsWith(data.path + '/') && element.depth == data.depth + 1) {
         element.display = change;
       }
     });

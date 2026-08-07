@@ -4,12 +4,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class DirPipe implements PipeTransform {
 
   transform(path: any): any {
-
-    const depth = path.split('/').length - 1;
-
-
-
-    return "_".repeat(depth) + path.substring(path.lastIndexOf('/') + 1);
+    return path.substring(path.lastIndexOf('/') + 1);
   }
 
 }

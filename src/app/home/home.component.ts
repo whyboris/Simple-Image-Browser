@@ -14,7 +14,6 @@ import { FileService } from '../file.service';
 
 import { SettingsComponent } from '../settings/settings.component';
 import { RibbonComponent } from '../ribbon/ribbon.component';
-import { TreeViewComponent } from '../tree/tree.component';
 
 import { SubfolderPipe } from '../pipes/subfolder.pipe';
 import { FiletypePipe } from '../pipes/filetype.pipe';
@@ -27,11 +26,12 @@ import { SettingsButtons, SettingsButtonsGroups, SettingsButtonKey } from './set
 
 import type { AllowedExtension, AllowedView, AllSettings, ImageFile, RowNumbers, MyTreeNode } from '../interfaces';
 import { DirViewComponent } from '../dir/dir.component';
+import { LimitPipe } from '../pipes/limit.pipe';
 
 @Component({
     selector: 'app-root',
     templateUrl: './home.component.html',
-    imports: [ FormsModule, DirViewComponent, SettingsComponent, RibbonComponent, TreeViewComponent, SubfolderPipe, FiletypePipe, SearchPipe, SortPipe, SavePipe ],
+    imports: [ FormsModule, LimitPipe, DirViewComponent, SettingsComponent, RibbonComponent, SubfolderPipe, FiletypePipe, SearchPipe, SortPipe, SavePipe ],
     styleUrls: ['./home.component.scss', './gallery.scss', '../settings.scss'],
     changeDetection: ChangeDetectionStrategy.Eager
 })
@@ -262,22 +262,34 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     const onlyFolders = paths.map((el) => el.substring(0, el.lastIndexOf("/")));
 
+    // bug -- a folder that has no images but has subfolders with images
+    // there will be no intermediate folder - and the folder will not show up in sidebar
+
     console.log(onlyFolders);
 
     const uniqueFolders = [...new Set(onlyFolders)];
 
+    console.log('hi')
+
     console.log(uniqueFolders);
+
+    const sorted = this.natural_sort(uniqueFolders);
+
+    console.log(sorted);
 
     const dirData = [];
 
     uniqueFolders.forEach((path) => {
+
+      const depth = path.split('/').length - 1;
+
       dirData.push({
         path: path,
         selected: false,
         expanded: false,
-        hasChildren: uniqueFolders.some((elPath) => elPath !== path && elPath.includes(path)),
-        depth: path.split('/').length - 1,
-        display: true,
+        hasChildren: uniqueFolders.some((elPath) => elPath !== path && elPath.includes(path + '/')),
+        depth: depth,
+        display: depth > 1 ? false : true,
       })
     });
 
@@ -337,22 +349,34 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   }
 
+  public natural_sort(array: any[]): any[] {
+    array.sort((a, b) =>
+      a.localeCompare(b, navigator.languages[0] || navigator.language, {
+        numeric: true,
+        ignorePunctuation: true,
+      })
+    );
+
+    return array;
+  }
+
+
   treeMessage(data: any) {
     console.log("Click received");
     console.log(data);
 
-    this.partialPath = data.partial
+    this.partialPath = data.path
   }
 
   async openFolder() {
 
-    console.log('temp hardcoded - remove before git commit');
-    const folderPath = "C:\\Users\\Boris\\Desktop\\images"
+    // console.log('temp hardcoded - remove before git commit');
+    // const folderPath = "C:\\Users\\Boris\\Desktop\\images"
 
-    // const folderPath: string | null = await open({
-    //   multiple: false,
-    //   directory: true,
-    // });
+    const folderPath: string | null = await open({
+      multiple: false,
+      directory: true,
+    });
 
     console.log(folderPath);
 

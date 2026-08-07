@@ -6,11 +6,11 @@
 
       @if (path.hasChildren) {
         <span class="expand-icon" (click)="expand(path)">
-          {{ path.expanded ? "[-]" : "[+]" }}
+          {{ path.expanded ? "-" : "+" }}
         </span>
       }
 
-      <span [class]="{ selected: path.selected }" (click)="clicked(path)">
+      <span class="folder-name" [class]="{ selected: path.selected }" [style]="{ marginLeft: path.depth * 16 + 'px' }" (click)="clicked(path)">
         {{ path.path | dir }}
       </span>
 
