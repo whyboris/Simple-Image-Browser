@@ -1,0 +1,21 @@
+@for(path of pathList; track path; let i = $index;) {
+
+  @if (path.display) {
+
+    <div>
+
+      @if (path.hasChildren) {
+        <span class="expand-icon" (click)="expand(path)">
+          {{ path.expanded ? "[-]" : "[+]" }}
+        </span>
+      }
+
+      <span [class]="{ selected: path.selected }" (click)="clicked(path)">
+        {{ path.path | dir }}
+      </span>
+
+    </div>
+
+  }
+
+}

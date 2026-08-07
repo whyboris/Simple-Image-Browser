@@ -285,6 +285,7 @@
           [options]="options"
         ></tree-root>  -->
         <tree-view [tree]="treeData" (messageEvent)="treeMessage($event)"></tree-view>
+        <dir-view [pathList]="dirData" (messageEvent)="treeMessage($event)"></dir-view>
 
       </div>
 

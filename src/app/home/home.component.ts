@@ -26,15 +26,18 @@ import { LanguageLookup, SupportedLanguage } from '../languages';
 import { SettingsButtons, SettingsButtonsGroups, SettingsButtonKey } from './settings-buttons';
 
 import type { AllowedExtension, AllowedView, AllSettings, ImageFile, RowNumbers, MyTreeNode } from '../interfaces';
+import { DirViewComponent } from '../dir/dir.component';
 
 @Component({
     selector: 'app-root',
     templateUrl: './home.component.html',
-    imports: [ FormsModule, SettingsComponent, RibbonComponent, TreeViewComponent, SubfolderPipe, FiletypePipe, SearchPipe, SortPipe, SavePipe ],
+    imports: [ FormsModule, DirViewComponent, SettingsComponent, RibbonComponent, TreeViewComponent, SubfolderPipe, FiletypePipe, SearchPipe, SortPipe, SavePipe ],
     styleUrls: ['./home.component.scss', './gallery.scss', '../settings.scss'],
     changeDetection: ChangeDetectionStrategy.Eager
 })
 export class HomeComponent implements OnInit, AfterViewInit {
+
+  dirData: any;
 
   treeData: MyTreeNode[] = [
     {
@@ -265,16 +268,34 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     console.log(uniqueFolders);
 
+    const dirData = [];
 
-    var obj = {}
-    uniqueFolders.forEach(function(path) {
-      path.split('/').reduce(function(r, e) {
+    uniqueFolders.forEach((path) => {
+      dirData.push({
+        path: path,
+        selected: false,
+        expanded: false,
+        hasChildren: uniqueFolders.some((elPath) => elPath !== path && elPath.includes(path)),
+        depth: path.split('/').length - 1,
+        display: true,
+      })
+    });
 
-        return r[e] || (r[e] = {})
-      }, obj)
-    })
+    this.dirData = dirData;
 
-    console.log(obj)
+    console.log("CURRENT");
+    console.log(this.dirData);
+
+
+    // var obj = {}
+    // uniqueFolders.forEach(function(path) {
+    //   path.split('/').reduce(function(r, e) {
+
+    //     return r[e] || (r[e] = {})
+    //   }, obj)
+    // })
+
+    // console.log(obj)
 
     // thank you Nenad Vracar for the algorithm: https://stackoverflow.com/a/57344801/5017391
     let result: MyTreeNode[] = [];
@@ -282,8 +303,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     uniqueFolders.forEach(path => {
       path.split('/').reduce((r, name) => {
-
-        console.log(r, name);
 
         if (!r[name]) {
           r[name] = { result: [] };

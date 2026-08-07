@@ -1,0 +1,15 @@
+div {
+  font-family: monospace;
+  margin-left: 10px;
+  cursor: pointer;
+  padding-left: 20px;
+}
+
+.selected {
+  font-weight: bold;
+}
+
+.expand-icon {
+  position: absolute;
+  left: 6px;
+}
