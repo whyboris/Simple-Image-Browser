@@ -1,7 +1,6 @@
 import { AfterViewInit, ChangeDetectorRef, Component, HostListener, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms'
 
-import { convertFileSrc } from '@tauri-apps/api/core';
 import { invoke } from '@tauri-apps/api/core';
 import { load } from '@tauri-apps/plugin-store';
 import { open } from '@tauri-apps/plugin-dialog';
@@ -37,8 +36,6 @@ import { LimitPipe } from '../pipes/limit.pipe';
     changeDetection: ChangeDetectionStrategy.Eager
 })
 export class HomeComponent implements OnInit, AfterViewInit {
-
-  dirData: any;
 
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
@@ -80,7 +77,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   appWindow = getCurrentWindow();
 
-  allImages: ImageFile[] = [];
+  allImages: ImageFile[] = []; // every image in gallery is an object here
+  dirData: myTree[]; // for the tree view in the sidebar
+
   allowedExtensions: AllowedExtension[] = ['png','jpg', 'jpeg', 'jxl'];
   appMaximized: boolean = false;
   expanded = false;
@@ -207,50 +206,21 @@ export class HomeComponent implements OnInit, AfterViewInit {
       response = fileList;
     });
 
-    this.list_of_files_to_objects(response);
+    this.processImagesAndTree(response);
   }
 
+  processImagesAndTree(list: string[]) {
+    this.allImages = this.fileService.createImageFileObjects(this.filterOutNonImages(list), this.inputFolder);
 
-  list_of_files_to_objects(list: string[]) {
-
-    // temporary; filter more file types later
-    const filtered: string[] = list.filter((filename: string) => filename.endsWith('.jpg'))
-
-    let allFiles: ImageFile[] = [];
-
-    for (const unparsed of filtered) {
-
-      const parsed = this.fileService.parse(unparsed);
-
-      let partial = unparsed.replace(this.inputFolder, "").trim();
-
-      const newItem: ImageFile = {
-        extension: parsed.ext.replace('.', '') as AllowedExtension,
-        fullPath: unparsed,
-        safePath: convertFileSrc(unparsed),
-        name: parsed.base.replace(parsed.ext, ''),
-        partialPath: partial.replace(/\\/g, '/'),
-        folderPath: partial.replace(/\\/g, '/').replace(parsed.base, "")
-      };
-
-      allFiles.push(newItem);
-    }
-
-    this.populateTree(allFiles);
-  }
-
-  populateTree(allFiles: ImageFile[]): void {
-
-    this.allImages = allFiles;
-
-    this.dirData = this.utilityService.processData(allFiles, this.inputFolder);
-
-    console.log("dirData");
-    console.log(this.dirData);
+    this.dirData = this.utilityService.processData(this.allImages, this.inputFolder);
 
     setTimeout(() => {
       this.cd.detectChanges();
     }, 1);
+  }
+
+  filterOutNonImages(list: string[]): string[] {
+    return list.filter((filename: string) => filename.endsWith('.jpg')); // TODO - include more filetypes
   }
 
   filterTree(folderFilter: string): void {

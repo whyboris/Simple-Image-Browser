@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 
 import { platform } from '@tauri-apps/plugin-os';
 
+import { convertFileSrc } from '@tauri-apps/api/core';
+import { AllowedExtension, ImageFile } from './interfaces';
+
 export interface ParsedPath {
     base: string;
     dir: string;
@@ -23,6 +26,31 @@ export class FileService {
   constructor() {
     this.isWindows = platform() === 'windows' ? true : false;
     this.sep = this.isWindows ? "\\" : "/";
+  }
+
+  createImageFileObjects(list: string[], inputFolder: string) {
+
+    let allFiles: ImageFile[] = [];
+
+    for (const unparsed of list) {
+
+      const parsed = this.parse(unparsed);
+
+      let partial = unparsed.replace(inputFolder, "").trim();
+
+      const newItem: ImageFile = {
+        extension: parsed.ext.replace('.', '') as AllowedExtension,
+        fullPath: unparsed,
+        safePath: convertFileSrc(unparsed),
+        name: parsed.base.replace(parsed.ext, ''),
+        partialPath: partial.replace(/\\/g, '/'),
+        folderPath: partial.replace(/\\/g, '/').replace(parsed.base, "")
+      };
+
+      allFiles.push(newItem);
+    }
+
+    return allFiles;
   }
 
   parse(path: string): ParsedPath {
