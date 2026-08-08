@@ -34,3 +34,11 @@ div {
     color: red;
   }
 }
+
+.total {
+  position: absolute;
+  right: 0;
+  font-size: 10px;
+  opacity: 0.4;
+  transform: translateY(3px);
+}

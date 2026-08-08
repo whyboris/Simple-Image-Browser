@@ -22,6 +22,10 @@
         {{ path.path | dir }}
       </span>
 
+      @if (path.depth !== 0) {
+        <span class="total">{{ path.total }}</span>
+      }
+
     </div>
 
   }
