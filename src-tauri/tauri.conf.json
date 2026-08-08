@@ -7,7 +7,7 @@
     "beforeDevCommand": "npm run start",
     "devUrl": "http://localhost:1420",
     "beforeBuildCommand": "npm run build",
-    "frontendDist": "../dist/renamer/browser"
+    "frontendDist": "../dist/simple-image-browser/browser"
   },
   "app": {
     "windows": [
@@ -23,7 +23,11 @@
         "enable": true,
         "scope": ["**/*"]
       },
-      "csp": "default-src 'self'; img-src 'self' asset: https://* data:"
+      "csp": {
+        "default-src": "'self' asset: http://asset.localhost",
+        "media-src": "'self' asset: http://asset.localhost",
+        "img-src": "'self' asset: http://asset.localhost"
+      }
     }
   },
   "bundle": {
