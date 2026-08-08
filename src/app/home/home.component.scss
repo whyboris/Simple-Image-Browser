@@ -53,31 +53,37 @@
 
 .the-sidebar {
   // background: white;
-  border: 1px solid red;
+  // border: 1px solid red;
   height: calc(100vh - 35px);
   position: absolute;
   transform: translateX(0);
-  transition-delay: 0;
-  transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1); // ease out cubic
-  transition-duration: 250ms;
   width: 190px;
   z-index: 2;
 
   .tree-container {
     background: white;
-    border: 1px solid green;
+    border-right: 1px solid #bbbbbb;
     height: 100%;
-    width: calc(100% - 20px);
+    width: calc(100% - 9px);
+    padding-right: 8px;
+    box-shadow: 5px 0px 5px 0 rgba(0, 0, 0, 0.2); // in conjunction with `clip-path`
+    clip-path: inset(0px -10px 0px 0px); // slice off shadow from above this div
 
     white-space: nowrap;
     overflow-x: hidden;
-    overflow-y: scroll;
+    overflow-y: auto;
     padding-top: 10px;
   }
 }
 
+.the-sidebar-animated {
+  transition-delay: 0ms;
+  transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1); // ease out cubic
+  transition-duration: 250ms;
+}
+
 .the-gallery {
-  border: 1px solid blue;
+  // border: 1px solid blue;
   height: calc(100vh - 35px);
   overflow: scroll;
   padding: 10px 10px 10px 0;
@@ -95,12 +101,17 @@
 }
 
 .drag-me {
-  border: 6px solid red;
-  background: blue;
+  // border: 6px solid red;
+  opacity: 0.5;
+  // background: blue;
   position: absolute;
-  right: 0;
+  right: 8px;
   top: 0;
   height: 100%;
   width: 6px;
   cursor: e-resize;
+
+  &:hover {
+    background: lightblue;
+  }
 }

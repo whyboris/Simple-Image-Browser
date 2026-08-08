@@ -8,7 +8,7 @@ div {
   cursor: pointer;
 
   // to make the folder number hide behind folder name
-  background-color: white;
+  background: linear-gradient(to right, white, white 95%, rgba(255,255,255, 0));
   padding-right: 5px;
   position: relative;
   z-index: 2;
