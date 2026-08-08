@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, HostListener, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, HostListener, OnInit, ChangeDetectionStrategy, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms'
 
 import { getCurrentWindow } from '@tauri-apps/api/window';
@@ -36,6 +36,36 @@ import type { AllowedExtension, AllowedView, AllSettings, ImageFile, RowNumbers,
     changeDetection: ChangeDetectionStrategy.Eager
 })
 export class HomeComponent implements OnInit, AfterViewInit {
+
+  // side tray resize code
+  readonly sidebarWidth = signal<number>(260);
+  private readonly minWidth = 100;
+  private readonly maxWidth = 600;
+
+  protected isResizing = false;
+
+  startResize(event: MouseEvent): void {
+    event.preventDefault();
+    this.isResizing = true;
+  }
+
+  @HostListener('window:mousemove', ['$event'])
+  onMouseMove(event: MouseEvent): void {
+
+    if (!this.isResizing) return;
+
+    const newWidth = event.pageX;
+
+    if (newWidth >= this.minWidth && newWidth <= this.maxWidth) {
+      this.sidebarWidth.set(newWidth);
+    }
+  }
+
+  @HostListener('window:mouseup')
+  onMouseUp(): void {
+    this.isResizing = false;
+  }
+  // end of side tray resize code
 
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {

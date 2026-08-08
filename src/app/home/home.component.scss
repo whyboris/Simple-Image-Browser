@@ -93,3 +93,14 @@
   transition-duration: 250ms;
   transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1); // ease out cubic
 }
+
+.drag-me {
+  border: 6px solid red;
+  background: blue;
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 6px;
+  cursor: e-resize;
+}

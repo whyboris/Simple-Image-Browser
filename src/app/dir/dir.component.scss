@@ -7,6 +7,12 @@ div {
 .folder-name {
   cursor: pointer;
 
+  // to make the folder number hide behind folder name
+  background-color: white;
+  padding-right: 5px;
+  position: relative;
+  z-index: 2;
+
   &:hover {
     color: lightgreen;
   }

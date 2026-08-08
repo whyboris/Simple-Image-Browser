@@ -276,10 +276,13 @@
       [class]="{ 'sidebar-hidden': (autohide && !showTree) || forceHide }"
       (mouseover)="showTree = true"
       (mouseout)="showTree = false"
-      >
+      [style]="{ width: sidebarWidth() + 'px' }"
+    >
       <div class="tree-container">
         <dir-view [pathList]="dirData" (messageEvent)="treeMessage($event)"></dir-view>
       </div>
+
+      <div class="drag-me" (mousedown)="startResize($event)"></div>
 
       <input
         #folderFilter
