@@ -1,16 +1,18 @@
-import { Component, Input, output, signal } from "@angular/core";
+import { Component, input, Input, output, signal } from "@angular/core";
 import { DirPipe } from "../pipes/dir.pipe";
 import { myTree } from "../interfaces";
+import { DecimalPipe } from "@angular/common";
 
 @Component({
     selector: 'dir-view',
-    imports: [ DirPipe ],
+    imports: [ DirPipe, DecimalPipe ],
     templateUrl: 'dir.component.html',
     styleUrl: './dir.component.scss'
 })
 export class DirViewComponent {
 
   @Input() public pathList: myTree[];
+  showSizes = input();
 
   messageEvent = output<string>();
 

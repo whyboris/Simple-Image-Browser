@@ -65,7 +65,7 @@
     border-right: 1px solid #bbbbbb;
     height: 100%;
     width: calc(100% - 9px);
-    padding-right: 8px;
+    // padding-right: 8px;
     box-shadow: 5px 0px 5px 0 rgba(0, 0, 0, 0.2); // in conjunction with `clip-path`
     clip-path: inset(0px -10px 0px 0px); // slice off shadow from above this div
 
@@ -114,4 +114,13 @@
   &:hover {
     background: lightblue;
   }
+}
+
+.text-fade-out {
+  background: linear-gradient(to left, white, white 50%, rgba(255, 255, 255, 0));
+  height: 100%;
+  position: absolute;
+  right: 9px;
+  top: 0;
+  width: 16px;
 }

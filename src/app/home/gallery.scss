@@ -9,16 +9,17 @@
 
     span {
       background: white;
-      border-radius: 6px;
-      bottom: 3px;
+      border-top-right-radius: 6px;
+      bottom: 0;
       display: block;
+      font-family: monospace;
       font-size: 12px;
       height: 16px;
-      left: 2px;
+      left: 0;
       line-height: 1;
       max-width: calc(100% - 4px);
       overflow: hidden;
-      padding: 2px 3px;
+      padding: 2px 4px 0 0;
       position: absolute;
       white-space: nowrap;
     }

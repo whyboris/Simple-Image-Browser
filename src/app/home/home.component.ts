@@ -37,6 +37,7 @@ import type { AllowedExtension, AllowedView, AllSettings, ImageFile, RowNumbers,
 })
 export class HomeComponent implements OnInit, AfterViewInit {
 
+  // ------------------------------------------------------------
   // side tray resize code
   readonly sidebarWidth = signal<number>(260);
   private readonly minWidth = 100;
@@ -44,9 +45,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   protected isResizing = false;
 
+  protected pastAutohideSetting; // to reset the `autohide` boolean when done dragging
+
   startResize(event: MouseEvent): void {
     event.preventDefault();
     this.isResizing = true;
+
+    this.pastAutohideSetting = this.autohide;
+    this.autohide = false;
   }
 
   @HostListener('window:mousemove', ['$event'])
@@ -54,7 +60,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     if (!this.isResizing) return;
 
-    const newWidth = event.pageX;
+    const newWidth = event.pageX + 14; // add a few pixels because of hidden hoverable area on right
 
     if (newWidth >= this.minWidth && newWidth <= this.maxWidth) {
       this.sidebarWidth.set(newWidth);
@@ -64,8 +70,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
   @HostListener('window:mouseup')
   onMouseUp(): void {
     this.isResizing = false;
+    this.autohide = this.pastAutohideSetting;
   }
   // end of side tray resize code
+  // ------------------------------------------------------------
 
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
@@ -163,6 +171,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
     view5: 5,
   }
 
+  borderRadius = signal<boolean>(true);
+  showSizes = signal<boolean>(true);
+
   currentView: AllowedView = 'view1';
 
   toggleFolder(partialPath: string) {
@@ -208,6 +219,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   toggleTree(): void {
+    console.log("TODO: IMPLEMENT TREE EXPAND");
+
     this.expanded = !this.expanded;
   }
 
