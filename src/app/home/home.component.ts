@@ -37,8 +37,9 @@ import type { AllowedExtension, AllowedView, AllSettings, ImageFile, RowNumbers,
 })
 export class HomeComponent implements OnInit, AfterViewInit {
 
-  // ------------------------------------------------------------
+  // ============================================================
   // side tray resize code
+  // ------------------------------------------------------------
   readonly sidebarWidth = signal<number>(260);
   private readonly minWidth = 100;
   private readonly maxWidth = 600;
@@ -51,8 +52,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     event.preventDefault();
     this.isResizing = true;
 
-    this.pastAutohideSetting = this.autohide;
-    this.autohide = false;
+    this.pastAutohideSetting = this.autohide();
+    this.autohide.set(false);
   }
 
   @HostListener('window:mousemove', ['$event'])
@@ -70,7 +71,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   @HostListener('window:mouseup')
   onMouseUp(): void {
     this.isResizing = false;
-    this.autohide = this.pastAutohideSetting;
   }
   // end of side tray resize code
   // ------------------------------------------------------------
@@ -116,7 +116,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   appWindow = getCurrentWindow();
 
   allImages: ImageFile[] = []; // every image in gallery is an object here
-  dirData: myTree[]; // for the tree view in the sidebar
+  dirData: myTree[] = []; // for the tree view in the sidebar
 
   allowedExtensions: AllowedExtension[] = ['png','jpg', 'jpeg', 'jxl'];
   appMaximized: boolean = false;
@@ -133,7 +133,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   showJxl: boolean = true;
   showPng: boolean = true;
 
-  autohide: boolean = false;
+  autohide = signal<boolean>(false);
   showText: boolean = false;
   showTree: boolean = true;
   forceHide: boolean = false;

@@ -94,8 +94,8 @@
 
         <button
           class="btn btn-default"
-          [class]="{ active: autohide }"
-          (click)="autohide = !autohide"
+          [class]="{ active: autohide() }"
+          (click)="autohide.set(!autohide())"
           title="toggle autohide sidebar"
           >
           <span
@@ -295,11 +295,12 @@
 
     <div
       class="the-sidebar"
-      [class]="{ 'sidebar-hidden': (autohide && !showTree) || forceHide,
+      [class]="{ 'sidebar-hidden': (autohide() && !showTree) || forceHide,
                  'the-sidebar-animated': !isResizing }"
       (mouseover)="showTree = true"
       (mouseout)="showTree = false"
-      [style]="{ width: sidebarWidth() + 'px' }"
+      [style]="{ width: sidebarWidth() + 'px',
+                 transform: (autohide() && !showTree) || forceHide ? 'translateX(-' + (sidebarWidth() - 10) + 'px)' : 'unset' }"
     >
       <div class="tree-container">
         <dir-view
