@@ -219,8 +219,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   toggleTree(): void {
-    console.log("TODO: IMPLEMENT TREE EXPAND");
-
     this.expanded = !this.expanded;
   }
 

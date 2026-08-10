@@ -1,4 +1,4 @@
-import { Component, input, Input, output, signal } from "@angular/core";
+import { Component, effect, input, Input, output, signal } from "@angular/core";
 import { DirPipe } from "../pipes/dir.pipe";
 import { myTree } from "../interfaces";
 import { DecimalPipe } from "@angular/common";
@@ -13,8 +13,15 @@ export class DirViewComponent {
 
   @Input() public pathList: myTree[];
   showSizes = input();
+  expandTreeToggle = input(false);
 
   messageEvent = output<string>();
+
+  constructor() {
+    effect(() => {
+      this.expandTree(this.expandTreeToggle());
+    });
+  }
 
   clicked(data: any) {
     this.pathList.forEach(element => element.selected = false);
@@ -31,7 +38,17 @@ export class DirViewComponent {
     }
   }
 
-  expand(data: any) {
+  expandTree(change: boolean): void {
+    this.pathList.forEach((element) => {
+      if (change === false && element.depth <= 1) {
+        // do nothing -- do not hide the 1st level folders
+      } else {
+        element.display = change;
+      }
+    });
+  }
+
+  expand(data: any): void {
     console.log(data);
 
     // data.expanded = !data.expanded;
