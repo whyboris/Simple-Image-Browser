@@ -48,7 +48,8 @@ export class UtilityService {
       depth: 0,
       expanded: true,
       hasChildren: true,
-      selected: true
+      selected: true,
+      total: 0,
     }];
 
     sorted.forEach((path) => {
@@ -63,6 +64,7 @@ export class UtilityService {
           hasChildren: sorted.some((elPath) => elPath !== path && elPath.includes(path + '/')),
           depth: depth,
           display: depth > 1 ? false : true,
+          total: data.filter((file) => file.folderPath === path + '/').length,
         })
       }
     });

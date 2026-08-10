@@ -94,8 +94,8 @@
 
         <button
           class="btn btn-default"
-          [class]="{ active: autohide }"
-          (click)="autohide = !autohide"
+          [class]="{ active: autohide() }"
+          (click)="autohide.set(!autohide())"
           title="toggle autohide sidebar"
           >
           <span
@@ -118,7 +118,7 @@
           [class]="{ active: expanded }"
           (click)="toggleTree()"
           title="expand / collapse tree"
-          >
+        >
           <span
             class="icon icon-flow-cascade"
           ></span>
@@ -182,6 +182,28 @@
           <span
             class="icon icon-language"
             title="show / hide file name"
+          ></span>
+        </button>
+
+        <button
+          (click)="borderRadius.set(!borderRadius())"
+          class="btn btn-default"
+          [class]="{ active: borderRadius() }"
+          >
+          <span
+            class="icon icon-flow-line"
+            title="border radius"
+          ></span>
+        </button>
+
+        <button
+          (click)="showSizes.set(!showSizes())"
+          class="btn btn-default"
+          [class]="{ active: showSizes() }"
+          >
+          <span
+            class="icon icon-flow-tree"
+            title="show size"
           ></span>
         </button>
       </div>
@@ -273,13 +295,26 @@
 
     <div
       class="the-sidebar"
-      [class]="{ 'sidebar-hidden': (autohide && !showTree) || forceHide }"
+      [class]="{ 'sidebar-hidden': (autohide() && !showTree) || forceHide,
+                 'the-sidebar-animated': !isResizing }"
       (mouseover)="showTree = true"
       (mouseout)="showTree = false"
-      >
+      [style]="{ width: sidebarWidth() + 'px',
+                 transform: (autohide() && !showTree) || forceHide ? 'translateX(-' + (sidebarWidth() - 10) + 'px)' : 'unset' }"
+    >
       <div class="tree-container">
-        <dir-view [pathList]="dirData" (messageEvent)="treeMessage($event)"></dir-view>
+        <dir-view
+          [pathList]="dirData"
+          [showSizes]="showSizes()"
+          [expandTreeToggle]="expanded"
+          (messageEvent)="treeMessage($event)"
+        />
       </div>
+
+      @if (!showSizes()) {
+        <div class="text-fade-out">&emsp;</div>
+      }
+      <div class="drag-me" (mousedown)="startResize($event)"></div>
 
       <input
         #folderFilter
@@ -329,7 +364,8 @@
                 (click)="updatePreview(idx)"
                 [src]="image.safePath"
                 [style]="{
-                  'height': currentView === 'view3' ? previewHeight + 'px' : '100%'
+                  'height': currentView === 'view3' ? previewHeight + 'px' : '100%',
+                  'border-radius': borderRadius() ? '10px' : 'unset'
                 }"
                 >
               @if (showText) {

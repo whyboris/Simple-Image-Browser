@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, HostListener, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, HostListener, OnInit, ChangeDetectionStrategy, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms'
 
 import { getCurrentWindow } from '@tauri-apps/api/window';
@@ -36,6 +36,44 @@ import type { AllowedExtension, AllowedView, AllSettings, ImageFile, RowNumbers,
     changeDetection: ChangeDetectionStrategy.Eager
 })
 export class HomeComponent implements OnInit, AfterViewInit {
+
+  // ============================================================
+  // side tray resize code
+  // ------------------------------------------------------------
+  readonly sidebarWidth = signal<number>(260);
+  private readonly minWidth = 100;
+  private readonly maxWidth = 600;
+
+  protected isResizing = false;
+
+  protected pastAutohideSetting; // to reset the `autohide` boolean when done dragging
+
+  startResize(event: MouseEvent): void {
+    event.preventDefault();
+    this.isResizing = true;
+
+    this.pastAutohideSetting = this.autohide();
+    this.autohide.set(false);
+  }
+
+  @HostListener('window:mousemove', ['$event'])
+  onMouseMove(event: MouseEvent): void {
+
+    if (!this.isResizing) return;
+
+    const newWidth = event.pageX + 14; // add a few pixels because of hidden hoverable area on right
+
+    if (newWidth >= this.minWidth && newWidth <= this.maxWidth) {
+      this.sidebarWidth.set(newWidth);
+    }
+  }
+
+  @HostListener('window:mouseup')
+  onMouseUp(): void {
+    this.isResizing = false;
+  }
+  // end of side tray resize code
+  // ------------------------------------------------------------
 
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
@@ -78,7 +116,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   appWindow = getCurrentWindow();
 
   allImages: ImageFile[] = []; // every image in gallery is an object here
-  dirData: myTree[]; // for the tree view in the sidebar
+  dirData: myTree[] = []; // for the tree view in the sidebar
 
   allowedExtensions: AllowedExtension[] = ['png','jpg', 'jpeg', 'jxl'];
   appMaximized: boolean = false;
@@ -95,7 +133,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   showJxl: boolean = true;
   showPng: boolean = true;
 
-  autohide: boolean = false;
+  autohide = signal<boolean>(false);
   showText: boolean = false;
   showTree: boolean = true;
   forceHide: boolean = false;
@@ -132,6 +170,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
     view4: 5,
     view5: 5,
   }
+
+  borderRadius = signal<boolean>(true);
+  showSizes = signal<boolean>(true);
 
   currentView: AllowedView = 'view1';
 

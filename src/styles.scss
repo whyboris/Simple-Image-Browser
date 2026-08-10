@@ -1,3 +1,5 @@
+@import './assets/css/photon.min.css'; // TODO - figure out how to make built app use this CSS
+
 /* You can add global styles to this file, and also import other style files */
 html, body {
   margin: 0;
@@ -5,49 +7,4 @@ html, body {
 
   height: 100%;
   font-family: Arial, Helvetica, sans-serif;
-}
-
-// EDIT TREE STYLING HERE
-.my-tree {
-
-  .tree-node-level-1 {
-    padding-left: 12px;
-  }
-
-  span {
-    cursor: pointer;
-  }
-
-  .toggle-children-wrapper {
-    border: 1px solid red;
-    position: absolute;
-    width: 5px;
-    height: 5px;
-    transform: translate(-8px, 8px);
-  }
-
-  .node-content-wrapper-focused {
-    // border: 1px solid red;
-    position: relative;
-
-    &:after {
-      border: 1px solid green;
-      content: "";
-      display: block;
-      height: 5px;
-      position: absolute;
-      right: 4px;
-      top: 6px;
-      width: 5px;
-    }
-  }
-  // .node-wrapper {
-  //   border-left: 1px solid red;
-  // }
-
-  // .node-content-wrapper-active {
-  //   border: 1px solid red;
-  //   background: none;
-  // }
-
 }

@@ -34,3 +34,14 @@ div {
     color: red;
   }
 }
+
+.total {
+  background: linear-gradient(to left, white, white 70%, rgba(255,255,255, 0));
+  color: #666666;
+  font-size: 10px;
+  padding-left: 12px;
+  padding-right: 8px;
+  position: absolute;
+  right: 0;
+  transform: translateY(3px);
+}

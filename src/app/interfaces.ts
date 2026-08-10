@@ -43,9 +43,10 @@ export interface ImageFile {
 
 export interface myTree {
   depth: number;
+  display: boolean;
   expanded: boolean;
   hasChildren: boolean;
   path: string;
   selected: boolean;
-  display: boolean;
+  total: number;
 }

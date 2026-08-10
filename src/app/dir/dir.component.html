@@ -1,4 +1,4 @@
-@for(path of pathList; track path; let i = $index;) {
+@for(path of pathList(); track path; let i = $index;) {
 
   @if (path.display) {
 
@@ -21,6 +21,10 @@
       >
         {{ path.path | dir }}
       </span>
+
+      @if (showSizes() && path.depth !== 0) {
+        <span class="total">{{ path.total | number }}</span>
+      }
 
     </div>
 

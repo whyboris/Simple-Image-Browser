@@ -1,13 +1,13 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
   "productName": "Simple Image Browser",
-  "version": "1.0.0",
+  "version": "0.5.0",
   "identifier": "com.simpleimagebrowser.simpleimagebrowser",
   "build": {
     "beforeDevCommand": "npm run start",
     "devUrl": "http://localhost:1420",
     "beforeBuildCommand": "npm run build",
-    "frontendDist": "../dist/renamer/browser"
+    "frontendDist": "../dist/simple-image-browser/browser"
   },
   "app": {
     "windows": [
@@ -23,7 +23,11 @@
         "enable": true,
         "scope": ["**/*"]
       },
-      "csp": "default-src 'self'; img-src 'self' asset: https://* data:"
+      "csp": {
+        "default-src": "'self' asset: http://asset.localhost",
+        "media-src": "'self' asset: http://asset.localhost",
+        "img-src": "'self' asset: http://asset.localhost"
+      }
     }
   },
   "bundle": {
