@@ -277,6 +277,7 @@
 
       <div class="btn-group pull-right">
         <input
+          id="idnotused"
           #search
           placeholder="file filter"
           [(ngModel)]="searchString"
@@ -317,6 +318,7 @@
       <div class="drag-me" (mousedown)="startResize($event)"></div>
 
       <input
+        id="idisnotused"
         #folderFilter
         placeholder="folder filter"
         (keyup)="filterTree(folderFilter.value)"

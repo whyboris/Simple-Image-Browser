@@ -1,6 +1,8 @@
-@import './assets/css/photon.min.css'; // TODO - figure out how to make built app use this CSS
+* {
+  cursor: unset;
+  outline: none;
+}
 
-/* You can add global styles to this file, and also import other style files */
 html, body {
   margin: 0;
   padding: 0;
