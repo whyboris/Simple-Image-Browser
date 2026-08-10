@@ -31,8 +31,8 @@
               }
             ],
             "styles": [
-              "src/styles.scss",
-              "src/assets/css/photon.min.css"
+              "src/assets/css/photon.min.css",
+              "src/styles.scss"
             ]
           },
           "configurations": {
