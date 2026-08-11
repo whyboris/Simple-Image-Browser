@@ -269,8 +269,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     console.log(folderFilter);
   }
 
-  exit(): void {
-    this.store.set('theme', 'lol');
+  async exit() {
+    await this.appWindow.close();
   }
 
   async maximize() {
